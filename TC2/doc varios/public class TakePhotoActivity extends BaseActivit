@@ -1,0 +1,444 @@
+public class TakePhotoActivity extends BaseActivity {
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_TAKE_PHOTO = 1;
+
+    private String mCurrentPhotoPath;
+
+    Bitmap myBitmap;
+    Uri picUri;
+
+    private SurfaceView cameraPreview;
+    private RelativeLayout overlay;
+
+    private ArrayList<String> permissionsToRequest;
+    private ArrayList<String> permissionsRejected = new ArrayList();
+    private ArrayList<String> permissions = new ArrayList();
+
+    private final static int ALL_PERMISSIONS_RESULT = 107;
+
+    private static int IMAGE_SIZE = 1024;
+    private static int IMAGE_ORIENTATION = 0 ;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View view) {
+//                startActivityForResult(getPickImageChooserIntent(), 200);
+                //dispatchTakePictureIntent();
+            }
+        });
+
+//        permissions.add(CAMERA);
+//        permissionsToRequest = findUnAskedPermissions(permissions);
+//        //get the permissions we have asked for before but are not granted..
+//        //we will store this in a global list to access later.
+//
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//            if (permissionsToRequest.size() > 0)
+//                requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
+//        }
+
+        // Optional: Hide the status bar at the top of the window
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        // Set the content view and get references to our views
+        setContentView(R.layout.activity_take_photo);
+        ////cameraPreview = (SurfaceView) findViewById(R.id.camera_preview);
+       // overlay = (RelativeLayout) findViewById(R.id.overlay);
+
+
+//        CameraManager. camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+//        Camera.Parameters camParams = camera.getParameters();
+//
+//// Find a preview size that is at least the size of our IMAGE_SIZE
+//        Camera.Size previewSize = camParams.getSupportedPreviewSizes().get(0);
+//        for (Camera.Size size : camParams.getSupportedPreviewSizes()) {
+//            if (size.width >= IMAGE_SIZE && size.height >= IMAGE_SIZE) {
+//                previewSize = size;
+//                break;
+//            }
+//        }
+//        camParams.setPreviewSize(previewSize.width, previewSize.height);
+//
+//// Try to find the closest picture size to match the preview size.
+//        Camera.Size pictureSize = camParams.getSupportedPictureSizes().get(0);
+//        for (Camera.Size size : camParams.getSupportedPictureSizes()) {
+//            if (size.width == previewSize.width && size.height == previewSize.height) {
+//                pictureSize = size;
+//                break;
+//            }
+//        }
+//        camParams.setPictureSize(pictureSize.width, pictureSize.height);
+//        //camera.takePicture();
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        // Get the preview size
+        int previewWidth = cameraPreview.getMeasuredWidth();
+        int previewHeight = cameraPreview.getMeasuredHeight();
+
+        // Set the height of the overlay so that it makes the preview a square
+        RelativeLayout.LayoutParams overlayParams = (RelativeLayout.LayoutParams) overlay.getLayoutParams();
+        overlayParams.height = previewHeight - previewWidth;
+        overlay.setLayoutParams(overlayParams);
+    }
+
+    private Bitmap processImage(byte[] data) throws IOException {
+
+//        Camera camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+//        Camera.Parameters camParams = camera.getParameters();
+//
+//        // Determine the width/height of the image
+//        int width = camera.getParameters().getPictureSize().width;
+//        int height = camera.getParameters().getPictureSize().height;
+//
+//        // Load the bitmap from the byte array
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+//
+//        // Rotate and crop the image into a square
+//        int croppedWidth = (width > height) ? height : width;
+//        int croppedHeight = (width > height) ? height : width;
+//
+//        Matrix matrix = new Matrix();
+//        matrix.postRotate(IMAGE_ORIENTATION);
+//        Bitmap cropped = Bitmap.createBitmap(bitmap, 0, 0, croppedWidth, croppedHeight, matrix, true);
+//        bitmap.recycle();
+//
+//        // Scale down to the output size
+//        Bitmap scaledBitmap = Bitmap.createScaledBitmap(cropped, IMAGE_SIZE, IMAGE_SIZE, true);
+//        cropped.recycle();
+//
+//        return scaledBitmap;
+        return null;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            Bundle extras = data.getExtras();
+//            Bitmap imageBitmap = (Bitmap) extras.get("data");
+////            mImageView.setImageBitmap(imageBitmap);
+//
+//        }
+//
+//        Bitmap bitmap;
+//        if (resultCode == Activity.RESULT_OK) {
+//
+//            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+//
+//            if (getPickImageResultUri(data) != null) {
+//                picUri = getPickImageResultUri(data);
+//
+//                try {
+//                    myBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), picUri);
+//                    myBitmap = rotateImageIfRequired(myBitmap, picUri);
+//                    myBitmap = getResizedBitmap(myBitmap, 500);
+//
+////                    CircleImageView croppedImageView = (CircleImageView) findViewById(R.id.img_profile);
+////                    croppedImageView.setImageBitmap(myBitmap);
+//                    imageView.setImageBitmap(myBitmap);
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            } else {
+//
+//
+//                bitmap = (Bitmap) data.getExtras().get("data");
+//
+//                myBitmap = bitmap;
+////                CircleImageView croppedImageView = (CircleImageView) findViewById(R.id.img_profile);
+////                if (croppedImageView != null) {
+////                    croppedImageView.setImageBitmap(myBitmap);
+////                }
+//
+//                imageView.setImageBitmap(myBitmap);
+//
+//            }
+//
+//        }
+
+    }
+
+    private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {
+        ArrayList result = new ArrayList();
+
+        for (String perm : wanted) {
+            if (!hasPermission(perm)) {
+                result.add(perm);
+            }
+        }
+
+        return result;
+    }
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            //startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+//                    Uri photoURI = FileProvider.getUriForFile(this,
+//                            "com.example.android.fileprovider",
+//                            photoFile);
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
+
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+        }
+    }
+
+
+
+
+    public Intent getPickImageChooserIntent() {
+
+        // Determine Uri of camera image to save.
+        Uri outputFileUri = getCaptureImageOutputUri();
+
+        List<Intent> allIntents = new ArrayList();
+        PackageManager packageManager = getPackageManager();
+
+        // collect all camera intents
+        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for (ResolveInfo res : listCam) {
+            Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            if (outputFileUri != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            }
+            allIntents.add(intent);
+        }
+
+//        // collect all gallery intents
+//        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//        galleryIntent.setType("image/*");
+//        List<ResolveInfo> listGallery = packageManager.queryIntentActivities(galleryIntent, 0);
+//        for (ResolveInfo res : listGallery) {
+//            Intent intent = new Intent(galleryIntent);
+//            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+//            intent.setPackage(res.activityInfo.packageName);
+//            allIntents.add(intent);
+//        }
+
+        // the main intent is the last in the list (fucking android) so pickup the useless one
+        Intent mainIntent = (Intent) allIntents.get(allIntents.size() - 1);
+        for (Intent intent : allIntents) {
+            if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
+                mainIntent = intent;
+                break;
+            }
+        }
+        allIntents.remove(mainIntent);
+
+        // Create a chooser from the main intent
+        Intent chooserIntent = Intent.createChooser(mainIntent, "Select source");
+
+        // Add all other intents
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toArray(new Parcelable[allIntents.size()]));
+
+        return chooserIntent;
+    }
+
+    private Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File getImage = getExternalCacheDir();
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "profile.png"));
+        }
+        return outputFileUri;
+    }
+
+    private static Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
+
+        ExifInterface ei = new ExifInterface(selectedImage.getPath());
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotateImage(img, 90);
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotateImage(img, 180);
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotateImage(img, 270);
+            default:
+                return img;
+        }
+    }
+
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float) width / (float) height;
+        if (bitmapRatio > 0) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    public Uri getPickImageResultUri(Intent data) {
+        boolean isCamera = true;
+        if (data != null) {
+            String action = data.getAction();
+            isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+        }
+
+
+        return isCamera ? getCaptureImageOutputUri() : data.getData();
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // save file url in bundle as it will be null on scren orientation
+        // changes
+        outState.putParcelable("pic_uri", picUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        picUri = savedInstanceState.getParcelable("pic_uri");
+    }
+
+
+
+    private boolean hasPermission(String permission) {
+        if (canMakeSmores()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
+            }
+        }
+        return true;
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    private boolean canMakeSmores() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        switch (requestCode) {
+
+            case ALL_PERMISSIONS_RESULT:
+                for (String perms : permissionsToRequest) {
+                    if (hasPermission(perms)) {
+
+                    } else {
+
+                        permissionsRejected.add(perms);
+                    }
+                }
+
+                if (permissionsRejected.size() > 0) {
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
+                            showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                                                //Log.d("API123", "permisionrejected " + permissionsRejected.size());
+
+                                                requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
+                                            }
+                                        }
+                                    });
+                            return;
+                        }
+                    }
+
+                }
+
+                break;
+        }
+
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    @Override
+    public int getContentViewId() {
+        return R.layout.activity_take_photo;
+    }
+
+    @Override
+    public int getNavigationMenuItemId() {
+       // mTextMessage.setText(R.string.title_take_photo);
+        return R.id.take_photos;
+    }

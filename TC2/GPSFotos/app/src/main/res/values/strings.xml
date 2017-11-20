@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GPSFotos</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_take_photo">Take Photos</string>
+    <string name="btnIntend">btnIntend</string>
+    <string name="take_picture">Take Picture</string>
+
+
+</resources>
