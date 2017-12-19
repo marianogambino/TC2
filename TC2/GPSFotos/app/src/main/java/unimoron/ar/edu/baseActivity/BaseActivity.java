@@ -58,10 +58,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     }
 
-    @Override
+  /*  @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
-    }
+    }*/
 
     @Override
     protected void onStart() {
