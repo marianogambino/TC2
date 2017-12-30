@@ -13,7 +13,7 @@
         android:name="android.hardware.camera.flash"
         android:required="false" />
 
-    <!--Camera Permission -->
+    <!-- Camera Permission -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- External Storage Access -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -27,11 +27,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- GPS -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
-
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- Provider -->
     <provider
@@ -41,9 +38,8 @@
         android:grantUriPermissions="true">
         <meta-data
             android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/file_paths"></meta-data>
+            android:resource="@xml/file_paths" />
     </provider>
-
 
     <application
         android:allowBackup="true"
@@ -52,7 +48,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -62,8 +57,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="unimoron.ar.edu.photo.TakePhotoActivity"></activity>
+        <!--<activity android:name="unimoron.ar.edu.photo.TakePhotoActivity" />-->
+        <!--<activity android:name="unimoron.ar.edu.navigationMaps.NaviagationMaps" />-->
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
+       <!-- <activity
+            android:name="unimoron.ar.edu.navigationMaps.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>-->
     </application>
 
 </manifest>

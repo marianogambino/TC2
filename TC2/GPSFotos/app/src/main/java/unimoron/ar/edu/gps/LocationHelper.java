@@ -159,18 +159,18 @@ public class LocationHelper implements PermissionUtils.PermissionResultCallback{
 
         mGoogleApiClient.connect();
 
-        LocationRequest mLocationRequest = new LocationRequest();
+      /*  LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);*/
 
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(mLocationRequest);
+     /*   LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);*/
 
-        PendingResult<LocationSettingsResult> result =
-                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
+       /* PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());*/
 
-        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+       /* result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
             @Override
             public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
 
@@ -195,7 +195,7 @@ public class LocationHelper implements PermissionUtils.PermissionResultCallback{
                         break;
                 }
             }
-        });
+        });*/
 
 
     }

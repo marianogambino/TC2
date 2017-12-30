@@ -16,36 +16,6 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior"
 tools:context="unimoron.ar.edu.photo.TakePhotoActivity">
 
 
-    <!--<RelativeLayout-->
-        <!--android:layout_width="250dp"-->
-        <!--android:layout_height="250dp"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:background="@drawable/image_border"-->
-        <!--android:clickable="true"-->
-        <!--android:orientation="vertical"-->
-        <!--android:id="@+id/relativeLayout2">-->
-
-
-        <!--<ImageView-->
-            <!--android:id="@+id/imageView"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:adjustViewBounds="true"-->
-            <!--android:scaleType="centerCrop" />-->
-
-    <!--</RelativeLayout>-->
-
-    <!--<de.hdodenhof.circleimageview.CircleImageView-->
-        <!--android:id="@+id/img_profile"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:src="@drawable/profile"-->
-        <!--app:civ_border_width="5dp"-->
-        <!--app:civ_border_color="#FFFFFF"-->
-        <!--android:layout_below="@+id/relativeLayout2"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="33dp" />-->
 
 
     <!-- Camera Preview -->
@@ -73,13 +43,5 @@ tools:context="unimoron.ar.edu.photo.TakePhotoActivity">
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="36dp" />
 
-    <include
-        android:id="@+id/navigation"
-        layout="@layout/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

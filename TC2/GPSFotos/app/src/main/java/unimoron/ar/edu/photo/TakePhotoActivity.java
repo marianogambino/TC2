@@ -26,10 +26,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -46,27 +49,23 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import unimoron.ar.edu.baseActivity.BaseActivity;
 import unimoron.ar.edu.gps.PermissionUtils;
+import unimoron.ar.edu.gpsfotos.MainActivity;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.Photo;
+import unimoron.ar.edu.navigationMaps.MapsActivity;
 
 
-public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Callback,
+public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,ActivityCompat.OnRequestPermissionsResultCallback,
-        PermissionUtils.PermissionResultCallback{
+        GoogleApiClient.OnConnectionFailedListener,ActivityCompat.OnRequestPermissionsResultCallback{
 
     private static final String TAG = TakePhotoActivity.class.getSimpleName();
 
@@ -110,19 +109,32 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
     ArrayList<String> permissions=new ArrayList<>();
     PermissionUtils permissionUtils;
 
-    private boolean isPermissionGranted;
-
     private int visibility = View.VISIBLE;
 
-   private List<Photo> photos = Lists.newArrayList();
+    private List<Photo> photos = Lists.newArrayList();
+
+
+    public static TakePhotoActivity newInstance() {
+        TakePhotoActivity fragment = new TakePhotoActivity();
+        return fragment;
+    }
+
+    final String[] nameFile = new String[1];
+    final String[] nameDir = new String[1];
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        setContentView(R.layout.activity_take_photo);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        surfaceView = (SurfaceView) findViewById(R.id.camera_preview);
+        //setContentView(R.layout.activity_take_photo);
+        View view = inflater.inflate(R.layout.activity_take_photo, container, false);
+
+        surfaceView = (SurfaceView) view.findViewById(R.id.camera_preview);
         surfaceHolder = surfaceView.getHolder();
 
         // Install a SurfaceHolder.Callback so we get notified when the
@@ -132,23 +144,17 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
         // deprecated setting, but required on Android versions prior to 3.0
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-
-
-
-        final String[] nameFile = new String[1];
-        final String[] nameDir = new String[1];
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
 
         //::::  Obtener GPS - WIFI - 4G ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         //Obtener la mejor posicion
 
-      /*  permissionUtils=new PermissionUtils(TakePhotoActivity.this);
+        permissionUtils=new PermissionUtils(getContext());
 
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        permissionUtils.check_permission(permissions,"Need GPS permission for getting your location",1);*/
+        permissionUtils.check_permission(permissions,"Need GPS permission for getting your location",1);
 
         //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -181,13 +187,16 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
                     outStream.write(data);
                     outStream.close();
                     Log.d("Log", "onPictureTaken - wrote bytes: " + data.length);
+
+                    takeAndSetPhotos(getAddress());
+
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                 }
-                Toast.makeText(getApplicationContext(), "Picture Saved", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Picture Saved", Toast.LENGTH_LONG).show();
                 refreshCamera();
             }
         };
@@ -204,34 +213,12 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
                     latitude = mLastLocation.getLatitude();
                     longitude = mLastLocation.getLongitude();
                      Address address = getAddress();
-                    camera.takePicture(null, null, jpegCallback);
 
-                    Photo photo = new Photo();
-                    photo.setPathDir(nameDir[0]);
-                    photo.setName(nameFile[0]);
-
-                    String addrss = address.getAddressLine(0);
-                    String city = address.getLocality();
-                    String state = address.getAdminArea();
-                    String country = address.getCountryName();
-
-                    if(address != null) {
-                        photo.setLocation(new unimoron.ar.edu.model.Location(latitude, longitude, country ,state , city, addrss ));
-                        photos.add(photo);
-                    }
-
-                    //guarda foto en la BD o firebase
-                        //pendiente
-
-                    //convierto a json y guardo en una shared preferences
-                    Gson gson = new Gson();
-                    String photosJs = gson.toJson(photos);
-
-                    SharedPreferences.Editor sharedpreferences = getSharedPreferences("Photos", Context.MODE_PRIVATE).edit();
-                    sharedpreferences.putString("photos", photosJs);
-
-                    //IR A OTRO ACTIVITY y abrir google maps, localizando todas la fotos
-
+                     if(address!=null) {
+                         camera.takePicture(null, null, jpegCallback);
+                     }else{
+                         showToast("address null");
+                     }
 
                 } else {
 
@@ -250,30 +237,49 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
             }
         });
 
-
         // check availability of play services
         if (checkPlayServices()) {
-
             // Building the GoogleApi client
             buildGoogleApiClient();
         }
 
+        return view;
+    }
+
+    private void takeAndSetPhotos(Address address){
+        Photo photo = new Photo();
+        photo.setPathDir(nameDir[0]);
+        photo.setName(nameFile[0]);
+
+        String addrss = address.getAddressLine(0);
+        String city = address.getLocality();
+        String state = address.getAdminArea();
+        String country = address.getCountryName();
+
+        if (address != null) {
+            photo.setLocation(new unimoron.ar.edu.model.Location(latitude, longitude, country, state, city, addrss));
+            photos.add(photo);
+        }
+
+        //guarda foto en la BD o firebase
+        //pendiente
+
+        //convierto a json y guardo en una shared preferences
+        Gson gson = new Gson();
+        String photosJs = gson.toJson(photos);
+
+        SharedPreferences.Editor sharedpreferences = getActivity().getSharedPreferences("Photos", Context.MODE_PRIVATE).edit();
+        sharedpreferences.putString("photos", photosJs);
+        sharedpreferences.apply();
     }
 
     private void getLocation() {
 
-        if (isPermissionGranted) {
+        if (((MainActivity)getActivity()).isPermissionGranted()) {
             try
             {
-
                 mLastLocation = LocationServices.FusedLocationApi
                         .getLastLocation(mGoogleApiClient);
-
-//                visibility = View.VISIBLE;
-//
-//                if(mLastLocation==null){
-//                    visibility = View.INVISIBLE;
-//                }
             }
             catch (SecurityException e)
             {
@@ -287,7 +293,7 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
     {
         Geocoder geocoder;
         List<Address> addresses;
-        geocoder = new Geocoder(this, Locale.getDefault());
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
 
         try {
             addresses = geocoder.getFromLocation(latitude,longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
@@ -307,18 +313,20 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
 
         if(locationAddress!=null)
         {
-            String address = locationAddress.getAddressLine(0);
-            String address1 = locationAddress.getAddressLine(1);
-            String city = locationAddress.getLocality();
-            String state = locationAddress.getAdminArea();
-            String country = locationAddress.getCountryName();
-            String postalCode = locationAddress.getPostalCode();
+//            String address = locationAddress.getAddressLine(0);
+//            String address1 = locationAddress.getAddressLine(1);
+//            String city = locationAddress.getLocality();
+//            String state = locationAddress.getAdminArea();
+//            String country = locationAddress.getCountryName();
+//            String postalCode = locationAddress.getPostalCode();
 
-            showToast("address: " + address);
-            showToast("city: " + city);
-            showToast("country: " + country);
-            showToast("state: " + state);
-            showToast("address1: " + address1);
+//            showToast("address: " + address);
+//            showToast("city: " + city);
+//            showToast("country: " + country);
+//            showToast("state: " + state);
+//            showToast("address1: " + address1);
+
+            return locationAddress;
         }
         return null;
 
@@ -330,7 +338,7 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
      * */
 
     protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
@@ -363,7 +371,7 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
                         try {
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
-                            status.startResolutionForResult(TakePhotoActivity.this, REQUEST_CHECK_SETTINGS);
+                            status.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
 
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
@@ -387,17 +395,17 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
 
         GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
 
-        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(this);
+        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(getActivity());
 
         if (resultCode != ConnectionResult.SUCCESS) {
             if (googleApiAvailability.isUserResolvableError(resultCode)) {
-                googleApiAvailability.getErrorDialog(this,resultCode,
+                googleApiAvailability.getErrorDialog(getActivity(),resultCode,
                         PLAY_SERVICES_REQUEST).show();
             } else {
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(getActivity(),
                         "This device is not supported.", Toast.LENGTH_LONG)
                         .show();
-                finish();
+                //finish();
             }
             return false;
         }
@@ -406,14 +414,6 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
 
     //:::::::::::::::::::::::::::::::
 
-    private Uri getCaptureImageOutputUri() {
-        Uri outputFileUri = null;
-        File getImage = getExternalCacheDir();
-        if (getImage != null) {
-            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "profile.png"));
-        }
-        return outputFileUri;
-    }
 
     private static Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
 
@@ -455,76 +455,18 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
-    public Uri getPickImageResultUri(Intent data) {
-        boolean isCamera = true;
-        if (data != null) {
-            String action = data.getAction();
-            isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
-        }
-
-
-        return isCamera ? getCaptureImageOutputUri() : data.getData();
-    }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         // save file url in bundle as it will be null on scren orientation
         // changes
         outState.putParcelable("pic_uri", picUri);
     }
 
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        // get the file url
-        picUri = savedInstanceState.getParcelable("pic_uri");
-    }
-
-    private boolean hasPermission(String permission) {
-        if (canMakeSmores()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
-            }
-        }
-        return true;
-    }
-
-
     private boolean canMakeSmores() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
-    }
-
-
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    @Override
-    public int getContentViewId() {
-        return R.layout.activity_take_photo;
-    }
-
-    @Override
-    public int getNavigationMenuItemId() {
-       // mTextMessage.setText(R.string.title_take_photo);
-        return R.id.take_photos;
     }
 
 
@@ -610,11 +552,11 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
 
     public void showToast(String message)
     {
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         checkPlayServices();
     }
@@ -638,38 +580,5 @@ public class TakePhotoActivity extends BaseActivity implements SurfaceHolder.Cal
     }
 
 
-    private void turnGPSOn(){
-        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
-        if(!provider.contains("gps")){ //if gps is disabled
-            final Intent poke = new Intent();
-            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            poke.setData(Uri.parse("3"));
-            sendBroadcast(poke);
-        }
-    }
-
-
-
-    @Override
-    public void PermissionGranted(int request_code) {
-        Log.i("PERMISSION","GRANTED");
-        isPermissionGranted=true;
-    }
-
-    @Override
-    public void PartialPermissionGranted(int request_code, ArrayList<String> granted_permissions) {
-        Log.i("PERMISSION PARTIALLY","GRANTED");
-    }
-
-    @Override
-    public void PermissionDenied(int request_code) {
-        Log.i("PERMISSION","DENIED");
-    }
-
-    @Override
-    public void NeverAskAgain(int request_code) {
-        Log.i("PERMISSION","NEVER ASK AGAIN");
-    }
 }
