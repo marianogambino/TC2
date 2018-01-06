@@ -54,8 +54,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.gps.PermissionUtils;
 import unimoron.ar.edu.gpsfotos.MainActivity;
 import unimoron.ar.edu.gpsfotos.R;
@@ -171,7 +174,6 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
         //obtener el clima actual.
 
 
-
         //lograr que la foto rote segun posicion del telefono
         jpegCallback = new Camera.PictureCallback() {
             public void onPictureTaken(byte[] data, Camera camera) {
@@ -232,8 +234,6 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
                         buildGoogleApiClient();
                     }
                 }
-
-
             }
         });
 
@@ -259,18 +259,33 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
         if (address != null) {
             photo.setLocation(new unimoron.ar.edu.model.Location(latitude, longitude, country, state, city, addrss));
             photos.add(photo);
+            //aca se deberia hacer todo
+
+            //guarda foto en la BD o firebase
+            //pendiente
+
+            //convierto a json y guardo en una shared preferences
+            Gson gson = new Gson();
+
+            //momentaneo
+            String photosJs = gson.toJson(photos);
+
+            PhotoDB db = new PhotoDB(this.getContext());
+            db.open();
+
+            db.savePhoto(photo, gson.toJson(photo));
+            db.close();
+
+            //momentaneo
+            SharedPreferences.Editor sharedpreferences = getActivity().getSharedPreferences("Photos", Context.MODE_PRIVATE).edit();
+            sharedpreferences.putString("photos", photosJs);
+            sharedpreferences.apply();
+
+            //guardar en base de datos
         }
 
-        //guarda foto en la BD o firebase
-        //pendiente
 
-        //convierto a json y guardo en una shared preferences
-        Gson gson = new Gson();
-        String photosJs = gson.toJson(photos);
 
-        SharedPreferences.Editor sharedpreferences = getActivity().getSharedPreferences("Photos", Context.MODE_PRIVATE).edit();
-        sharedpreferences.putString("photos", photosJs);
-        sharedpreferences.apply();
     }
 
     private void getLocation() {
@@ -313,19 +328,6 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
 
         if(locationAddress!=null)
         {
-//            String address = locationAddress.getAddressLine(0);
-//            String address1 = locationAddress.getAddressLine(1);
-//            String city = locationAddress.getLocality();
-//            String state = locationAddress.getAdminArea();
-//            String country = locationAddress.getCountryName();
-//            String postalCode = locationAddress.getPostalCode();
-
-//            showToast("address: " + address);
-//            showToast("city: " + city);
-//            showToast("country: " + country);
-//            showToast("state: " + state);
-//            showToast("address1: " + address1);
-
             return locationAddress;
         }
         return null;

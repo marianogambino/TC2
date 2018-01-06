@@ -1,5 +1,7 @@
 package unimoron.ar.edu.model;
 
+import java.util.Date;
+
 /**
  * Created by mariano on 15/12/17.
  */
@@ -10,6 +12,7 @@ public class Photo {
     private String name;
     private Location location;
     private Weather weather;
+    private Date takenDate;
 
     public String getPathDir() {
         return pathDir;
@@ -41,5 +44,13 @@ public class Photo {
 
     public void setWeather(Weather weather) {
         this.weather = weather;
+    }
+
+    public Date getTakenDate() {
+        return takenDate;
+    }
+
+    public void setTakenDate(Date takenDate) {
+        this.takenDate = takenDate;
     }
 }

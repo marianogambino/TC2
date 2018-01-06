@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CustomTheme.Background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_light"
+    android:divider="?android:dividerHorizontal" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/grey_light"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/datosPersonales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="75dp"
+            android:background="@color/grey_light"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/datosPersonales"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="20sp" />
+       
+        <View
+            android:id="@+id/view3"
+            android:layout_width="250dp"
+            android:layout_height="3dp"
+            android:layout_marginRight="20dp"
+            android:background="@android:color/holo_blue_bright" />
+       
+     	<TextView
+            android:id="@+id/matricula"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:layout_marginRight="102dp"
+            android:background="@color/grey_light"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/matricula"
+            android:textColor="@color/black" />    
+         
+        <TextView
+            android:id="@+id/matriculaTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="68dp"
+            android:background="@color/grey_light"
+            android:fontFamily="sans-serif-condensed"
+            android:text="31213434"
+            android:textColor="@android:color/darker_gray"
+            android:width="120dp" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginBottom="17dp"
+            android:background="@android:color/darker_gray" />
+        
+        <TextView
+            android:id="@+id/nombreCompleto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="78dp"
+            android:background="@color/grey_light"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/nombreCompleto"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/nombreCompletoTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="28dp"
+            android:background="@color/grey_light"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Juan Perez"
+            android:textColor="@android:color/darker_gray"
+            android:width="200dp" />
+        
+        <View
+            android:id="@+id/view4"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="14dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/carrera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:layout_marginRight="105dp"
+            android:background="@color/grey_light"
+            android:fontFamily="sans-serif"
+            android:text="@string/carrera"
+            android:textColor="@color/black" />
+
+         <TextView
+             android:id="@+id/carreraTxt"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="28dp"
+             android:background="@color/grey_light"
+             android:fontFamily="sans-serif-condensed"
+             android:text="Ingenieria en Informatica"
+             android:textColor="@android:color/darker_gray"
+             android:width="200dp" />
+      
+        <View
+            android:id="@+id/view1"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/darker_gray" />
+       
+         <TextView
+            android:id="@+id/planEstudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="85dp"
+            android:background="@color/grey_light"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/planEstudio"
+            android:textColor="@color/black" />
+                
+         <TextView
+             android:id="@+id/planEstudioTxt"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="105dp"
+             android:background="@color/grey_light"
+             android:fontFamily="sans-serif-condensed"
+             android:text="2014"
+             android:textColor="@android:color/darker_gray"
+             android:width="40dp" />
+                 
+         <View
+            android:id="@+id/view7"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="19dp"
+            android:background="@android:color/darker_gray" />
+
+         <TextView
+            android:id="@+id/facultad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="102dp"
+            android:layout_marginTop="19dp"
+            android:background="@color/grey_light"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/facultad"
+            android:textColor="@color/black" />
+        
+   	 	 <TextView
+   	 	     android:id="@+id/facultadTxt"
+   	 	     android:layout_width="wrap_content"
+   	 	     android:layout_height="wrap_content"
+   	 	     android:layout_marginBottom="38dp"
+   	 	     android:layout_marginRight="30dp"
+   	 	     android:background="@color/grey_light"
+   	 	     android:fontFamily="sans-serif-condensed"
+   	 	     android:text="Informatica"
+   	 	     android:textColor="@android:color/darker_gray"
+   	 	     android:width="190dp" />
+          
+         <View
+            android:id="@+id/view6"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginBottom="120dp"
+            android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -28,6 +28,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,39 +100,36 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
 
                 LatLng loc = new LatLng(p.getLocation().getLatitude() , p.getLocation().getLongitude());
 
-                File sdCard = Environment.getExternalStorageDirectory();
+                /*File sdCard = Environment.getExternalStorageDirectory();
                 File imageFile = new File(sdCard.getAbsolutePath() + "/" +  p.getPathDir() +  "/" + p.getName());
-
-
                 Canvas canvas;
                 if(imageFile.exists()){
                     try {
                         bMap = BitmapFactory.decodeStream( new FileInputStream(imageFile));
+                        //bMap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                         Bitmap workingBitmap = Bitmap.createBitmap(bMap);
                         Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
+                        Bitmap b = Bitmap.createScaledBitmap(mutableBitmap, 120, 120, false);
                         canvas = new Canvas(mutableBitmap);
-                        canvas.drawBitmap(bMap, 25, 25, null);
+                        canvas.drawBitmap(b, 25, 25, null);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                     // Offset the drawing by 25x25
-
-                }
-
-
+                }*/
                 //VER OUT OF MEMORY POR TAMANIO IMAGEN
+                //.icon(BitmapDescriptorFactory.fromBitmap( bMap ))
+                //.icon(BitmapDescriptorFactory.fromBitmap( bMap ))
 
-                marker = mMap.addMarker(
+                    marker = mMap.addMarker(
                         new MarkerOptions()
                                 .position(loc)
                                 .title(p.getLocation().getAddress())
-                                .icon(BitmapDescriptorFactory.fromBitmap( bMap ))
                                 .zIndex(zInd)
                                 .alpha(alpha)
                                 .snippet(p.getName()));
 
                 // .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-
                 alpha = alpha + 0.1f;
                 zInd = zInd + 1;
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));

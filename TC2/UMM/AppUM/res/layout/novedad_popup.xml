@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/novedadPopup"
+    android:layout_width="300dp"
+    android:layout_height="260dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginTop="30dp"
+    android:background="@color/list_background" >
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_centerVertical="false"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:contentDescription="@string/desc_list_item_icon"
+        android:src="@drawable/ic_novedades"
+        android:background="@color/list_background" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/novedadUMmsg"
+        android:textColor="@drawable/menu_item_text_color_selector"
+        android:textSize="12sp"
+        android:background="@color/list_background" />
+
+    <TextView
+        android:id="@+id/novedad"
+        android:layout_width="200dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="0dp"
+        android:text="@string/novedadUM"
+        android:textColor="@drawable/menu_item_text_color_selector"
+        android:textSize="18sp"
+        android:background="@color/list_background" />
+    
+     <Button
+         android:id="@+id/btnClose"
+         android:layout_width="115dp"
+         android:layout_height="40dp"
+         android:layout_centerHorizontal="false"
+         android:layout_centerInParent="false"
+         android:layout_marginBottom="20dp"
+         android:layout_marginLeft="90dp"
+         android:layout_marginTop="210dp"
+         android:background="@drawable/buttom_login_bg"
+         android:fontFamily="sans-serif"
+         android:onClick="login"
+         android:text="@string/cerrar"
+         android:textColor="#ffffff"
+         android:textSize="14sp"
+         android:textStyle="normal" />
+
+</RelativeLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp" 
+    android:background="@drawable/list_selector">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:contentDescription="@string/desc_list_item_icon"
+        android:src="@drawable/ic_cursos"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/aula"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/aulaDef"
+        android:textColor="@drawable/menu_item_text_color_selector" />
+
+    <TextView
+        android:id="@+id/aulaTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/counter_bg"
+        android:text="@string/aConfimar"
+        android:textColor="@color/counter_text_color"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/comision"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_alignLeft="@+id/materiaTxt"
+        android:layout_below="@+id/materiaTxt"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:text="@string/comision"
+        android:textColor="@drawable/menu_item_text_color_selector"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/comisionTxt"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_alignLeft="@+id/comision"
+        android:layout_alignTop="@+id/comision"
+        android:layout_marginLeft="52dp"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:text="@string/comisionDef"
+        android:textColor="@drawable/menu_item_text_color_selector"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/materiaTxt"
+        android:layout_width="200dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="0dp"
+        android:text="@string/materiaDef"
+        android:textColor="@drawable/menu_item_text_color_selector"
+        android:textSize="18sp" />
+
+</RelativeLayout>

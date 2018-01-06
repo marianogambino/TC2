@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ar.edu.unimoron.appum"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="21" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+   <uses-permission android:name="android.permission.BLUETOOTH" />
+
+ <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission> 
+   
+   <uses-permission android:required="true" android:name="android.permission.ACCESS_WIFI_STATE"/>
+   <uses-permission android:required="true" android:name="android.permission.CHANGE_WIFI_STATE"/>    
+   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+   <uses-permission android:name="android.permission.BLUETOOTH" />
+  
+    
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo_um"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.NoActionBar" >
+        <activity
+            android:name="ar.edu.unimoron.appum.MainActivity"
+            android:label="@string/app_name" 
+            android:configChanges="screenSize|orientation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="ar.edu.unimoron.appum.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.NoActionBar" 
+             android:configChanges="screenSize|orientation"
+             >
+        </activity>
+        <activity
+            android:name="ar.edu.unimoron.appum.NotificationActivity"
+            android:parentActivityName="ar.edu.unimoron.appum.LoginActivity"
+            android:theme="@style/CustomActivityWelcomeTheme" 
+             android:configChanges="screenSize|orientation"
+             >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.edu.unimoron.appum.LoginActivity" />
+        </activity>
+        <activity
+            android:name="ar.edu.unimoron.appum.WelcomeActivity"
+            android:label="@string/title_activity_welcome"
+            android:parentActivityName="ar.edu.unimoron.appum.LoginActivity"
+            android:theme="@style/CustomActivityWelcomeTheme" 
+             android:configChanges="screenSize|orientation"
+             >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.edu.unimoron.appum.LoginActivity" />
+        </activity>
+        <activity
+            android:name="ar.edu.unimoron.appum.CursosActivity"
+            android:label="@string/title_activity_cursos"
+            android:theme="@style/CustomActivityWelcomeTheme" 
+             android:configChanges="screenSize|orientation"
+             >
+        </activity>
+        <activity
+            android:name="ar.edu.unimoron.appum.ExamenesActivity"
+            android:label="@string/title_activity_examenes"
+            android:theme="@style/CustomActivityWelcomeTheme"
+             android:configChanges="screenSize|orientation"
+             >
+        </activity>
+        <activity
+            android:name="ar.edu.unimoron.appum.DetalleCursoActivity"
+            android:label="@string/title_activity_detalle_curso"
+            android:theme="@style/CustomActivityWelcomeTheme" 
+             android:configChanges="screenSize|orientation"
+             >
+        </activity>
+        <activity
+            android:name="ar.edu.unimoron.appum.DetalleCursoHorarioActivity"
+            android:label="@string/title_activity_horario_curso"
+            android:theme="@style/CustomActivityWelcomeTheme" 
+             android:configChanges="screenSize|orientation"
+             >
+        </activity>
+        <activity
+            android:name="ar.edu.unimoron.appum.DetalleExamenActivity"
+            android:label="@string/title_activity_detalle_examen"
+            android:theme="@style/CustomActivityWelcomeTheme"
+             android:configChanges="screenSize|orientation"
+             >
+        </activity>
+
+        <activity
+            android:name="ar.edu.unimoron.appum.NovedadesActivity"
+            android:label="@string/title_activity_novedades"
+            android:theme="@style/CustomActivityWelcomeTheme"
+             android:configChanges="screenSize|orientation"
+             >
+        </activity>
+        <activity
+            android:name="ar.edu.unimoron.appum.AlumnosUMActivity"
+            android:label="@string/title_activity_alumnos_um"
+            android:theme="@style/CustomActivityWelcomeTheme"
+             android:configChanges="screenSize|orientation"
+             >
+        </activity>
+        
+        <service android:name="ar.edu.unimoron.services.servicioUM.NotifyService" 
+             android:configChanges="screenSize|orientation"/>
+        <service android:name="ar.edu.unimoron.services.servicioUM.NotifyListenerService" 
+             android:configChanges="screenSize|orientation"/>
+    </application>
+
+</manifest>

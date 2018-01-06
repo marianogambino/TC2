@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp" 
+    android:background="@drawable/list_selector">
+
+    <ImageView
+        android:id="@+id/iconNovedad"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:contentDescription="@string/desc_list_item_icon"
+        android:src="@drawable/ic_novedades"
+        android:layout_centerVertical="true" />
+
+     <TextView
+         android:id="@+id/novedadTxt"
+         android:layout_width="wrap_content"
+         android:layout_height="30dp"
+         android:layout_alignLeft="@+id/novedadUM"
+         android:layout_alignParentTop="true"
+         android:layout_marginTop="30dp"
+         android:paddingBottom="1dp"
+         android:paddingLeft="0dp"
+         android:paddingRight="20dp"
+         android:text="@string/novedadUMmsgTxt"
+         android:textColor="@drawable/menu_item_text_color_selector"
+         android:textSize="12sp" />
+
+     <TextView
+         android:id="@+id/novedadUM"
+         android:layout_width="wrap_content"
+         android:layout_height="20dp"
+         android:layout_alignParentTop="true"
+         android:layout_marginTop="5dp"
+         android:layout_toRightOf="@+id/iconNovedad"
+         android:paddingBottom="0dp"
+         android:paddingLeft="0dp"
+         android:paddingRight="20dp"
+         android:text="@string/novedadUMmsg"
+         android:textColor="@drawable/menu_item_text_color_selector"
+         android:textSize="18sp" />
+
+</RelativeLayout>

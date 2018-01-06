@@ -1,0 +1,49 @@
+ <RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CustomTheme.Background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_light"
+    android:divider="?android:dividerHorizontal" >
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:background="@color/grey_light"
+        android:orientation="vertical" >
+             
+    <TextView
+            android:id="@+id/bienvenido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="normal"
+            android:text="@string/mensajeBienvenida"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/blue"
+            android:textColorHint="@color/blue"
+            android:background="@color/grey_light"
+            android:textSize="38sp" />
+    
+    <TextView
+            android:id="@+id/umMobileBienvenida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="normal"
+            android:background="@color/grey_light"
+            android:text="@string/UMmobile"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/blue"
+            android:textColorHint="@color/blue"
+            android:textSize="38sp" />
+     
+	
+    </LinearLayout>
+</RelativeLayout>

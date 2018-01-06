@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="list_item_title">#4a4a4a</color>
+    <color name="list_background">#f7f7f7</color>
+    <color name="list_background_pressed">#36bbe3</color>
+    <color name="list_divider">#d4d4d4</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+    
+    <color name="fecha_text_bg">#20d945</color>
+    <color name="fecha_text_color">#c5c4c4</color>
+    
+    <color name="enLaUM_text_bg">#20d945</color>
+    
+    <color name="action_bar_background_start">#ffffff</color>
+    <color name="action_bar_background_end">#ffffff</color>
+    
+    <color name="action_bar_title_welcome">#3366ff</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="grey_light">#f2f2f2</color>
+    <color name="orange">#ff7b00</color>
+    <color name="verde">#30cf00</color>  
+    <color name="violet">#b244fc</color>
+       
+    <color name="opaque_back">#29000000</color>
+    
+    
+</resources>

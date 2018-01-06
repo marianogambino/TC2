@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>Fwk Configuration - default</comment>
+	
+	<entry key="contexts">wifi|bluetooth|novedades|alumnoExamen</entry>
+	
+	<entry key="package">edu.fwk.context</entry>
+	
+	<entry key="wifi">edu.fwk.context.wifi.WifiCtx</entry>
+	<entry key="bluetooth">edu.fwk.context.bluetooth.BluetoothCtx</entry>
+	<entry key="novedades">edu.fwk.context.novedades.NovedadesCtx</entry>
+	<entry key="alumnoExamen">ar.edu.unimoron.context.alumnoExamen.AlumnoExamenCtx</entry>
+	
+	
+</properties>

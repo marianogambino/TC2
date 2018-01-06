@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <string name="app_name">UM Mobile</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="iniciarSesion">Iniciar Sesión</string>
+    <string name="iniciarSesionUM">Iniciar Sesión con</string>
+    <string name="UMmobile">UM mobile</string>
+    <string name="notificacion">Notificación</string>
+    <string name="title_activity_welcome">Bienvenido</string>
+    <string name="usuario">Usuario</string>
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="password">Password</string>
+    <string name="cerrarSesion">Cerrar Sesión</string>
+    <string name="cursoDef">Curso</string>
+    <string name="materiaDef">Materia</string>
+    <string name="aulaDef">Aula:</string>
+    <string name="aConfimar">a confirmar</string>
+    <string name="comisionDef">Comisión</string>
+    <string name="comision">Comisión:</string>
+    <string name="mensajeBienvenida">Bienvenido a</string>
+    <string name="datosPersonales">Datos Personales</string>
+    <string name="nombreCompleto">Nombre Completo</string>
+    <string name="matricula">Matrícula</string>
+    <string name="planEstudio">Plan de Estudio</string>
+    <string name="carrera">Carrera</string>
+    <string name="facultad">Facultad</string>
+    <string name="fechaInicioFin">Fecha Inicio/Fin</string>
+    <string name="Horarios">Horarios</string>
+    <string name="VerHorarios">Ver Horarios</string>
+    <string name="cursoTitle">Curso</string>
+    <string name="examneTitle">Examen</string>
+    <string name="fecha">Fecha</string>
+    <string name="fecha1">Fecha:</string>
+    <string name="estado">Estado</string>
+    <string name="nota">Nota</string>
+    <string name="novedadUMmsg">La UM informa: </string>
+    <string name="novedadUMmsgTxt">Que la universidad permanecerá cerrada</string>
+    <string name="bienvenidosTitle">Bienvenido:</string>
+    <string name="datoPersonalesTitle">Datos Personales</string>
+    <string name="cursosTitle">Cursos</string>
+    <string name="examenesTitle">Exámenes</string>
+    <string name="novedadesTitle">Novedades</string>
+    <string name="alumnosUmTitle">Alumnos en la UM</string>
+    <string name="menu">Menú UM</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="novedadUM">Novedad UM</string>
+    <string name="umInforma">UM Informa</string>
+    <string name="enLaUM">en la UM</string>
+    <string name="matriculaItem">Matrícula:</string>
+    <string name="ubicacionUM">Mi Ubicación en la UM</string>
+    <string name="ubicacionUMTitle">Mi Ubicación en la UM</string>
+    <string name="ubicacion">Estoy en:</string>
+    <string name="title_activity_horario_curso">Horarios del Curso</string>
+    <string name="diaDef">Día:</string>
+    <string name="horaDesde">De:</string>
+    <string name="horaHasta">A:</string>
+    
+
+    <!-- Nombres de los items -->
+    <string-array name="nav_drawer_items">
+        <item>Datos Personales</item>
+        <item>Cursos</item>
+        <item>Exámenes</item>
+        <item>Novedades UM</item>
+        <item>Alumnos en la UM</item>
+        <item>Mi Ubicación</item>
+    </string-array>
+
+    <!-- Iconos de los items -->
+    <array name="menu_drawer_icons">
+        <item>@drawable/ic_user</item>
+        <item>@drawable/ic_cursos</item>
+        <item>@drawable/ic_examen</item>
+        <item>@drawable/ic_novedades</item>
+        <item>@drawable/ic_alumnos_um</item>
+        <item>@drawable/ic_ubicacion</item>
+    </array>
+
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+
+    <style name="login_ButtonText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:layout_marginLeft">60dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_detalle_curso">Detalle del Curso</string>
+    <string name="title_activity_detalle_examen">Detalle del Examen</string>
+    <string name="title_activity_cursos">CursosActivity</string>
+    <string name="title_activity_examenes">ExámenesActivity</string>
+    <string name="title_activity_novedades">NovedadesActivity</string>
+    <string name="title_activity_alumnos_um">AlumnosUMActivity</string>
+
+</resources>

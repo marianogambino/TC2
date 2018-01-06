@@ -11,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.idescout.sql.SqlScoutServer;
+
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.navigationMaps.MapsActivity;
 import unimoron.ar.edu.photo.TakePhotoActivity;
@@ -32,6 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
+
+        //momentaneo
+        SqlScoutServer.create(this, getPackageName());
 
        // mTextMessage = (TextView) findViewById(R.id.message);
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);

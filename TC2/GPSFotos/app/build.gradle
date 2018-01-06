@@ -41,4 +41,8 @@ dependencies {
     compile 'com.google.guava:guava:22.0-android'
     compile 'com.google.code.gson:gson:2.8.1'
 
+    compile 'com.idescout.sql:sqlscout-server:2.0'
+
+
+
 }

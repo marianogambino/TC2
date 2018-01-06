@@ -1,0 +1,193 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ar.edu.unimoron.appum.DetalleExamenActivity" >
+
+     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/Examen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/examneTitle"
+            android:textColor="@color/verde"
+            android:textSize="20sp" />
+       
+        <View
+            android:id="@+id/view3"
+            android:layout_width="250dp"
+            android:layout_height="3dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/verde" />
+
+        <TextView
+            android:id="@+id/materia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="108dp"
+            android:layout_marginTop="19dp"
+            android:background="@color/white"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/materiaDef"
+            android:textColor="@color/black" />
+         
+        <TextView
+            android:id="@+id/materiaTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="30dp"
+            android:background="@color/white"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Info I"
+            android:textColor="@android:color/darker_gray"
+            android:width="200dp" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginBottom="17dp"
+            android:background="@android:color/darker_gray" />
+        
+        <TextView
+            android:id="@+id/estado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="110dp"
+            android:background="@color/white"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/estado"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/estadoTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="28dp"
+            android:background="@color/white"
+            android:fontFamily="sans-serif-condensed"
+            android:text="pendiente"
+            android:textColor="@android:color/darker_gray"
+            android:width="200dp" />
+        
+        <View
+            android:id="@+id/view4"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="14dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/aula"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="112dp"
+            android:layout_marginTop="19dp"
+            android:background="@color/white"
+            android:fontFamily="sans-serif"
+            android:text="@string/aulaDef"
+            android:textColor="@color/black" />
+
+         <TextView
+             android:id="@+id/aulaTxt"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="28dp"
+             android:background="@color/white"
+             android:fontFamily="sans-serif-condensed"
+             android:text="@string/aConfimar"
+             android:textColor="@android:color/darker_gray"
+             android:width="200dp" />
+      
+        <View
+            android:id="@+id/view1"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/darker_gray" />
+       
+         <TextView
+             android:id="@+id/fecha"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="110dp"
+             android:background="@color/white"
+             android:fontFamily="sans-serif-condensed"
+             android:text="@string/fecha"
+             android:textColor="@color/black" />
+                
+         <TextView
+             android:id="@+id/fechaTxt"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="95dp"
+             android:background="@color/white"
+             android:fontFamily="sans-serif-condensed"
+             android:text="@string/aConfimar"
+             android:textColor="@android:color/darker_gray"
+             android:width="65dp" />
+                 
+         <View
+            android:id="@+id/view7"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="19dp"
+            android:background="@android:color/darker_gray" />
+
+         <TextView
+             android:id="@+id/nota"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="114dp"
+             android:layout_marginTop="19dp"
+             android:background="@color/white"
+             android:fontFamily="sans-serif-condensed"
+             android:text="@string/nota"
+             android:textColor="@color/black" />
+        
+   	 	 <TextView
+   	 	     android:id="@+id/notaTxt"
+   	 	     android:layout_width="wrap_content"
+   	 	     android:layout_height="wrap_content"
+   	 	     android:layout_marginBottom="38dp"
+   	 	     android:layout_marginLeft="0dp"
+   	 	     android:layout_marginRight="90dp"
+   	 	     android:background="@color/white"
+   	 	     android:fontFamily="sans-serif-condensed"
+   	 	     android:height="60dp"
+   	 	     android:text="@string/aConfimar"
+   	 	     android:textColor="@android:color/darker_gray"
+   	 	     android:width="70dp" />
+          
+         <View
+             android:id="@+id/view6"
+             android:layout_width="270dp"
+             android:layout_height="0.5dp"
+             android:layout_marginLeft="7dp"
+             android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
+
+</RelativeLayout>
