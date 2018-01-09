@@ -45,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + TablesColumns.C_PHOTO_UPLOAD + " INTEGER, "
                 + TablesColumns.C_PHOTO_DELETE + " INTEGER, "
                 + TablesColumns.C_PHOTO_FILE + " INTEGER,"
-                + TablesColumns.C_PHOTO_DATE + " default CURRENT_DATE ,"
+                + TablesColumns.C_PHOTO_DATE + " DATETIME default CURRENT_TIMESTAMP ,"
                 + TablesColumns.C_CITY_ID + " INTEGER, FOREIGN KEY("
                 + TablesColumns.C_CITY_ID + ") REFERENCES " + TablesColumns.T_CITY + "(" + TablesColumns.C_CITY_ID + "))");
 

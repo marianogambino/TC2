@@ -8,11 +8,21 @@ import java.util.Date;
 
 public class Photo {
 
+    private Long id;
     private String pathDir;
     private String name;
+    private String json;
     private Location location;
     private Weather weather;
     private Date takenDate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getPathDir() {
         return pathDir;
@@ -52,5 +62,13 @@ public class Photo {
 
     public void setTakenDate(Date takenDate) {
         this.takenDate = takenDate;
+    }
+
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String json) {
+        this.json = json;
     }
 }

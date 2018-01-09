@@ -5,7 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import unimoron.ar.edu.model.City;
+import unimoron.ar.edu.model.Country;
 import unimoron.ar.edu.model.Photo;
+import unimoron.ar.edu.model.State;
 
 /**
  * Created by mariano on 03/01/18.
@@ -40,7 +49,6 @@ public class PhotoDB {
      */
     public void savePhoto(Photo photo, String jsonPhoto){
 
-        ContentValues valores = new ContentValues();
         Cursor cCountry = db.query(TablesColumns.T_COUNTRY, TablesColumns.allColumnsCountry,
                 TablesColumns.C_COUNTRY_NAME + "=?", new String[]{photo.getLocation().getCountry()},
                 null, null, null);
@@ -74,93 +82,163 @@ public class PhotoDB {
                 int countCity = cCity.getCount();
                 //if exist city - save photo
                 if(cCity.moveToFirst() && countCity > 0) {
-
                     int cityColIdx = cCity.getColumnIndex(TablesColumns.C_CITY_ID);
                     int cCityIdx = cState.getInt(cityColIdx);
-
-                    //insert country, getId, insert state, get id, insert city and insert photo
-                    valores.put(TablesColumns.C_PHOTO_JSON, jsonPhoto);
-                    valores.put(TablesColumns.C_PHOTO_DELETE, 0);
-                    valores.put(TablesColumns.C_PHOTO_UPLOAD, 0);
-                    valores.put(TablesColumns.C_CITY_ID, cCityIdx);
-
-                    System.out.println( "insert into photo");
-                    db.insert(TablesColumns.T_PHOTO, null, valores);
-
-
+                    persistPhoto(photo, jsonPhoto, cCityIdx);
                 }else{
-                    //save city ann then save photo
-                    ContentValues valCity = new ContentValues();
-                    valCity.put(TablesColumns.C_CITY_NAME, photo.getLocation().getCity());
-                    valCity.put(TablesColumns.C_STATE_ID,cStateIdx );
-
-                    long cityId = db.insert(TablesColumns.T_CITY, null, valCity);
-                    valores.put(TablesColumns.C_PHOTO_JSON, jsonPhoto);
-                    valores.put(TablesColumns.C_PHOTO_DELETE, 0);
-                    valores.put(TablesColumns.C_PHOTO_UPLOAD, 0);
-                    valores.put(TablesColumns.C_CITY_ID, cityId);
-                    valores.put(TablesColumns.C_PHOTO_FILE, photo.getPathDir()+ "/" + photo.getName());
-
-                    System.out.println( "insert into photo");
-                    db.insert(TablesColumns.T_PHOTO, null, valores);
+                    long cityId = persistCity(cStateIdx,  photo.getLocation().getCity());
+                    persistPhoto(photo, jsonPhoto, cityId);
                 }
                 cCity.close();
             }else{
                 //countryIdx
                 //insert state and insert city with photo
-
-                ContentValues valState = new ContentValues();
-                valState.put(TablesColumns.C_STATE_NAME, photo.getLocation().getState());
-                valState.put(TablesColumns.C_COUNTRY_ID, countryIdx );
-                long stateIdx = db.insert(TablesColumns.T_STATE, null, valState);
-
-                ContentValues valCity = new ContentValues();
-                valCity.put(TablesColumns.C_CITY_NAME, photo.getLocation().getCity());
-                valCity.put(TablesColumns.C_STATE_ID, stateIdx );
-
-                long cityId = db.insert(TablesColumns.T_CITY, null, valCity);
-                valores.put(TablesColumns.C_PHOTO_JSON, jsonPhoto);
-                valores.put(TablesColumns.C_PHOTO_DELETE, 0);
-                valores.put(TablesColumns.C_PHOTO_UPLOAD, 0);
-                valores.put(TablesColumns.C_CITY_ID, cityId);
-                valores.put(TablesColumns.C_PHOTO_FILE, photo.getPathDir()+ "/" + photo.getName());
-
-                System.out.println( "insert into photo");
-                db.insert(TablesColumns.T_PHOTO, null, valores);
-
+                long stateIdx = persistState(countryIdx, photo.getLocation().getState());
+                long cityId = persistCity(stateIdx, photo.getLocation().getCity());
+                persistPhoto(photo, jsonPhoto, cityId);
             }
             cState.close();
 
         }
         else{
             //insert country, getId, insert state, get id, insert city and insert photo
-            ContentValues valCountry = new ContentValues();
-            valCountry.put(TablesColumns.C_COUNTRY_NAME, photo.getLocation().getCountry());
-            long countryIdx = db.insert(TablesColumns.T_COUNTRY, null, valCountry);
-
-            ContentValues valState = new ContentValues();
-            valState.put(TablesColumns.C_STATE_NAME, photo.getLocation().getState());
-            valState.put(TablesColumns.C_COUNTRY_ID, countryIdx );
-            long stateIdx = db.insert(TablesColumns.T_STATE, null, valState);
-
-            ContentValues valCity = new ContentValues();
-            valCity.put(TablesColumns.C_CITY_NAME, photo.getLocation().getCity());
-            valCity.put(TablesColumns.C_STATE_ID, stateIdx );
-
-            long cityId = db.insert(TablesColumns.T_CITY, null, valCity);
-            valores.put(TablesColumns.C_PHOTO_JSON, jsonPhoto);
-            valores.put(TablesColumns.C_PHOTO_DELETE, 0);
-            valores.put(TablesColumns.C_PHOTO_UPLOAD, 0);
-            valores.put(TablesColumns.C_CITY_ID, cityId);
-            valores.put(TablesColumns.C_PHOTO_FILE, photo.getPathDir()+ "/" + photo.getName());
-
-            System.out.println( "insert into photo");
-            db.insert(TablesColumns.T_PHOTO, null, valores);
+            long countryIdx = persistCountry(photo.getLocation().getCountry());
+            long stateIdx = persistState(countryIdx, photo.getLocation().getState());
+            long cityId = persistCity(stateIdx, photo.getLocation().getCity());
+            persistPhoto(photo, jsonPhoto, cityId);
         }
         cCountry.close();
     }
 
+    private long persistCountry(String country){
+        ContentValues valCountry = new ContentValues();
+        valCountry.put(TablesColumns.C_COUNTRY_NAME, country);
+        long countryIdx = db.insert(TablesColumns.T_COUNTRY, null, valCountry);
+        return countryIdx;
+    }
 
+    private long persistState(long countryIdx , String state){
+        ContentValues valState = new ContentValues();
+        valState.put(TablesColumns.C_STATE_NAME, state);
+        valState.put(TablesColumns.C_COUNTRY_ID, countryIdx );
+        long stateIdx = db.insert(TablesColumns.T_STATE, null, valState);
+        return stateIdx;
+    }
+
+    private long persistCity(long stateIdx , String city){
+        ContentValues valCity = new ContentValues();
+        valCity.put(TablesColumns.C_CITY_NAME, city);
+        valCity.put(TablesColumns.C_STATE_ID, stateIdx );
+        return db.insert(TablesColumns.T_CITY, null, valCity);
+    }
+
+    private long persistPhoto(Photo photo, String jsonPhoto , long cityId){
+        ContentValues valores = new ContentValues();
+        valores.put(TablesColumns.C_PHOTO_JSON, jsonPhoto);
+        valores.put(TablesColumns.C_PHOTO_DELETE, 0);
+        valores.put(TablesColumns.C_PHOTO_UPLOAD, 0);
+        valores.put(TablesColumns.C_CITY_ID, cityId);
+        valores.put(TablesColumns.C_PHOTO_FILE, photo.getPathDir()+ "/" + photo.getName());
+        Date currentDate = new Date();
+        SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String date = fmt.format(currentDate);
+        valores.put(TablesColumns.C_PHOTO_DATE, date);
+
+        System.out.println( "insert into photo");
+        return db.insert(TablesColumns.T_PHOTO, null, valores);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<String> countries(){
+        Cursor c = db.rawQuery("select c.name, s.name, ct.name, p.path_file, p.creation_date From country c, state s, city ct , photo p" +
+                " where c.id = s.id and s.id_state = ct.id_state and p.id_city = ct.id_city ", null);
+
+        String data = null;
+        List<String> list = new ArrayList<>();
+        //If exists Country
+        if (c.moveToFirst()) {
+            do {
+                // Passing values
+                String column1 = c.getString(0);
+                String column2 = c.getString(1);
+                String column3 = c.getString(2);
+                String column4 = c.getString(3);
+                String column5 = c.getString(4);
+                // Do something Here with values
+
+                list.add( column1 + " - " + column2 + " - " + column3 + " - " + column4 + " - " + column5);
+            } while (c.moveToNext());
+        }
+
+        return list;
+    }
+
+
+    public List<Country> getCountries(){
+        Cursor c = db.rawQuery("select c.id , c.name From country c", null);
+        Country country = null;
+        List<Country> list = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                country = new Country();
+                country.setId(Long.valueOf(c.getString(0) ));
+                country.setName( c.getString(1) );
+                list.add(country);
+            } while (c.moveToNext());
+        }
+        return list;
+    }
+
+    public List<State> getStates(String idCountry){
+        Cursor c = db.rawQuery("select s.id , s.name From state s where s.id = " + idCountry, null);
+        State state = null;
+        List<State> list = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                state = new State();
+                state.setId(Long.valueOf(c.getString(0) ));
+                state.setName( c.getString(1) );
+                list.add(state);
+            } while (c.moveToNext());
+        }
+        return list;
+    }
+
+    public List<City> getCities(String idState){
+        Cursor c = db.rawQuery("select c.id , c.name From city c where c.id_state=" + idState, null);
+        City city = null;
+        List<City> list = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                city = new City();
+                city.setId(Long.valueOf(c.getString(0) ));
+                city.setName( c.getString(1) );
+                list.add(city);
+            } while (c.moveToNext());
+        }
+        return list;
+    }
+
+    public List<Photo> getPhoto(String idCity) throws ParseException {
+        Cursor c = db.rawQuery("select * From Photo c", null);
+        Photo photo = null;
+        List<Photo> list = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                photo = new Photo();
+                photo.setId(Long.valueOf(c.getString(0) ));
+                photo.setJson( c.getString(1) );
+                photo.setPathDir( c.getString(4) );
+                SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                photo.setTakenDate( fmt.parse( c.getString(5) ) );
+                list.add(photo);
+            } while (c.moveToNext());
+        }
+        return list;
+    }
 
     //Verifica si ya esta logeando el usuario
     public String getLogin() {

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -88,54 +89,44 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<Photo>>(){}.getType();
             List<Photo> photos = gson.fromJson(photosJs,listType);
-
-            float zInd = 0f;
             float alpha = 0.7f;
-            Marker marker;
-
-            Bitmap bMap = null;
 
             for(Photo p : photos) {
                 // Add a marker in Sydney and move the camera
-
                 LatLng loc = new LatLng(p.getLocation().getLatitude() , p.getLocation().getLongitude());
+                File root = Environment.getExternalStorageDirectory();
+                Bitmap bMap = BitmapFactory.decodeFile(root+"/" +  p.getPathDir() +  "/" + p.getName());
 
-                /*File sdCard = Environment.getExternalStorageDirectory();
-                File imageFile = new File(sdCard.getAbsolutePath() + "/" +  p.getPathDir() +  "/" + p.getName());
-                Canvas canvas;
-                if(imageFile.exists()){
-                    try {
-                        bMap = BitmapFactory.decodeStream( new FileInputStream(imageFile));
-                        //bMap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-                        Bitmap workingBitmap = Bitmap.createBitmap(bMap);
-                        Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
-                        Bitmap b = Bitmap.createScaledBitmap(mutableBitmap, 120, 120, false);
-                        canvas = new Canvas(mutableBitmap);
-                        canvas.drawBitmap(b, 25, 25, null);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    // Offset the drawing by 25x25
-                }*/
-                //VER OUT OF MEMORY POR TAMANIO IMAGEN
-                //.icon(BitmapDescriptorFactory.fromBitmap( bMap ))
-                //.icon(BitmapDescriptorFactory.fromBitmap( bMap ))
-
-                    marker = mMap.addMarker(
+                Bitmap img = getResizedBitmap(bMap, 100);
+                mMap.addMarker(
                         new MarkerOptions()
                                 .position(loc)
                                 .title(p.getLocation().getAddress())
-                                .zIndex(zInd)
-                                .alpha(alpha)
-                                .snippet(p.getName()));
 
-                // .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                alpha = alpha + 0.1f;
-                zInd = zInd + 1;
+                                .icon(BitmapDescriptorFactory.fromBitmap(img))
+                                .snippet(p.getName()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-                marker.setTag(0);
             }
         }
+    }
+
+    private Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float) width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+        Bitmap b = Bitmap.createScaledBitmap(image, width, height, true);
+        return Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
     }
 
 
