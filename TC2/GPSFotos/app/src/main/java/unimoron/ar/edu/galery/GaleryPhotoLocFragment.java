@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.Country;
 
@@ -55,14 +57,14 @@ public class GaleryPhotoLocFragment extends Fragment {
 
         listCountry = (ListView) view.findViewById(R.id.list_country);
 
-        countries = new ArrayList<>();
-        Country country = new Country();
-        country.setName("Argentina");
-        countries.add( country );
+        PhotoDB db = new PhotoDB(getContext());
+        db.open();
+        countries =  db.getCountries();
+        db.close();
+
         CountryViewAdapter adapter = new CountryViewAdapter(countries, this.getContext());
 
         listCountry.setAdapter(adapter);
-
         listCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -70,7 +72,7 @@ public class GaleryPhotoLocFragment extends Fragment {
                                     int position, long arg3) {
 
                 Country country = countries.get(position);
-                Toast.makeText(getContext(),country.getName() , Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(),country.getName() , Toast.LENGTH_SHORT).show();
 
                 Fragment frg =  StatesFragment.newInstance(country);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -93,5 +95,6 @@ public class GaleryPhotoLocFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
 
 }

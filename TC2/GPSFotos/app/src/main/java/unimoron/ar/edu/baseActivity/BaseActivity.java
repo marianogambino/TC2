@@ -186,6 +186,19 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        }
+        else if(getFragmentManager().getBackStackEntryCount() == 1) {
+            moveTaskToBack(false);
+        }
+        else {
+            getFragmentManager().popBackStack();
+        }
+    }
+
     public abstract int getContentViewId();
 
     public abstract int getNavigationMenuItemId();

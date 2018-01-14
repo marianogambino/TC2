@@ -192,7 +192,7 @@ public class PhotoDB {
         return list;
     }
 
-    public List<State> getStates(String idCountry){
+    public List<State> getStates(Long idCountry){
         Cursor c = db.rawQuery("select s.id , s.name From state s where s.id = " + idCountry, null);
         State state = null;
         List<State> list = new ArrayList<>();
@@ -207,8 +207,8 @@ public class PhotoDB {
         return list;
     }
 
-    public List<City> getCities(String idState){
-        Cursor c = db.rawQuery("select c.id , c.name From city c where c.id_state=" + idState, null);
+    public List<City> getCities(Long idState){
+        Cursor c = db.rawQuery("select c.id_city , c.name From city c where c.id_state=" + idState, null);
         City city = null;
         List<City> list = new ArrayList<>();
         if (c.moveToFirst()) {
@@ -222,8 +222,8 @@ public class PhotoDB {
         return list;
     }
 
-    public List<Photo> getPhoto(String idCity) throws ParseException {
-        Cursor c = db.rawQuery("select * From Photo c", null);
+    public List<Photo> getPhoto(Long idCity) throws ParseException {
+        Cursor c = db.rawQuery("select * From Photo c where c.id_city=" + idCity, null);
         Photo photo = null;
         List<Photo> list = new ArrayList<>();
         if (c.moveToFirst()) {

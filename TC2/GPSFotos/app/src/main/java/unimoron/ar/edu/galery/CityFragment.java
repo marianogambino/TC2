@@ -17,27 +17,28 @@ import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.City;
 import unimoron.ar.edu.model.Country;
+import unimoron.ar.edu.model.Photo;
 import unimoron.ar.edu.model.State;
 
 
-public class StatesFragment extends Fragment {
+public class CityFragment extends Fragment {
 
-    private Country country;
-    private List<State> stateList;
-    private ListView listViewState;
+    private State state;
+    private List<City> cities;
+    private ListView listView;
 
-    public StatesFragment() {
+    public CityFragment() {
         // Required empty public constructor
     }
 
-    public static StatesFragment newInstance(Country country) {
-        StatesFragment fragment = new StatesFragment();
-        fragment.setCountry(country);
+    public static CityFragment newInstance(State state) {
+        CityFragment fragment = new CityFragment();
+        fragment.setState(state);
         return fragment;
     }
 
-    private void setCountry(Country country){
-        this.country = country;
+    private void setState(State state){
+        this.state = state;
     }
 
     @Override
@@ -51,38 +52,35 @@ public class StatesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_states, container, false);
+        View view = inflater.inflate(R.layout.fragment_city, container, false);
 
         //View view = inflater.inflate(R.layout.list_state, container, false);
 
-        listViewState = (ListView) view.findViewById(R.id.list_state);
+        listView = (ListView) view.findViewById(R.id.list_city);
 
         PhotoDB db = new PhotoDB(getContext());
         db.open();
-        stateList =  db.getStates(this.country.getId());
+        cities =  db.getCities(this.state.getId());
         db.close();
 
+        CityViewAdapter adapter = new CityViewAdapter(cities, this.getContext());
+        listView.setAdapter(adapter);
 
-        StateViewAdapter adapter = new StateViewAdapter(stateList, this.getContext());
-
-        listViewState.setAdapter(adapter);
-
-        listViewState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int position, long arg3) {
 
-                State state = stateList.get(position);
-               // Toast.makeText(getContext(),state.getName() , Toast.LENGTH_SHORT).show();
+                City city = cities.get(position);
+                //Toast.makeText(getContext(), city.getName() , Toast.LENGTH_SHORT).show();
 
-                Fragment frg = CityFragment.newInstance(state);
+                Fragment frg = PhotoGaleryFragment.newInstance(city);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 fm.beginTransaction().replace(R.id.frame_layout, frg ).commit();
 
             }
         });
-
         return view;
     }
 
