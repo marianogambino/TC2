@@ -7,18 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import unimoron.ar.edu.gpsfotos.R;
-import unimoron.ar.edu.model.Country;
 
 import java.util.List;
 
+import unimoron.ar.edu.gpsfotos.R;
+import unimoron.ar.edu.model.City;
+import unimoron.ar.edu.model.Country;
 
-public class CountryViewAdapter extends BaseAdapter {
 
-    private final List<Country> mValues;
+public class CityViewAdapter extends BaseAdapter {
+
+    private final List<City> mValues;
     private Context ctx;
 
-    public CountryViewAdapter(List<Country> items, Context context) {
+    public CityViewAdapter(List<City> items, Context context) {
         mValues = items;
         this.ctx = context;
     }

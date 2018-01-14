@@ -16,15 +16,12 @@
     <string name="ic_search">Search</string>
     <string name="ic_user">User</string>
 
-    <string name="seccion_1">Seccion 1</string>
-    <string name="seccion_2">Seccion 2</string>
-    <string name="seccion_3">Seccion 3</string>
+    <string name="seccion_1">Galeria Fotos Geolocalizadas</string>
+    <string name="seccion_2">Galeria Fotos</string>
+    <string name="seccion_3">Contactos</string>
     <string name="otras_opciones">Otras Opciones</string>
     <string name="opcion_1">Opcion 1</string>
     <string name="opcion_2">Opcion 2</string>
-
-
-
 
 
 </resources>

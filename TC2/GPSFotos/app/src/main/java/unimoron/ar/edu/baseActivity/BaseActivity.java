@@ -105,7 +105,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         return true;
                     }
                 });
-
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -137,6 +136,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 selectedFragment =  MapsActivity.newInstance();
                  break;
         }
+        getSupportActionBar().setTitle(item.getTitle());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, selectedFragment);
         transaction.commit();

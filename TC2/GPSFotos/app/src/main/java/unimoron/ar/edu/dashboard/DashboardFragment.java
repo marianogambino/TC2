@@ -53,6 +53,7 @@ public class DashboardFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);*/
+
         return fragment;
     }
 
@@ -94,12 +95,6 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //if (context instanceof OnFragmentInteractionListener) {
-        //    mListener = (OnFragmentInteractionListener) context;
-        //} else {
-         //   throw new RuntimeException(context.toString()
-          //          + " must implement OnFragmentInteractionListener");
-        //}
     }
 
     @Override

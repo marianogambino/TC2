@@ -3,10 +3,13 @@ package unimoron.ar.edu.galery;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ public class GaleryPhotoLocFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     private ListView listCountry;
+    private List<Country> countries;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,13 +55,29 @@ public class GaleryPhotoLocFragment extends Fragment {
 
         listCountry = (ListView) view.findViewById(R.id.list_country);
 
-        List<Country> countries = new ArrayList<>();
+        countries = new ArrayList<>();
         Country country = new Country();
         country.setName("Argentina");
         countries.add( country );
         CountryViewAdapter adapter = new CountryViewAdapter(countries, this.getContext());
 
-            
+        listCountry.setAdapter(adapter);
+
+        listCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,
+                                    int position, long arg3) {
+
+                Country country = countries.get(position);
+                Toast.makeText(getContext(),country.getName() , Toast.LENGTH_SHORT).show();
+
+                Fragment frg =  StatesFragment.newInstance(country);
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.beginTransaction().replace(R.id.frame_layout, frg ).commit();
+
+            }
+        });
 
         return view;
     }
