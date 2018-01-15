@@ -223,7 +223,7 @@ public class PhotoDB {
     }
 
     public List<Photo> getPhoto(Long idCity) throws ParseException {
-        Cursor c = db.rawQuery("select * From Photo c where c.id_city=" + idCity, null);
+        Cursor c = db.rawQuery("select * From Photo c where c.id_city=" + idCity + " order by creation_date desc", null);
         Photo photo = null;
         List<Photo> list = new ArrayList<>();
         if (c.moveToFirst()) {

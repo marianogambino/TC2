@@ -2,6 +2,7 @@ package unimoron.ar.edu.galery;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.City;
 import unimoron.ar.edu.model.Photo;
-import unimoron.ar.edu.model.State;
 
 
 public class PhotoGaleryFragment extends Fragment {
@@ -52,12 +51,10 @@ public class PhotoGaleryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_photo, container, false);
+        View view = inflater.inflate(R.layout.fragment_photo_galery, container, false);
         try {
 
-
             listView = (ListView) view.findViewById(R.id.list_photo);
-
             PhotoDB db = new PhotoDB(getContext());
             db.open();
             photos = db.getPhoto(this.city.getId());
@@ -77,14 +74,13 @@ public class PhotoGaleryFragment extends Fragment {
                     Photo photo1 = gson.fromJson(photo.getJson(), Photo.class);
                     Toast.makeText(getContext(), photo1.getName(), Toast.LENGTH_SHORT).show();
 
-                    //Fragment frg =  StatesFragment.newInstance(state);
-                    //FragmentManager fm = getActivity().getSupportFragmentManager();
-                    //fm.beginTransaction().replace(R.id.frame_layout, frg ).commit();
-
-                    //Goto photo and show data of photo.
+                    Fragment frg =  PhotoFragment.newInstance(photo);
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    fm.beginTransaction().replace(R.id.frame_layout, frg ).commit();
 
                 }
             });
+            listView.setScrollingCacheEnabled(false);
 
         }catch (ParseException ex){
             ex.printStackTrace();

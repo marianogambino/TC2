@@ -2,19 +2,22 @@ package unimoron.ar.edu.galery;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import unimoron.ar.edu.gpsfotos.R;
-import unimoron.ar.edu.model.City;
 import unimoron.ar.edu.model.Photo;
+import unimoron.ar.edu.util.BitmapConverter;
 
 
 public class PhotoViewAdapter extends BaseAdapter {
@@ -50,28 +53,21 @@ public class PhotoViewAdapter extends BaseAdapter {
             convertView = mInflater.inflate( R.layout.photo_item_default, null );
         }
 
-        //ImageView imgIcon = (ImageView) convertView.findViewById(R.id.iconExamen);
-        //TextView txtMateria = (TextView) convertView.findViewById(R.id.materiaTxt);
-        //TextView txtAula = (TextView) convertView.findViewById(R.id.aulaTxt);
         TextView name = (TextView) convertView.findViewById(R.id.name);
+        ImageView view = (ImageView) convertView.findViewById(R.id.image);
+        TextView fechaHora = (TextView) convertView.findViewById(R.id.textView2);
+
         Photo p = this.mValues.get(position);
         Gson gson = new Gson();
         Photo photo = gson.fromJson(p.getJson(), Photo.class);
         name.setText( photo.getName() );
 
-        //imgIcon.setImageResource( this.examenes.get(position).getIcono() );
-        // txtMateria.setText( this.examenes.get(position).getMateria() );
+        SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        fechaHora.setText(fm.format(p.getTakenDate()));
 
-        //if( examenes.get(position).getAula() != null && !examenes.get(position).getAula().isEmpty() ){
-       //     txtAula.setText( examenes.get(position).getAula() );
-        //}
+        Bitmap img = BitmapConverter.convertBitmap(photo.getPathDir(), photo.getName());
+        view.setImageBitmap( BitmapConverter.getResizedBitmap(img, 40 ) );
 
-        /*SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyy" );
-        String fecha = null;
-        if( examenes.get(position).getExamen().getExamen().getFechaExamen() != null ){
-            fecha = format.format( examenes.get(position).getExamen().getExamen().getFechaExamen() );
-            fechaTxt.setText( fecha );
-        }*/
         return convertView;
     }
 
