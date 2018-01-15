@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -19,6 +20,7 @@ import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.City;
 import unimoron.ar.edu.model.Photo;
+import unimoron.ar.edu.progressBar.ProgressBarFragment;
 
 
 public class PhotoGaleryFragment extends Fragment {
@@ -26,6 +28,7 @@ public class PhotoGaleryFragment extends Fragment {
     private City city;
     private List<Photo> photos;
     private ListView listView;
+    private ProgressBar prg;
 
     public PhotoGaleryFragment() {
         // Required empty public constructor
@@ -54,6 +57,7 @@ public class PhotoGaleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_photo_galery, container, false);
         try {
 
+
             listView = (ListView) view.findViewById(R.id.list_photo);
             PhotoDB db = new PhotoDB(getContext());
             db.open();
@@ -70,10 +74,6 @@ public class PhotoGaleryFragment extends Fragment {
                                         int position, long arg3) {
 
                     Photo photo = photos.get(position);
-                    Gson gson = new Gson();
-                    Photo photo1 = gson.fromJson(photo.getJson(), Photo.class);
-                    Toast.makeText(getContext(), photo1.getName(), Toast.LENGTH_SHORT).show();
-
                     Fragment frg =  PhotoFragment.newInstance(photo);
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     fm.beginTransaction().replace(R.id.frame_layout, frg ).commit();

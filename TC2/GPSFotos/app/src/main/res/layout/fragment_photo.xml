@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="unimoron.ar.edu.galery.StatesFragment">
+    tools:context="unimoron.ar.edu.galery.PhotoFragment">
 
 
     <RelativeLayout
@@ -85,11 +85,12 @@
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/fechaHoraTxt"
-            android:layout_marginEnd="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_alignBaseline="@+id/fechaHoraTxt"
+            android:layout_alignBottom="@+id/fechaHoraTxt"
+            android:layout_alignLeft="@+id/textView9"
+            android:layout_alignStart="@+id/textView9"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="Button" />
 
         <TextView
