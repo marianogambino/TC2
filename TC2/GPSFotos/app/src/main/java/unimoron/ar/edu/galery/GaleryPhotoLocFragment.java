@@ -9,9 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import unimoron.ar.edu.DB.PhotoDB;
@@ -72,11 +69,9 @@ public class GaleryPhotoLocFragment extends Fragment {
                                     int position, long arg3) {
 
                 Country country = countries.get(position);
-               // Toast.makeText(getContext(),country.getName() , Toast.LENGTH_SHORT).show();
-
                 Fragment frg =  StatesFragment.newInstance(country);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.frame_layout, frg ).commit();
+                fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
 
             }
         });

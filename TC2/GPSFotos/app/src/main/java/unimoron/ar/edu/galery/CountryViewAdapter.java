@@ -46,25 +46,9 @@ public class CountryViewAdapter extends BaseAdapter {
             convertView = mInflater.inflate( R.layout.item_default, null );
         }
 
-        //ImageView imgIcon = (ImageView) convertView.findViewById(R.id.iconExamen);
-        //TextView txtMateria = (TextView) convertView.findViewById(R.id.materiaTxt);
-        //TextView txtAula = (TextView) convertView.findViewById(R.id.aulaTxt);
         TextView name = (TextView) convertView.findViewById(R.id.name);
         name.setText( this.mValues.get(position).getName() );
 
-        //imgIcon.setImageResource( this.examenes.get(position).getIcono() );
-        // txtMateria.setText( this.examenes.get(position).getMateria() );
-
-        //if( examenes.get(position).getAula() != null && !examenes.get(position).getAula().isEmpty() ){
-       //     txtAula.setText( examenes.get(position).getAula() );
-        //}
-
-        /*SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyy" );
-        String fecha = null;
-        if( examenes.get(position).getExamen().getExamen().getFechaExamen() != null ){
-            fecha = format.format( examenes.get(position).getExamen().getExamen().getFechaExamen() );
-            fechaTxt.setText( fecha );
-        }*/
         return convertView;
     }
 

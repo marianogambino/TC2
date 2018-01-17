@@ -83,7 +83,7 @@ public class PhotoDB {
                 //if exist city - save photo
                 if(cCity.moveToFirst() && countCity > 0) {
                     int cityColIdx = cCity.getColumnIndex(TablesColumns.C_CITY_ID);
-                    int cCityIdx = cState.getInt(cityColIdx);
+                    int cCityIdx = cCity.getInt(cityColIdx);
                     persistPhoto(photo, jsonPhoto, cCityIdx);
                 }else{
                     long cityId = persistCity(cStateIdx,  photo.getLocation().getCity());
@@ -153,10 +153,10 @@ public class PhotoDB {
      * @return
      */
     public List<String> countries(){
-        Cursor c = db.rawQuery("select c.name, s.name, ct.name, p.path_file, p.creation_date From country c, state s, city ct , photo p" +
+        Cursor c = db.rawQuery("select c.name, s.name, ct.name, ct.id_city, p.path_file, p.creation_date " +
+                " from country c, state s, city ct , photo p" +
                 " where c.id = s.id and s.id_state = ct.id_state and p.id_city = ct.id_city ", null);
 
-        String data = null;
         List<String> list = new ArrayList<>();
         //If exists Country
         if (c.moveToFirst()) {
@@ -167,9 +167,11 @@ public class PhotoDB {
                 String column3 = c.getString(2);
                 String column4 = c.getString(3);
                 String column5 = c.getString(4);
+                String column6 = c.getString(5);
                 // Do something Here with values
 
-                list.add( column1 + " - " + column2 + " - " + column3 + " - " + column4 + " - " + column5);
+                list.add( column1 + " - " + column2 + " - " + column3 + " - " +
+                        " citi ID: " + column4 + " - " + column5 + " - " + column6 );
             } while (c.moveToNext());
         }
 

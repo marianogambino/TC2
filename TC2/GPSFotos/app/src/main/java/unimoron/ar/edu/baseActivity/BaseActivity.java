@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -188,15 +189,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     @Override
     public void onBackPressed() {
-        //if(getFragmentManager().getBackStackEntryCount() == 0) {
-        //    super.onBackPressed();
-       // }
-       // else if(getFragmentManager().getBackStackEntryCount() == 1) {
-       //     moveTaskToBack(false);
-       // }
-       // else {
-            getFragmentManager().popBackStack();
-        //}
+        getSupportFragmentManager().popBackStack();
+        //super.onBackPressed();
+
     }
 
     public abstract int getContentViewId();

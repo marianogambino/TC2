@@ -78,7 +78,7 @@ public class StatesFragment extends Fragment {
 
                 Fragment frg = CityFragment.newInstance(state);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.frame_layout, frg ).commit();
+                fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
 
             }
         });

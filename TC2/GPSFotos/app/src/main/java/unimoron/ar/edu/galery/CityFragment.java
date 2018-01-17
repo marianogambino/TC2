@@ -77,7 +77,7 @@ public class CityFragment extends Fragment {
 
                 Fragment frg = PhotoGaleryFragment.newInstance(city);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.frame_layout, frg ).commit();
+                fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
 
             }
         });

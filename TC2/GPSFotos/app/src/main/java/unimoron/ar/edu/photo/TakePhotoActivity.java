@@ -134,7 +134,6 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //setContentView(R.layout.activity_take_photo);
         View view = inflater.inflate(R.layout.activity_take_photo, container, false);
 
         surfaceView = (SurfaceView) view.findViewById(R.id.camera_preview);
@@ -149,9 +148,7 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
 
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
 
-        //::::  Obtener GPS - WIFI - 4G ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-        //Obtener la mejor posicion
-
+        //::::  Obtener GPS - WIFI - 4G :::::::::::::::::::::::
         permissionUtils=new PermissionUtils(getContext());
 
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -159,14 +156,9 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
 
         permissionUtils.check_permission(permissions,"Need GPS permission for getting your location",1);
 
-        //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-        //asociar coordenadas con la foto y guardarlas - por el momento en memoria
-
-        // luego en BD del telefono
         //luego usar Firebase.
-
-        //En otro activity mostrar la lista de fotos tomadas
 
         //Implemetar google maps y ubicar la foto seleccionada en el mapa
         //luego ubicar todas las fotos en el mapa
@@ -221,15 +213,9 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
                      }else{
                          showToast("address null");
                      }
-
                 } else {
-
-                    //if(btnProceed.isEnabled())
-                    //    btnProceed.setEnabled(false);
-
                     showToast("Couldn't get the location. Make sure location is enabled on the device");
                     if (checkPlayServices()) {
-
                         // Building the GoogleApi client
                         buildGoogleApiClient();
                     }
@@ -266,13 +252,10 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
 
             //convierto a json y guardo en una shared preferences
             Gson gson = new Gson();
-
             //momentaneo
             String photosJs = gson.toJson(photos);
-
             PhotoDB db = new PhotoDB(this.getContext());
             db.open();
-
             db.savePhoto(photo, gson.toJson(photo));
             db.close();
 
@@ -281,7 +264,6 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
             sharedpreferences.putString("photos", photosJs);
             sharedpreferences.apply();
 
-            //guardar en base de datos
         }
 
 
@@ -350,7 +332,7 @@ public class TakePhotoActivity extends Fragment implements SurfaceHolder.Callbac
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest);

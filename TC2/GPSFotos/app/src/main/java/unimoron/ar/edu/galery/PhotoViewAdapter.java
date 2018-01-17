@@ -56,11 +56,15 @@ public class PhotoViewAdapter extends BaseAdapter {
         TextView name = (TextView) convertView.findViewById(R.id.name);
         ImageView view = (ImageView) convertView.findViewById(R.id.image);
         TextView fechaHora = (TextView) convertView.findViewById(R.id.textView2);
+        TextView locTxt = (TextView) convertView.findViewById(R.id.location);
 
         Photo p = this.mValues.get(position);
         Gson gson = new Gson();
         Photo photo = gson.fromJson(p.getJson(), Photo.class);
         name.setText( photo.getName() );
+
+        locTxt.setText(photo.getLocation().getCountry() + "-" +
+                photo.getLocation().getState() + "-" + photo.getLocation().getCity());
 
         SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         fechaHora.setText(fm.format(p.getTakenDate()));

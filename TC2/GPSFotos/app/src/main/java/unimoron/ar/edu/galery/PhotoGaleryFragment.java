@@ -76,8 +76,7 @@ public class PhotoGaleryFragment extends Fragment {
                     Photo photo = photos.get(position);
                     Fragment frg =  PhotoFragment.newInstance(photo);
                     FragmentManager fm = getActivity().getSupportFragmentManager();
-                    fm.beginTransaction().replace(R.id.frame_layout, frg ).commit();
-
+                    fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
                 }
             });
             listView.setScrollingCacheEnabled(false);
