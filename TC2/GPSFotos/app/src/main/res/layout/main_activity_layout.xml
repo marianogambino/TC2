@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
@@ -29,4 +29,92 @@
         android:layout_alignParentBottom="true" />
 
 
+</RelativeLayout-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/bottonNavBar"
+    android:orientation="horizontal"
+    android:layout_alignParentBottom="true"
+    android:foregroundGravity="bottom"
+    tools:context="unimoron.ar.edu.gpsfotos.MainActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:id="@+id/dynamicContent"
+        android:layout_width="match_parent"
+        android:layout_height="520dp"
+        android:layout_alignTop="@id/dynamicContent"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="56dp"
+        android:background="@color/white"
+        android:orientation="vertical"></LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:gravity="center"
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:baselineAligned="false"
+        android:layout_alignParentBottom="true">
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:text="Publicaciones"
+            android:layout_weight="1"
+            android:button="@null"
+            android:padding="2dp"
+            android:checked="false"
+            android:textSize="12sp"
+            android:drawableTop="@drawable/ic_home_black_24dp"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/home"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:button="@null"
+            android:layout_weight="1"
+            android:padding="2dp"
+            android:checked="false"
+            android:textSize="12sp"
+            android:drawableTop="@drawable/ic_add_a_photo_black_24dp"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/takePhotos"
+            android:text="Tomar Foto"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:id="@+id/maps"
+            android:button="@null"
+            android:paddingTop="5dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:layout_weight="1"
+            android:checked="false"
+            android:textSize="12sp"
+            android:drawableTop="@drawable/ic_location_on_black_24dp"
+            android:textColor="@color/colorPrimary"
+            android:text="Localizacion"/>
+
+    </RadioGroup>
+
+
 </RelativeLayout>
+
+

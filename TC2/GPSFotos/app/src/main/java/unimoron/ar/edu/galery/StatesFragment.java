@@ -76,9 +76,10 @@ public class StatesFragment extends Fragment {
                 State state = stateList.get(position);
                // Toast.makeText(getContext(),state.getName() , Toast.LENGTH_SHORT).show();
 
-                Fragment frg = CityFragment.newInstance(state);
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
+                //CAMBIAR PARA EL SIGUIENTE ACT
+                //Fragment frg = CityFragment.newInstance(state);
+                //FragmentManager fm = getActivity().getSupportFragmentManager();
+                //fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
 
             }
         });

@@ -75,9 +75,10 @@ public class CityFragment extends Fragment {
                 City city = cities.get(position);
                 //Toast.makeText(getContext(), city.getName() , Toast.LENGTH_SHORT).show();
 
-                Fragment frg = PhotoGaleryFragment.newInstance(city);
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
+                //CAMBIAR PARA EL SIGUIENTE ACT
+                //Fragment frg = PhotoGaleryFragment.newInstance(city);
+                //FragmentManager fm = getActivity().getSupportFragmentManager();
+                //fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
 
             }
         });

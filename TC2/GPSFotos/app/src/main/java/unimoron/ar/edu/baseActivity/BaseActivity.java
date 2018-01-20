@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,9 +16,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import unimoron.ar.edu.gpsfotos.ContactosActivity;
 import unimoron.ar.edu.dashboard.DashboardFragment;
 import unimoron.ar.edu.galery.GaleryPhotoLocFragment;
+import unimoron.ar.edu.gpsfotos.DashboardActivity;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.navigationMaps.MapsActivity;
 import unimoron.ar.edu.photo.TakePhotoActivity;
@@ -28,23 +31,27 @@ import unimoron.ar.edu.photo.TakePhotoActivity;
  * Created by mariano on 06/11/17.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public abstract class BaseActivity extends AppCompatActivity
+        /*implements BottomNavigationView.OnNavigationItemSelectedListener*/ {
 
-    protected BottomNavigationView navigationView;
+    //protected BottomNavigationView navigationView;
     //protected TextView mTextMessage;
 
     private Toolbar toolbar;
+    private RadioGroup radioGroup1;
+    private RadioButton home;
 
     private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getContentViewId());
+        setContentView(R.layout.activity_main);
 
        // mTextMessage = (TextView) findViewById(R.id.message);
-        navigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        navigationView.setOnNavigationItemSelectedListener(this);
+        //navigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        //navigationView.setOnNavigationItemSelectedListener(this);
+
 
         // Attaching the layout to the toolbar object
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -52,60 +59,98 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         setSupportActionBar(toolbar);
 
-        if (savedInstanceState == null){
+        /*if (savedInstanceState == null){
             Fragment currentFragment = DashboardFragment.newInstance("", "");
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.frame_layout, currentFragment);
             transaction.commit();
-        }
+        }*/
 
+        radioGroup1=(RadioGroup)findViewById(R.id.radioGroup1);
+        home = (RadioButton)findViewById(R.id.home);
+
+        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                Intent in;
+                Log.i("matching", "matching inside1 bro" + checkedId);
+                switch (checkedId)
+                {
+                    case R.id.home:
+                        Log.i("matching", "matching inside1 matching" +  checkedId);
+                        in=new Intent(getBaseContext(),DashboardActivity.class);
+                        startActivity(in);
+                        overridePendingTransition(0, 0);
+                        break;
+                    case R.id.takePhotos:
+                        Log.i("matching", "matching inside1 watchlistAdapter" + checkedId);
+
+                        //in = new Intent(getBaseContext(), WatchlistActivity.class);
+                        //startActivity(in);
+                        //overridePendingTransition(0, 0);
+
+                        break;
+                    case R.id.maps:
+                        Log.i("matching", "matching inside1 rate" + checkedId);
+
+                        //in = new Intent(getBaseContext(),RatesActivity.class);
+                        //startActivity(in);
+                        //overridePendingTransition(0, 0);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         NavigationView navView = (NavigationView)findViewById(R.id.navview);
-
         navView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+            new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-                        boolean fragmentTransaction = false;
-                        Fragment fragment = null;
+                    boolean fragmentTransaction = false;
+                    //Fragment fragment = null;
 
-                        switch (menuItem.getItemId()) {
-                            case R.id.menu_seccion_1:
-                                fragment = new GaleryPhotoLocFragment();
-                                fragmentTransaction = true;
-                                break;
-                            case R.id.menu_seccion_2:
-                                //fragment = new Fragment2();
-                                fragmentTransaction = true;
-                                break;
-                            case R.id.menu_seccion_3:
-                                //fragment = new Fragment3();
-                                fragmentTransaction = true;
-                                break;
-                            case R.id.menu_opcion_1:
-                                Log.i("NavigationView", "Pulsada opción 1");
-                                break;
-                            case R.id.menu_opcion_2:
-                                Log.i("NavigationView", "Pulsada opción 2");
-                                break;
-                        }
-
-                        if(fragmentTransaction) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frame_layout, fragment)
-                                    .commit();
-
-                            menuItem.setChecked(true);
-                            getSupportActionBar().setTitle(menuItem.getTitle());
-                        }
-
-                        drawerLayout.closeDrawers();
-
-                        return true;
+                    switch (menuItem.getItemId()) {
+                        case R.id.menu_seccion_1:
+                            //fragment = new GaleryPhotoLocFragment();
+                            //fragmentTransaction = true;
+                            break;
+                        case R.id.menu_seccion_2:
+                            //fragment = new Fragment2();
+                            //fragmentTransaction = true;
+                            break;
+                        case R.id.menu_seccion_3:
+                            //Intent intent = new Intent( BaseActivity.this , ContactosActivity.class);
+                            //intent.putExtra("USERNAME", "Mariano");
+                            //BaseActivity.this.getApplicationContext().startActivity(intent);
+                            break;
+                        case R.id.menu_opcion_1:
+                            Log.i("NavigationView", "Pulsada opción 1");
+                            break;
+                        case R.id.menu_opcion_2:
+                            Log.i("NavigationView", "Pulsada opción 2");
+                            break;
                     }
-                });
+
+                    /*if(fragmentTransaction) {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame_layout, fragment)
+                                .commit();
+
+                        menuItem.setChecked(true);
+                        getSupportActionBar().setTitle(menuItem.getTitle());
+                    }*/
+
+                    drawerLayout.closeDrawers();
+
+                    return true;
+                }
+            });
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -120,29 +165,30 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
         Intent intent;
 
-        Fragment selectedFragment = null;
+        //Fragment selectedFragment = null;
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 //mTextMessage.setText(R.string.title_home);
-                selectedFragment = DashboardFragment.newInstance("", "");
+                //selectedFragment = DashboardFragment.newInstance("", "");
+
                 break;
             case R.id.take_photos:
-                selectedFragment =  TakePhotoActivity.newInstance();
+                //selectedFragment =  TakePhotoActivity.newInstance();
                break;
             case R.id.navigation_maps:
-                selectedFragment =  MapsActivity.newInstance();
+                //selectedFragment =  MapsActivity.newInstance();
                  break;
         }
-        getSupportActionBar().setTitle(item.getTitle());
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, selectedFragment);
-        transaction.commit();
+        //getSupportActionBar().setTitle(item.getTitle());
+        //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        //transaction.replace(R.id.frame_layout, selectedFragment);
+        //transaction.commit();
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -160,7 +206,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     @Override
     protected void onStart() {
         super.onStart();
-        updateNavigationBarState();
+        //updateNavigationBarState();
     }
 
     // Remove inter-activity transition to avoid screen tossing on tapping bottom navigation items
@@ -170,12 +216,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         overridePendingTransition(0, 0);
     }
 
-    private void updateNavigationBarState(){
+    /*private void updateNavigationBarState(){
         int actionId = getNavigationMenuItemId();
         selectBottomNavigationBarItem(actionId);
-    }
+    }*/
 
-    void selectBottomNavigationBarItem(int itemId) {
+   /* void selectBottomNavigationBarItem(int itemId) {
         Menu menu = navigationView.getMenu();
         for (int i = 0, size = menu.size(); i < size; i++) {
             MenuItem item = menu.getItem(i);
@@ -185,7 +231,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 break;
             }
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

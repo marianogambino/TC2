@@ -71,7 +71,6 @@ public class DashboardFragment extends Fragment {
         textDB.setText( countries.toString() );
         db.close();
 
-        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         return rootView;
     }

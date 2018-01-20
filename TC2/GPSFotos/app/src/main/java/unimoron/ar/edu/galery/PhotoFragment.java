@@ -86,9 +86,10 @@ public class PhotoFragment extends Fragment {
                 sharedpreferences.putString("photos", photosJs);
                 sharedpreferences.apply();
 
-                Fragment frg = MapsActivity.newInstance();
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
+                //CAMBIAR PARA EL SIGUIENTE ACT
+                //Fragment frg = MapsActivity.newInstance();
+                //FragmentManager fm = getActivity().getSupportFragmentManager();
+                //fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
             }
         });
 

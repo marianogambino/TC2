@@ -69,9 +69,11 @@ public class GaleryPhotoLocFragment extends Fragment {
                                     int position, long arg3) {
 
                 Country country = countries.get(position);
-                Fragment frg =  StatesFragment.newInstance(country);
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
+
+                //CAMBIAR PARA EL SIGUIENTE ACT
+                //Fragment frg =  StatesFragment.newInstance(country);
+                //FragmentManager fm = getActivity().getSupportFragmentManager();
+                //fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
 
             }
         });

@@ -22,6 +22,20 @@
     <string name="otras_opciones">Otras Opciones</string>
     <string name="opcion_1">Opcion 1</string>
     <string name="opcion_2">Opcion 2</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">User</string>
+    <string name="prompt_password">Numero Telefono</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_user">This email address is invalid</string>
+    <string name="error_invalid_phoneNumber">El Num de Telefono es muy cort</string>
+    <string name="error_incorrect_password">El Num de Telefono es incorrecto</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 
 
 </resources>
