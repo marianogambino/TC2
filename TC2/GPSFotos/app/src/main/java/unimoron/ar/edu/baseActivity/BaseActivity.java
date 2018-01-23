@@ -4,14 +4,10 @@ package unimoron.ar.edu.baseActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -19,13 +15,8 @@ import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import unimoron.ar.edu.gpsfotos.ContactosActivity;
-import unimoron.ar.edu.dashboard.DashboardFragment;
-import unimoron.ar.edu.galery.GaleryPhotoLocFragment;
 import unimoron.ar.edu.gpsfotos.DashboardActivity;
 import unimoron.ar.edu.gpsfotos.R;
-import unimoron.ar.edu.navigationMaps.MapsActivity;
-import unimoron.ar.edu.photo.TakePhotoActivity;
 
 /**
  * Created by mariano on 06/11/17.
@@ -79,25 +70,25 @@ public abstract class BaseActivity extends AppCompatActivity
                 switch (checkedId)
                 {
                     case R.id.home:
-                        Log.i("matching", "matching inside1 matching" +  checkedId);
+                        Log.i("DashboardActivity", "matching inside1 DashboardActivity" +  checkedId);
                         in=new Intent(getBaseContext(),DashboardActivity.class);
                         startActivity(in);
                         overridePendingTransition(0, 0);
                         break;
                     case R.id.takePhotos:
-                        Log.i("matching", "matching inside1 watchlistAdapter" + checkedId);
+                        Log.i("TakePhotoActivity", "matching inside1 TakePhotoActivity" + checkedId);
 
-                        //in = new Intent(getBaseContext(), WatchlistActivity.class);
-                        //startActivity(in);
-                        //overridePendingTransition(0, 0);
+                        in = new Intent(getBaseContext(), unimoron.ar.edu.gpsfotos.TakePhotoActivity.class);
+                        startActivity(in);
+                        overridePendingTransition(0, 0);
 
                         break;
                     case R.id.maps:
-                        Log.i("matching", "matching inside1 rate" + checkedId);
+                        Log.i("MapActivity", "MapActivity inside1 rate" + checkedId);
 
-                        //in = new Intent(getBaseContext(),RatesActivity.class);
-                        //startActivity(in);
-                        //overridePendingTransition(0, 0);
+                        in = new Intent(getBaseContext(), unimoron.ar.edu.gpsfotos.MapActivity.class);
+                        startActivity(in);
+                        overridePendingTransition(0, 0);
                         break;
                     default:
                         break;

@@ -21,7 +21,6 @@ import java.util.List;
 
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.Photo;
-import unimoron.ar.edu.navigationMaps.MapsActivity;
 import unimoron.ar.edu.util.BitmapConverter;
 
 
