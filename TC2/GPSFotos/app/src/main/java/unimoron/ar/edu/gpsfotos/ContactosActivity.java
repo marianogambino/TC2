@@ -3,7 +3,7 @@ package unimoron.ar.edu.gpsfotos;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class ContactosActivity extends AppCompatActivity {
+public class ContactosActivity extends MainActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

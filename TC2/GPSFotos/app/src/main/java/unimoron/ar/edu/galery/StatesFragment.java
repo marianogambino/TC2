@@ -50,7 +50,7 @@ public class StatesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+/*
         View view = inflater.inflate(R.layout.fragment_states, container, false);
 
         //View view = inflater.inflate(R.layout.list_state, container, false);
@@ -84,7 +84,8 @@ public class StatesFragment extends Fragment {
             }
         });
 
-        return view;
+        return view;*/
+        return null;
     }
 
 

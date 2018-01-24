@@ -50,6 +50,8 @@ public class GaleryPhotoLocFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        /**
         View view = inflater.inflate(R.layout.country_list, container, false);
 
         listCountry = (ListView) view.findViewById(R.id.list_country);
@@ -76,9 +78,9 @@ public class GaleryPhotoLocFragment extends Fragment {
                 //fm.beginTransaction().replace(R.id.frame_layout, frg ).addToBackStack(null).commit();
 
             }
-        });
+        });*/
 
-        return view;
+        return null;
     }
 
 

@@ -71,7 +71,12 @@
         <activity android:name=".ContactosActivity" />
         <activity android:name=".MapActivity" />
         <activity android:name=".DashboardActivity" />
-        <activity android:name=".TakePhotoActivity"></activity>
+        <activity android:name=".TakePhotoActivity" />
+        <activity android:name=".GaleriaLocFotoActivity" />
+        <activity android:name=".StateActivity" />
+        <activity android:name=".CityActivity" />
+        <activity android:name=".PhotoGaleryActivity" />
+        <activity android:name=".PhotoActivity"></activity>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
