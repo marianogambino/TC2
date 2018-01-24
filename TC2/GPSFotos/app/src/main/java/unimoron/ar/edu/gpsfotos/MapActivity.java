@@ -33,7 +33,7 @@ import java.util.List;
 import unimoron.ar.edu.baseActivity.BaseActivity;
 import unimoron.ar.edu.model.Photo;
 
-public class MapActivity extends BaseActivity implements OnMapReadyCallback {
+public class  MapActivity extends BaseActivity implements OnMapReadyCallback {
 
     private LinearLayout dynamicContent;
     private RelativeLayout bottonNavBar;
@@ -103,7 +103,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
                         new MarkerOptions()
                                 .position(loc)
                                 .title(p.getLocation().getAddress())
-
                                 .icon(BitmapDescriptorFactory.fromBitmap(img))
                                 .snippet(p.getName()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));

@@ -31,43 +31,43 @@ public class PhotoActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_photo);
         dynamicContent = (LinearLayout) findViewById(R.id.dynamicContent);
         View wizard = getLayoutInflater().inflate(R.layout.activity_photo, null);
         dynamicContent.addView(wizard);
 
         Gson gson = new Gson();
         p = gson.fromJson(getIntent().getStringExtra("photo"), Photo.class);
+        photo = gson.fromJson(p.getJson(), Photo.class);
         TextView name = (TextView) findViewById(R.id.nombreTxt);
         ImageView img  = (ImageView) findViewById(R.id.imageView);
-        Bitmap bmap = BitmapConverter.convertBitmap(p.getPathDir(), p.getName());
+        Bitmap bmap = BitmapConverter.convertBitmap(photo.getPathDir(), photo.getName());
         img.setImageBitmap( BitmapConverter.getResizedBitmap(bmap, 150 ) );
 
-        photo = gson.fromJson(p.getJson(), Photo.class);
+
 
         TextView location = (TextView) findViewById(R.id.locationTxt);
         TextView fechaHora = (TextView) findViewById(R.id.fechaHoraTxt);
 
         Button btnLoc = (Button) findViewById(R.id.button2);
 
-        name.setText( p.getName());
-        location.setText( p.getLocation().getCountry() + "-" + p.getLocation().getState() + "-" + p.getLocation().getCity() );
+        name.setText( photo.getName());
+        location.setText( photo.getLocation().getCountry() + "-" + photo.getLocation().getState() + "-" + photo.getLocation().getCity() );
         SimpleDateFormat fm = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss");
-        fechaHora.setText( fm.format(photo.getTakenDate()) );
+        fechaHora.setText( fm.format(p.getTakenDate()) );
 
         btnLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 List<Photo> photos = Lists.newArrayList();
-                photos.add(p);
+                photos.add(photo);
                 Gson gson = new Gson();
                 String photosJs = gson.toJson(photos);
                 SharedPreferences.Editor sharedpreferences = getSharedPreferences("Photos", Context.MODE_PRIVATE).edit();
                 sharedpreferences.putString("photos", photosJs);
                 sharedpreferences.apply();
 
-                Intent in = new Intent(getBaseContext(), unimoron.ar.edu.gpsfotos.MapActivity.class);
+                Intent in = new Intent(PhotoActivity.this, MapActivity.class);
                 startActivity(in);
             }
         });

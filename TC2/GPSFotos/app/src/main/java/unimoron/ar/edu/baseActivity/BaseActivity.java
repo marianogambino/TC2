@@ -46,13 +46,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         radioGroup1=(RadioGroup)findViewById(R.id.radioGroup1);
         home = (RadioButton)findViewById(R.id.home);
 
+
+
         radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId)
             {
                 Intent in;
-                checkedId = R.id.home;
                 Log.i("matching", "matching inside1 bro" + checkedId);
                 switch (checkedId)
                 {
@@ -94,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                             intent = new Intent( BaseActivity.this , GaleriaLocFotoActivity.class);
                             intent.putExtra("USERNAME", "Mariano");
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            BaseActivity.this.getApplicationContext().startActivity(intent);
+                            startActivity(intent);
                             break;
                         case R.id.menu_seccion_2:
                             //fragment = new Fragment2();
@@ -103,7 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         case R.id.menu_seccion_3:
                             intent = new Intent( BaseActivity.this , ContactosActivity.class);
                             intent.putExtra("USERNAME", "Mariano");
-                            BaseActivity.this.getApplicationContext().startActivity(intent);
+                            startActivity(intent);
                             break;
                         case R.id.menu_opcion_1:
                             Log.i("NavigationView", "Pulsada opción 1");
