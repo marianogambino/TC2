@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:padding="5dip" >
+
+<!-- Name -->
+<TextView
+    android:id="@+id/name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@+id/thumbnail"
+    android:layout_toRightOf="@+id/thumbnail"
+    android:text="Nombre de la foto"
+    android:textColor="#040404"
+    android:typeface="sans"
+    android:textSize="15dip"
+    android:textStyle="bold"/>
+
+<!-- Phone Number -->
+<TextView
+    android:id="@+id/phoneNumber"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/name"
+    android:textColor="#343434"
+    android:textSize="10dip"
+    android:layout_marginTop="1dip"
+    android:layout_toRightOf="@+id/thumbnail"
+    android:text="11-xxxx-xxxx" />
+
+
+<!-- Permiso -->
+<TextView
+    android:id="@+id/avalilable"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_alignTop="@id/name"
+    android:gravity="right"
+    android:text="Habilitado"
+    android:layout_marginRight="5dip"
+    android:textSize="10dip"
+    android:textColor="#10bcc9"
+    android:textStyle="bold"/>
+
+
+
+
+
+</RelativeLayout>

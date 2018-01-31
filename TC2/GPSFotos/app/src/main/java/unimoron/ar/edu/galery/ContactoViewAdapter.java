@@ -2,25 +2,31 @@ package unimoron.ar.edu.galery;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import unimoron.ar.edu.gpsfotos.R;
-import unimoron.ar.edu.model.Country;
-import unimoron.ar.edu.model.State;
+import unimoron.ar.edu.model.Contact;
 
 
-public class StateViewAdapter extends BaseAdapter {
 
-    private final List<State> mValues;
+
+public class ContactoViewAdapter extends BaseAdapter {
+
+    private final List<Contact> mValues;
     private Context ctx;
 
-    public StateViewAdapter(List<State> items, Context context) {
+    public ContactoViewAdapter(List<Contact> items, Context context) {
         mValues = items;
         this.ctx = context;
     }
@@ -45,11 +51,21 @@ public class StateViewAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater) this.ctx.getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
-            convertView = mInflater.inflate( R.layout.item_default, null );
+            convertView = mInflater.inflate( R.layout.contacto_item, null );
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.name);
-        name.setText( this.mValues.get(position).getName() );
+        TextView phoneNum = (TextView) convertView.findViewById(R.id.phoneNumber);
+        TextView available = (TextView) convertView.findViewById(R.id.avalilable);
+
+        Contact c = this.mValues.get(position);
+        Gson gson = new Gson();
+
+        name.setText( c.getName() );
+        phoneNum.setText( c.getPhoneNumber() );
+        available.setText("Habilitado");
+
+
         return convertView;
     }
 

@@ -7,13 +7,14 @@
     android:id="@+id/dashboard"
     tools:context="unimoron.ar.edu.gpsfotos.ContactosActivity">
 
-
-    <TextView
-        android:id="@+id/contactosTxt"
+    <!-- Lista de contactos -->
+    <!-- + adapter -->
+    <ListView
+        android:id="@+id/contactos"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_marginTop="50dp"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="50dp">
+    </ListView>
 
 
 </LinearLayout>
