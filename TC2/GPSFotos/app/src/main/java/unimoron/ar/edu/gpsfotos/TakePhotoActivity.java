@@ -41,6 +41,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 
@@ -273,8 +274,21 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
         if (((MainActivity)TakePhotoActivity.this).isPermissionGranted()) {
             try
             {
-                mLastLocation = LocationServices.FusedLocationApi
-                        .getLastLocation(mGoogleApiClient);
+               // mLastLocation = LocationServices.FusedLocationApi
+               //         .getLastLocation(mGoogleApiClient);
+                 LocationServices.getFusedLocationProviderClient(this)
+                        .getLastLocation()
+                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                            mLastLocation = location;
+                        }
+                    }
+                  });
+
             }
             catch (SecurityException e)
             {
@@ -330,7 +344,7 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest);

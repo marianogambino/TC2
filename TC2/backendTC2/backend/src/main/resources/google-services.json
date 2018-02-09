@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "459127721783",
+    "firebase_url": "https://gpsfotos-5bf17.firebaseio.com",
+    "project_id": "gpsfotos-5bf17",
+    "storage_bucket": "gpsfotos-5bf17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459127721783:android:af6875cafa4ee6a2",
+        "android_client_info": {
+          "package_name": "unimoron.ar.edu.gpsfotos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459127721783-aibpcuth82i07fa8er51p9inm524o0v6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOuMyX0Tz3eVrlrlv552grXlN_OQAbkkQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

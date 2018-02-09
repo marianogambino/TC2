@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private EditText mUser;
+    private EditText mPassword;
     private EditText mNumTelefono;
     private View mProgressView;
     private View mLoginFormView;
@@ -69,10 +69,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mUser = (EditText) findViewById(R.id.email);
+        mPassword = (EditText) findViewById(R.id.password);
         populateAutoComplete();
 
-        mNumTelefono = (EditText) findViewById(R.id.password);
+        mNumTelefono = (EditText) findViewById(R.id.numTel);
         mNumTelefono.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mUser, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(mNumTelefono, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -151,11 +151,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Reset errors.
-        mUser.setError(null);
+        mPassword.setError(null);
         mNumTelefono.setError(null);
 
         // Store values at the time of the login attempt.
-        String user = mUser.getText().toString();
+        String password = mPassword.getText().toString();
         String numTelefono = mNumTelefono.getText().toString();
 
         boolean cancel = false;
@@ -182,7 +182,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(user, numTelefono, LoginActivity.this);
+            mAuthTask = new UserLoginTask(password, numTelefono, LoginActivity.this);
             mAuthTask.execute((Void) null);
         //}
     }
@@ -279,12 +279,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mNumTel;
         private final String mPassword;
         private final Context ctx;
 
-        UserLoginTask(String email, String password, Context ctx) {
-            mEmail = email;
+        UserLoginTask(String numTel, String password, Context ctx) {
+            mNumTel = numTel;
             mPassword = password;
             this.ctx = ctx;
         }
@@ -302,7 +302,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
+                if (pieces[0].equals(mNumTel)) {
                     // Account exists, return true if the password matches.
                     return pieces[1].equals(mPassword);
                 }

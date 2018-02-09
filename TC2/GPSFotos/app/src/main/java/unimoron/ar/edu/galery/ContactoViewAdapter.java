@@ -2,7 +2,9 @@ package unimoron.ar.edu.galery;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +65,8 @@ public class ContactoViewAdapter extends BaseAdapter {
 
         name.setText( c.getName() );
         phoneNum.setText( c.getPhoneNumber() );
-        available.setText("Habilitado");
+        available.setText("Deshabilitado");
+        available.setTextColor(Color.parseColor("#F44336"));
 
 
         return convertView;

@@ -10,6 +10,8 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.List;
 
 import unimoron.ar.edu.DB.PhotoDB;
@@ -23,7 +25,6 @@ public class DashboardActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_dashboard);
 
         dynamicContent = (LinearLayout) findViewById(R.id.dynamicContent);
         bottonNavBar= (RelativeLayout) findViewById(R.id.bottonNavBar);
