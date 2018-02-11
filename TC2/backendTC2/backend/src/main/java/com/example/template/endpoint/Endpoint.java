@@ -49,7 +49,7 @@ public class Endpoint {
     // un mensaje de datos con lo contactos a actualizar
     @PostMapping("/updateContacts")
     public void updateContacts(){
-
+        serviceIntegration.updateContacts();
     }
 
     //llega el usuario con numTel, password y token.
@@ -57,7 +57,6 @@ public class Endpoint {
     //valida que exista, valida la contraseña y si cambio el token
     @PostMapping("/loginOrRegister")
     public Response loginAndRegisterUser(@RequestBody User user){
-
         return serviceIntegration.loginAndRegisterUser(user);
 
     }

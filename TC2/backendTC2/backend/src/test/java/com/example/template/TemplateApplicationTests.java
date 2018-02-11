@@ -1,9 +1,6 @@
 package com.example.template;
 
-import com.example.template.model.Contact;
-import com.example.template.model.Data;
-import com.example.template.model.Message;
-import com.example.template.model.Notification;
+import com.example.template.model.*;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -11,14 +8,13 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -26,9 +22,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.net.URL;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -89,26 +84,141 @@ public class TemplateApplicationTests {
 	}
 
 	@Test
-	public void persistFirebaseDB() throws IOException {
+	public void getDataFirebaseDB(){
+		String url = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
+		RestTemplate service = new RestTemplate();
+		String users = service.getForObject(url, String.class);
 
-		FileInputStream serviceAccount = new FileInputStream("gpsfotos-5bf17-firebase-adminsdk-mw882-523cf033fc.json");
-		FirebaseOptions options = new FirebaseOptions.Builder()
-				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-				.setDatabaseUrl("https://gpsfotos-5bf17.firebaseio.com/")
-				.build();
-		FirebaseApp.initializeApp(options);
+		Gson gson = new Gson();
+		Map<String, LinkedTreeMap<String,String>> usersMap =  gson.fromJson(users, Map.class);
 
-		DatabaseReference mDatabase;
-		mDatabase = FirebaseDatabase.getInstance().getReference();
-		mDatabase.child("users").setValue(user);
+		Assert.assertNotNull(users);
+		LinkedTreeMap<String,String> map = (LinkedTreeMap) usersMap.get("1122223333");
+		Assert.assertEquals(map.get("password") , "1234");
+	}
+
+	@Test
+	public void putUserInFirebaseDB() throws IOException {
+
+		String url = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
+		RestTemplate service = new RestTemplate();
+		LinkedHashMap users = service.getForObject(url, LinkedHashMap.class);
+
+		User user = new User();
+		user.setNumTel("1199906700");
+		user.setToken("sdhkjsahdjkashdkjasdhksa");
+		user.setPassword("5555");
+		user.setName("Prueba");
+
+
+		LinkedHashMap userMap = (LinkedHashMap) users.get(user.getNumTel());
+		if(userMap == null){
+			users.put(user.getNumTel(), user);
+			service.put(url, users);
+		}
+
 
 	}
 
 	@Test
-	public void getDataFirebaseDB(){
+	public void updateToken() throws IOException {
+
+		User user = new User();
+		user.setNumTel("1199906700");
+		user.setToken("sdhkjsahdjkashdkjasdhksa");
+		user.setPassword("1234	");
+		user.setName("Prueba");
+
+
+		String url = "https://gpsfotos-5bf17.firebaseio.com/usuarios/"+user.getNumTel()+".json";
+		RestTemplate service = new RestTemplate();
+		LinkedHashMap respUser = service.getForObject(url, LinkedHashMap.class);
+
+		String url2 = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
+
+		LinkedHashMap req = new LinkedHashMap();
+		HttpHeaders headers = new HttpHeaders();
+		MediaType mediaType = new MediaType("application", "merge-patch+json");
+		headers.setContentType(mediaType);
+
+		HttpEntity<LinkedHashMap> entity = new HttpEntity<>(req, headers);
+		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+		RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+		ResponseEntity<Map> response = null;
+
+		if(respUser != null){
+
+			respUser.put("token", "5555");
+			req.put(user.getNumTel(), respUser);
+			response = restTemplate.exchange(url2, HttpMethod.PATCH, entity, Map.class);
+		}
+
+		Assert.assertEquals(response.getStatusCode().value(), 200);
+	}
+
+	@Test
+	public void loginOrRegister(){
+		//Lo obtengo como parametro
+		User user = new User();
+		user.setNumTel("1144446789");
+		user.setToken("123ABAV");
+		user.setPassword("123456");
+		user.setName("Login");
+
+
+		//Agregarlo en un servicio - para consulta del usuario
+		//Se consulta si para verificar si existe el usuario
+		String url = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
+		RestTemplate service = new RestTemplate();
+		LinkedHashMap usuarios = service.getForObject(url, LinkedHashMap.class);
+		LinkedHashMap usuario = (LinkedHashMap) usuarios.get(user.getNumTel());
+		if(usuario == null){
+			usuarios.put(user.getNumTel(), user);
+			service.put(url, usuarios);
+		}else{
+
+			//Verificar la Password
+			String password = (String)usuario.get("password");
+			if(!user.getPassword().equalsIgnoreCase(password)){
+				Assert.fail();
+			}
+
+			//Existe el usuario verifico SI cambio el token, si si lo actualizo
+			String token = (String)usuario.get("token");
+			if(!user.getToken().equalsIgnoreCase(token)){
+
+				//crear update token service
+				HttpHeaders headers = new HttpHeaders();
+				MediaType mediaType = new MediaType("application", "merge-patch+json");
+				headers.setContentType(mediaType);
+				LinkedHashMap req = new LinkedHashMap();
+				HttpEntity<LinkedHashMap> entity = new HttpEntity<>(req, headers);
+				HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+				RestTemplate restTemplate = new RestTemplate(requestFactory);
+				usuario.put("token", user.getToken());
+				req.put(user.getNumTel(), usuario);
+				ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.PATCH, entity, Map.class);
+				Assert.assertEquals(response.getStatusCode().value(), 200);
+
+			}
+		}
+
+
 
 
 	}
+
+	@Test
+	public void updateContacts(){
+
+	}
+
+	@Test
+	public void acceptPermission(){
+
+	}
+
 
 
 
