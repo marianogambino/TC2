@@ -212,10 +212,43 @@ public class TemplateApplicationTests {
 	@Test
 	public void updateContacts(){
 
+		List<Contact> contactsMatch = new ArrayList<>();
+
+		//Como parametro viene una lista de contactos
+		List<Contact> contacts = new ArrayList<>();
+		Contact contact = new Contact("1122223333", "Ricardo");
+
+		//obtener todos los usuarios
+		String url = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
+		RestTemplate service = new RestTemplate();
+		LinkedHashMap users = service.getForObject(url, LinkedHashMap.class);
+
+		//matchear por los que existan
+		for(Contact c : contacts){
+
+			if ( users.get(c.getPhoneNumber() ) != null  ){
+				//para el que exista, verificar si tengo el permiso de publicacion y actualizo
+
+				
+				contactsMatch.add(c);
+			}
+		}
+
+
+
+		//convertir a json los contactos que matchearon
+		//enviar notificacion tipo data, con el tipo updateContacts
+
+
 	}
 
 	@Test
 	public void acceptPermission(){
+
+	}
+
+	@Test
+	public void obtenerPublicacionesUsuario(){
 
 	}
 
