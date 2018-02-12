@@ -7,5 +7,6 @@ public class Constants {
 
     public static String auth = "key=AAAAauYlDzc:APA91bGApX4w5jxy0vfHRFuSE1X4i8TWLS8j4tHV7SyVrk_Api5zgXCxOI7h03Qv0XEhss9x-QG5AUNQLhyZ2fODaaqRXPrGE0c6tQyhG_uT-m5lNyWx64N52mkpcfAScI2jsMzIsXKh";
     public static String urlFCM = "https://fcm.googleapis.com/fcm/send";
+    public static  String FIREBASEIO_USUARIOS = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
 
 }

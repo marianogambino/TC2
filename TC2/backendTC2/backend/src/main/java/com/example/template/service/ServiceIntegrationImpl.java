@@ -55,39 +55,20 @@ public class ServiceIntegrationImpl implements ServiceIntegration{
         Response response = new Response(0, "OK");
         //Agregarlo en un servicio - para consulta del usuario
         //Se consulta si para verificar si existe el usuario
-        String url = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
-        RestTemplate service = new RestTemplate();
-        LinkedHashMap usuarios = service.getForObject(url, LinkedHashMap.class);
-        LinkedHashMap usuario = (LinkedHashMap) usuarios.get(user.getNumTel());
-        if(usuario == null){
-            usuarios.put(user.getNumTel(), user);
-            service.put(url, usuarios);
-        }else {
 
-            //Verificar la Password
+        LinkedHashMap usuario = serviceDatabase.registrarUsuario(user);
+        if(usuario == null){
+            //Como es null, no existe, por lo tanto el servicio lo registro.
+            return response;
+        }else {
+            //Verificar Password
             String password = (String) usuario.get("password");
             if (!user.getPassword().equalsIgnoreCase(password)) {
                 return new Response(1, "Password incorrecta");
             }
-
-            //Existe el usuario verifico SI cambio el token, si si lo actualizo
-            String token = (String) usuario.get("token");
-            if (!user.getToken().equalsIgnoreCase(token)) {
-                //crear update token service
-                HttpHeaders headers = new HttpHeaders();
-                MediaType mediaType = new MediaType("application", "merge-patch+json");
-                headers.setContentType(mediaType);
-                LinkedHashMap req = new LinkedHashMap();
-                HttpEntity<LinkedHashMap> entity = new HttpEntity<>(req, headers);
-                HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-                RestTemplate restTemplate = new RestTemplate(requestFactory);
-                usuario.put("token", user.getToken());
-                req.put(user.getNumTel(), usuario);
-                ResponseEntity<Map> responseEntity = restTemplate.exchange(url, HttpMethod.PATCH, entity, Map.class);
-
-                if (responseEntity.getStatusCodeValue() == 200) {
-                    return response;
-                }
+            //Verifica y si es cambio el token lo actualiza
+            if( !serviceDatabase.actualizarToken(user,usuario) ){
+                return new Response(3, "Error al actualizar token");
             }
         }
         return response;
