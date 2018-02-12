@@ -212,6 +212,12 @@ public class TemplateApplicationTests {
 	@Test
 	public void updateContacts(){
 
+		User user = new User();
+		user.setNumTel("1144446789");
+		user.setToken("123ABAV");
+		user.setPassword("123456");
+		user.setName("Login");
+
 		List<Contact> contactsMatch = new ArrayList<>();
 
 		//Como parametro viene una lista de contactos
@@ -229,16 +235,48 @@ public class TemplateApplicationTests {
 			if ( users.get(c.getPhoneNumber() ) != null  ){
 				//para el que exista, verificar si tengo el permiso de publicacion y actualizo
 
-				
+				String url2 = "https://gpsfotos-5bf17.firebaseio.com/permisoPublicacion/"+user.getNumTel()+".json";
+				RestTemplate servicePermission = new RestTemplate();
+				LinkedHashMap permissionContacts = service.getForObject(url, LinkedHashMap.class);
+
+				if(permissionContacts.get(c.getPhoneNumber()) != null){
+					c.setPermission("ok");
+				}
 				contactsMatch.add(c);
 			}
 		}
 
-
-
 		//convertir a json los contactos que matchearon
-		//enviar notificacion tipo data, con el tipo updateContacts
+		Gson gson = new Gson();
+		String contactosJson = gson.toJson(contactsMatch);
 
+		//enviar notificacion tipo data, con el tipo updateContacts
+		String auth = "key=AAAAauYlDzc:APA91bGApX4w5jxy0vfHRFuSE1X4i8TWLS8j4tHV7SyVrk_Api5zgXCxOI7h03Qv0XEhss9x-QG5AUNQLhyZ2fODaaqRXPrGE0c6tQyhG_uT-m5lNyWx64N52mkpcfAScI2jsMzIsXKh";
+		String to = "c6enlIEA7lE:APA91bET6dmEm3TUj911-tgxGI6a3mjVsFmVjgFKnq9yZsfzjOwbrV1UJhEnMrPEk1C3xGkbi7KiakOnXUJIJ_lumgSC2SsJLwX4VSP6Wmox-hXbsmwyKzBi15LBs8ebERdNRmSexSvM";
+		String url3 = "https://fcm.googleapis.com/fcm/send";
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", "application/json");
+		headers.set("Authorization" , auth);
+		
+		List<Contact> contactoList = new ArrayList<>();
+		contactoList.add(new Contact("1213213", "lalala"));
+
+		Message msg = new Message();
+		msg.setTo(to);
+		Data data = new Data();
+		data.getBody().put("tipoMensaje" , "Contactos");
+		data.getBody().put("contatos" , contactosJson);
+		msg.setData(data);
+		HttpEntity<Message> entity = new HttpEntity<>(msg, headers);
+		RestTemplate serviceNotification = new RestTemplate();
+		serviceNotification.postForLocation(url, entity);
+
+
+	}
+
+	@Test
+	public void addPermission(){
 
 	}
 

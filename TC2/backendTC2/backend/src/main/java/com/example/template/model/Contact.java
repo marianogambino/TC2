@@ -7,7 +7,7 @@ public class Contact {
 
     private final String phoneNumber;
     private final String name;
-    private String permission;
+    private String permission = null;
 
     public Contact(String phoneNumber, String name) {
         this.phoneNumber = phoneNumber;
