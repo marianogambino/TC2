@@ -234,7 +234,7 @@ public class TemplateApplicationTests {
 				LinkedHashMap permissionContacts = service.getForObject(url2, LinkedHashMap.class);
 
 				if(permissionContacts != null && permissionContacts.get(c.getPhoneNumber()) != null){
-					c.setPermission("ok");
+					c.setAvailable(true);
 				}
 				contactsMatch.add(c);
 			}
@@ -286,10 +286,22 @@ public class TemplateApplicationTests {
 			listaPermitidos = new ArrayList<>();
 			listaPermitidos.add(permiso);
 			permisos.put("1133334444", listaPermitidos);
+
 		}else{
-			listaPermitidos.add(permiso);
+
+			Boolean existePermiso = false;
+			for(String p : listaPermitidos){
+				if(p.equalsIgnoreCase(permiso)){
+					existePermiso = true;
+					break;
+				}
+			}
+			if(!existePermiso) {
+				listaPermitidos.add(permiso);
+				service.put(url, permisos);
+			}
 		}
-		service.put(url, permisos);
+
 
 
 	}

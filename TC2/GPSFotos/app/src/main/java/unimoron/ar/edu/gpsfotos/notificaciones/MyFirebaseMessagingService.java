@@ -62,6 +62,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
             if(value.get("tipoMensaje").equalsIgnoreCase("SolicitudPermiso")){
                 String permiso = value.get("SolicitudPermiso");
+                Contact contact = gson.fromJson(permiso, Contact.class);
+                //Guardar en DB la solicitud de Permiso.... luego
                 //mostrar notificacion y abrir activity de aprobacion
                 //enviar el json al activity -> para que muestre si acepta o rechaza la solicitud
             }

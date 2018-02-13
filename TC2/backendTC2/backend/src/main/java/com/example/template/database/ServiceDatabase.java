@@ -83,10 +83,24 @@ public class ServiceDatabase {
         List<String> listaPermitidos = (List<String>) permisos.get(user.getNumTel());
         if(listaPermitidos == null) {
             listaPermitidos = new ArrayList<>();
+            listaPermitidos.add(permiso);
+            permisos.put(user.getNumTel(), listaPermitidos);
+            service.put(url, permisos);
+        }else{
+            Boolean existePermiso = false;
+            for(String p : listaPermitidos){
+                if(p.equalsIgnoreCase(permiso)){
+                    existePermiso = true;
+                    break;
+                }
+            }
+            if(!existePermiso) {
+                listaPermitidos.add(permiso);
+                permisos.put(user.getNumTel(), listaPermitidos);
+                service.put(url, permisos);
+            }
         }
-        listaPermitidos.add(permiso);
-        permisos.put(user.getNumTel(), listaPermitidos);
-        service.put(url, permisos);
+
 
     }
 }

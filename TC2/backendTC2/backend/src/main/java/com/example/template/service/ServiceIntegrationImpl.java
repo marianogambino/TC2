@@ -137,7 +137,10 @@ public class ServiceIntegrationImpl implements ServiceIntegration{
 
     }
 
+    @Override
+    public void obtenerPublicaciones(User user) {
 
+    }
 
 
 }
