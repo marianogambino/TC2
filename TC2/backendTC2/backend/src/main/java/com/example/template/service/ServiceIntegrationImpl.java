@@ -1,20 +1,23 @@
 package com.example.template.service;
 
 import com.example.template.database.ServiceDatabase;
-import com.example.template.model.Message;
-import com.example.template.model.Notification;
-import com.example.template.model.User;
+import com.example.template.model.*;
+import com.example.template.request.PermisoRequest;
+import com.example.template.request.UserRequest;
 import com.example.template.response.Response;
+import com.example.template.sendNotificacion.ServiceNotificacion;
 import com.example.template.util.Constants;
 import com.example.template.util.HelperUtil;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +28,8 @@ public class ServiceIntegrationImpl implements ServiceIntegration{
 
     @Autowired
     private ServiceDatabase serviceDatabase;
+    @Autowired
+    private ServiceNotificacion serviceNotificacion;
 
     /**
      * 1- Obtengo los contactos/usuarios desde firebase database
@@ -33,9 +38,34 @@ public class ServiceIntegrationImpl implements ServiceIntegration{
      */
     @Override
     @Async
-    public void updateContacts() {
+    public void updateContacts(UserRequest userRequest) {
 
+        User user = userRequest.getUsuario();
+        List<Contact> contactsMatch = new ArrayList<>();
+        LinkedHashMap users = serviceDatabase.getUsers();
+        //matchear por los que existan
+        for(Contact c : userRequest.getContactos()){
 
+            LinkedHashMap userMap = (LinkedHashMap) users.get(c.getPhoneNumber() );
+            if (userMap != null  ){
+                //para el que exista, verificar si tengo el permiso de publicacion y actualizo
+                List<String> permissionContacts = serviceDatabase.getPermisos(user);
+                if(permissionContacts != null){
+                    for(String num : permissionContacts){
+                        if(num.equalsIgnoreCase(c.getPhoneNumber())){
+                            c.setAvailable(true);
+                            break;
+                        }
+                    }
+                }
+                c.setToken((String) userMap.get("token"));
+                contactsMatch.add(c);
+            }
+        }
+        //convertir a json los contactos que matchearon
+        Gson gson = new Gson();
+        String contactosJson = gson.toJson(contactsMatch);
+        serviceNotificacion.sendDataNotificacion(user.getToken(), "Contactos", contactosJson);
 
     }
 
@@ -74,22 +104,40 @@ public class ServiceIntegrationImpl implements ServiceIntegration{
         return response;
     }
 
-
-
     @Override
-    public void postPhoto() {
+    public void publicarFoto() {
 
     }
 
     @Override
-    public void addComment() {
+    public void agreagrComentario() {
 
+    }
+
+
+    @Override
+    @Async
+    public void solicitarPermiso(PermisoRequest request) {
+        Gson gson = new Gson();
+        String permiso = gson.toJson(request);
+        serviceNotificacion.sendDataNotificacion(request.getContacto().getToken() , "SolicitudPermiso", permiso );
     }
 
     @Override
-    public void requestPermission() {
+    @Async
+    public void aprobarPermiso(PermisoRequest request){
+
+        if( request.getConPermiso() ){
+            serviceDatabase.updatePermiso(request.getUsuario(), request.getContacto());
+        }
+
+        Gson gson = new Gson();
+        String permiso = gson.toJson(request);
+        serviceNotificacion.sendDataNotificacion(request.getUsuario().getToken() , "AceptacionPermiso", permiso );
 
     }
+
+
 
 
 }

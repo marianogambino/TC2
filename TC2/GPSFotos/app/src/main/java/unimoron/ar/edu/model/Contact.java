@@ -8,6 +8,7 @@ public class Contact {
 
     private String phoneNumber;
     private String name;
+    private String token;
     private Boolean available = false;
 
 
@@ -33,5 +34,13 @@ public class Contact {
 
     public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

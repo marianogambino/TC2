@@ -1,8 +1,9 @@
 package com.example.template.endpoint;
 
-import com.example.template.ReqNotification;
-import com.example.template.model.Notification;
+import com.example.template.request.PermisoRequest;
+import com.example.template.request.ReqNotification;
 import com.example.template.model.User;
+import com.example.template.request.UserRequest;
 import com.example.template.response.Response;
 import com.example.template.service.ServiceIntegration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +49,8 @@ public class Endpoint {
     //Comparo todos los users con los contactos y envio
     // un mensaje de datos con lo contactos a actualizar
     @PostMapping("/updateContacts")
-    public void updateContacts(){
-        serviceIntegration.updateContacts();
+    public void updateContacts(@RequestBody UserRequest userRequest){
+        serviceIntegration.updateContacts(userRequest);
     }
 
     //llega el usuario con numTel, password y token.
@@ -59,6 +60,17 @@ public class Endpoint {
     public Response loginAndRegisterUser(@RequestBody User user){
         return serviceIntegration.loginAndRegisterUser(user);
 
+    }
+
+
+    @PostMapping("/solicitarPermiso")
+    public void solicitarPermiso(@RequestBody PermisoRequest request){
+        serviceIntegration.solicitarPermiso(request);
+    }
+
+    @PostMapping("/aprobarPermiso")
+    public void aprobarPermiso(@RequestBody PermisoRequest request){
+        serviceIntegration.aprobarPermiso(request);
     }
 
     //publicar foto (File upload), con geolocalizacion, al momento de obtener la foto
@@ -78,14 +90,6 @@ public class Endpoint {
     public void getPostByContact(){
 
     }
-
-    @PostMapping("/requestPermission")
-    public void requestPermission(){
-
-    }
-
-
-
 
 
     /*@GetMapping("/cool-cars")

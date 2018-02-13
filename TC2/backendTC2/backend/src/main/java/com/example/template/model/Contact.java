@@ -5,9 +5,14 @@ package com.example.template.model;
  */
 public class Contact {
 
-    private final String phoneNumber;
-    private final String name;
-    private String permission = null;
+    private String phoneNumber;
+    private String token;
+    private String name;
+    private Boolean available = false;
+
+    public Contact(){
+
+    }
 
     public Contact(String phoneNumber, String name) {
         this.phoneNumber = phoneNumber;
@@ -22,11 +27,27 @@ public class Contact {
         return name;
     }
 
-    public String getPermission() {
-        return permission;
+    public Boolean getAvailable() {
+        return available;
     }
 
-    public void setPermission(String permission) {
-        this.permission = permission;
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

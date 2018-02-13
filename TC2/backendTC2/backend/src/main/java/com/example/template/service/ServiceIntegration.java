@@ -1,6 +1,8 @@
 package com.example.template.service;
 
 import com.example.template.model.User;
+import com.example.template.request.PermisoRequest;
+import com.example.template.request.UserRequest;
 import com.example.template.response.Response;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +12,19 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ServiceIntegration {
 
-    void updateContacts();
+    void updateContacts(UserRequest userRequest);
 
     void sendNotification(String from, String token, String title, String message);
 
     Response loginAndRegisterUser(User user);
-    void postPhoto();
-    void addComment();
+    void publicarFoto();
+    void agreagrComentario();
 
-    void requestPermission();
+    void solicitarPermiso(PermisoRequest request);
+
+    void aprobarPermiso(PermisoRequest request);
+
+    void obtenerPublicaciones(User user);
 
 
 }

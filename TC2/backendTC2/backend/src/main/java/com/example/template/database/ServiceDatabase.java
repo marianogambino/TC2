@@ -1,5 +1,6 @@
 package com.example.template.database;
 
+import com.example.template.model.Contact;
 import com.example.template.model.User;
 import com.example.template.util.Constants;
 import org.springframework.http.*;
@@ -7,7 +8,9 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,6 +18,20 @@ import java.util.Map;
  */
 @Service
 public class ServiceDatabase {
+
+    public List<String> getPermisos(User user){
+        String url2 = "https://gpsfotos-5bf17.firebaseio.com/permisoPublicacion/"+user.getNumTel()+".json";
+        RestTemplate servicePermission = new RestTemplate();
+        List<String> permissionContacts = (List<String>)servicePermission.getForObject(url2, List.class);
+        return permissionContacts;
+    }
+
+    public LinkedHashMap getUsers(){
+        String url = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
+        RestTemplate service = new RestTemplate();
+        LinkedHashMap users = service.getForObject(url, LinkedHashMap.class);
+        return users;
+    }
 
     public LinkedHashMap registrarUsuario(User user){
         RestTemplate service = new RestTemplate();
@@ -50,5 +67,26 @@ public class ServiceDatabase {
             return false;
         }
         return true;
+    }
+
+    public void updatePermiso(User user, Contact contact) {
+
+        String url = "https://gpsfotos-5bf17.firebaseio.com/permisoPublicacion.json";
+        RestTemplate service = new RestTemplate();
+        LinkedHashMap permisos = service.getForObject(url, LinkedHashMap.class);
+
+        String permiso = contact.getPhoneNumber();
+
+        List<String> numTelPermitidos = new ArrayList<>();
+        numTelPermitidos.add(permiso);
+
+        List<String> listaPermitidos = (List<String>) permisos.get(user.getNumTel());
+        if(listaPermitidos == null) {
+            listaPermitidos = new ArrayList<>();
+        }
+        listaPermitidos.add(permiso);
+        permisos.put(user.getNumTel(), listaPermitidos);
+        service.put(url, permisos);
+
     }
 }

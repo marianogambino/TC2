@@ -1,12 +1,8 @@
 package com.example.template;
 
 import com.example.template.model.*;
+import com.example.template.request.ReqNotification;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import org.junit.Assert;
@@ -16,13 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 @RunWith(SpringRunner.class)
@@ -223,6 +216,7 @@ public class TemplateApplicationTests {
 		//Como parametro viene una lista de contactos
 		List<Contact> contacts = new ArrayList<>();
 		Contact contact = new Contact("1122223333", "Ricardo");
+		contacts.add(contact);
 
 		//obtener todos los usuarios
 		String url = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
@@ -237,9 +231,9 @@ public class TemplateApplicationTests {
 
 				String url2 = "https://gpsfotos-5bf17.firebaseio.com/permisoPublicacion/"+user.getNumTel()+".json";
 				RestTemplate servicePermission = new RestTemplate();
-				LinkedHashMap permissionContacts = service.getForObject(url, LinkedHashMap.class);
+				LinkedHashMap permissionContacts = service.getForObject(url2, LinkedHashMap.class);
 
-				if(permissionContacts.get(c.getPhoneNumber()) != null){
+				if(permissionContacts != null && permissionContacts.get(c.getPhoneNumber()) != null){
 					c.setPermission("ok");
 				}
 				contactsMatch.add(c);
@@ -258,7 +252,7 @@ public class TemplateApplicationTests {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Content-Type", "application/json");
 		headers.set("Authorization" , auth);
-		
+
 		List<Contact> contactoList = new ArrayList<>();
 		contactoList.add(new Contact("1213213", "lalala"));
 
@@ -266,11 +260,36 @@ public class TemplateApplicationTests {
 		msg.setTo(to);
 		Data data = new Data();
 		data.getBody().put("tipoMensaje" , "Contactos");
-		data.getBody().put("contatos" , contactosJson);
+		data.getBody().put("contactos" , contactosJson);
 		msg.setData(data);
 		HttpEntity<Message> entity = new HttpEntity<>(msg, headers);
 		RestTemplate serviceNotification = new RestTemplate();
-		serviceNotification.postForLocation(url, entity);
+		serviceNotification.postForLocation(url3, entity);
+
+
+	}
+
+	@Test
+	public void putPermiso() throws IOException {
+
+		String url = "https://gpsfotos-5bf17.firebaseio.com/permisoPublicacion.json";
+		RestTemplate service = new RestTemplate();
+		LinkedHashMap permisos = service.getForObject(url, LinkedHashMap.class);
+
+		String permiso = "1144441111";
+
+		List<String> numTelPermitidos = new ArrayList<>();
+		numTelPermitidos.add(permiso);
+
+		List<String> listaPermitidos = (List<String>) permisos.get("1133334444");
+		if(listaPermitidos == null){
+			listaPermitidos = new ArrayList<>();
+			listaPermitidos.add(permiso);
+			permisos.put("1133334444", listaPermitidos);
+		}else{
+			listaPermitidos.add(permiso);
+		}
+		service.put(url, permisos);
 
 
 	}

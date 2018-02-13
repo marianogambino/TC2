@@ -10,6 +10,7 @@ public class User {
 
     private String name;
     private String phoneNumber;
+    private String token;
     private List<Contact> contacts;
     private List<Photo> photos;
 
@@ -44,5 +45,13 @@ public class User {
 
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
