@@ -49,23 +49,36 @@ public class DBHelper extends SQLiteOpenHelper {
                 + TablesColumns.C_CITY_ID + " INTEGER, FOREIGN KEY("
                 + TablesColumns.C_CITY_ID + ") REFERENCES " + TablesColumns.T_CITY + "(" + TablesColumns.C_CITY_ID + "))");
 
-
-        //Login
-        /*db.execSQL("CREATE TABLE " + TablesColumns.T_LOGIN +
+        db.execSQL("CREATE TABLE " + TablesColumns.T_LOGIN +
                 " ( " + TablesColumns.C_LOGIN_ID +   " integer primary key autoincrement, "
-                + TablesColumns.C_LOGIN_USR + " TEXT, "
-                + TablesColumns.C_LOGIN_PASS + " TEXT, "
+                + TablesColumns.C_LOGIN_NUM_TEL + " TEXT,"
                 + TablesColumns.C_LOGIN_ESTADO + " TEXT, "
-                + TablesColumns.C_DATOS_USUARIO + " TEXT)");
+                + TablesColumns.C_LOGIN_PASS + " TEXT, "
+                + TablesColumns.C_LOGIN_TOKEN + " INTEGER )");
 
-        //Notificaciones
+        db.execSQL("CREATE TABLE " + TablesColumns.T_CONTACTO +
+                " ( " + TablesColumns.C_CONTACTO_ID +   " integer primary key autoincrement, "
+                + TablesColumns.C_CONTACTO_NAME + " TEXT,"
+                + TablesColumns.C_CONTACTO_NUM_TEL + " TEXT, "
+                + TablesColumns.C_CONTACTO_TOKEN + " TEXT, "
+                + TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO + " INTEGER,"
+                + TablesColumns.C_NOTIFICA_EVENTO + " INTEGER,"
+                + TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION + " TEXT )" );
+
+
+        db.execSQL("CREATE TABLE " + TablesColumns.T_PERMISOS_PENDIENTES +
+                " ( " + TablesColumns.C_PERMISO_ID +   " integer primary key autoincrement, "
+                + TablesColumns.C_PERMISO_CONTACTO_NAME + " TEXT,"
+                + TablesColumns.C_PERMISO_CONTACTO_NUMTEL + " TEXT, "
+                + TablesColumns.C_PERMISO_CONTACTO_TOKEN + " TEXT )");
+
         db.execSQL("CREATE TABLE " + TablesColumns.T_NOTIFICACIONES +
-                " ( " + TablesColumns.C_NOTI_ID + " integer primary key autoincrement, "
-                + TablesColumns.C_NOTI_DESC + " TEXT, " + TablesColumns.C_NOTI_ESTADO + " TEXT, " + TablesColumns.C_NOTI_UPD + " TEXT, "
-                + TablesColumns.C_LOGIN_ID + " INTEGER,	FOREIGN KEY("
-                + TablesColumns.C_LOGIN_ID + ") REFERENCES " + TablesColumns.T_LOGIN + "(" + TablesColumns.C_LOGIN_ID + "))");
+                " ( " + TablesColumns.C_NOTI_ID +   " integer primary key autoincrement, "
+                + TablesColumns.C_NOTI_DESC + " TEXT,"
+                + TablesColumns.C_NOTI_FROM_NAME + " INTEGER, "
+                + TablesColumns.C_NOTI_FROM_NUM_TEL + " INTEGER, "
+                + TablesColumns.C_NOTI_FECHA + " DATETIME default CURRENT_TIMESTAMP )");
 
-        */
     }
 
     @Override
@@ -74,13 +87,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
 
-        //db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_LOGIN);
-        //db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_NOTIFICACIONES);
-
         db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_COUNTRY);
         db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_STATE);
         db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_CITY);
         db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_PHOTO);
+        db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_LOGIN);
+        db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_CONTACTO);
+        db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_PERMISOS_PENDIENTES);
+        db.execSQL("DROP TABLE IF EXISTS " + TablesColumns.T_NOTIFICACIONES);
 
         onCreate(db);
     }

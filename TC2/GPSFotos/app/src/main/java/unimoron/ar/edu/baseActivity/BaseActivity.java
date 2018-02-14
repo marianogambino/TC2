@@ -15,10 +15,13 @@ import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.google.gson.Gson;
+
 import unimoron.ar.edu.gpsfotos.ContactosActivity;
 import unimoron.ar.edu.gpsfotos.DashboardActivity;
 import unimoron.ar.edu.gpsfotos.GaleriaLocFotoActivity;
 import unimoron.ar.edu.gpsfotos.R;
+import unimoron.ar.edu.model.User;
 
 /**
  * Created by mariano on 06/11/17.
@@ -36,6 +39,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Gson gson = new Gson();
+        String u = getIntent().getStringExtra("usuario");
+        User usuario = gson.fromJson(u , User.class);
+
+
 
         // Attaching the layout to the toolbar object
         toolbar = (Toolbar) findViewById(R.id.tool_bar);

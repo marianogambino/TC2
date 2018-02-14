@@ -12,9 +12,13 @@ import java.util.Date;
 import java.util.List;
 
 import unimoron.ar.edu.model.City;
+import unimoron.ar.edu.model.Contact;
 import unimoron.ar.edu.model.Country;
+import unimoron.ar.edu.model.Notificacion;
+import unimoron.ar.edu.model.Permiso;
 import unimoron.ar.edu.model.Photo;
 import unimoron.ar.edu.model.State;
+import unimoron.ar.edu.model.User;
 
 /**
  * Created by mariano on 03/01/18.
@@ -243,54 +247,131 @@ public class PhotoDB {
     }
 
     //Verifica si ya esta logeando el usuario
-    public String getLogin() {
+    public User getLogin() {
 
-        String select = "SELECT "+ TablesColumns.C_DATOS_USUARIO+"  from login where loginEstado = 'A'";
+        String select = "SELECT *  from login where loginEstado = 'A'";
         Cursor c= db.rawQuery(select, null);
         System.out.println( "Cursor de login = " + c.getCount());
 
+        User usuario = null;
         if (c.moveToFirst()) {
-            int colIndex = c.getColumnIndex(TablesColumns.C_DATOS_USUARIO);
-            System.out.println( "Cursor de login datos usuario = " + c.getString(colIndex));
-            return c.getString(colIndex);
-
-        } else
-            return null;
+            usuario.setNumTel( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_NUM_TEL)) );
+            usuario.setToken( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_TOKEN)) );
+            usuario.setPassword( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_PASS)) );
+        }
+        return usuario;
     }
 
     //VER EL LOGIN PERO CON NUMERO DE TELEFONO. VER validacion via firebase
-    public void saveLogin(String strUsr, String strPass, String response) {
-
+    public void saveLogin(User usuario) {
         ContentValues valores = new ContentValues();
-        Cursor cUsuario = db.query(TablesColumns.T_LOGIN, TablesColumns.allColumnsLogin,
-                TablesColumns.C_LOGIN_USR + "=?", new String[]{strUsr}, null, null, null);
-
-        System.out.println( "Cursor de login en saveLogin = " + cUsuario.getCount());
-
-        int canti = cUsuario.getCount();
-        if(cUsuario.moveToFirst() && canti > 0){
-
-            valores.put(TablesColumns.C_LOGIN_ESTADO,"A");
-            int colIndex = cUsuario.getColumnIndex(TablesColumns.C_LOGIN_ID);
-            String login =  cUsuario.getString(colIndex);
-            int idLogin = Integer.parseInt(login);
-            System.out.println( "updateo la sesion : " + "A" + "de: " + idLogin);
-            db.update(TablesColumns.T_LOGIN, valores, TablesColumns.C_LOGIN_ID + "=" + idLogin , null);
-        }
-        else{
-
-            valores.put(TablesColumns.C_LOGIN_USR, strUsr);
-            valores.put(TablesColumns.C_LOGIN_PASS, strPass);
-            valores.put(TablesColumns.C_LOGIN_ESTADO, "A");
-            valores.put(TablesColumns.C_DATOS_USUARIO, response);
-
-            System.out.println( "inserto la sesion : " + "A" + "de: " + strUsr);
-            db.insert(TablesColumns.T_LOGIN, null, valores);
-        }
-        cUsuario.close();
+        valores.put(TablesColumns.C_LOGIN_NUM_TEL, usuario.getNumTel());
+        valores.put(TablesColumns.C_LOGIN_PASS, usuario.getPassword());
+        valores.put(TablesColumns.C_LOGIN_ESTADO, "A");
+        valores.put(TablesColumns.C_LOGIN_TOKEN, usuario.getToken());
+        db.insert(TablesColumns.T_LOGIN, null, valores);
     }
 
+    //CONTACTOS
+    public List<Contact> getContactos(){
+        Cursor c = db.rawQuery("select * From CONTACTO c ", null);
+        Contact contact = null;
+        List<Contact> list = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                contact = new Contact();
+                contact.setName( c.getString( c.getColumnIndex(TablesColumns.C_CONTACTO_NAME) ) );
+                contact.setPhoneNumber( c.getString(c.getColumnIndex(TablesColumns.C_CONTACTO_NUM_TEL)));
+                contact.setToken( c.getString(c.getColumnIndex(TablesColumns.C_CONTACTO_TOKEN )) );
+                int habilitado = c.getInt(c.getColumnIndex(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO ));
+                if(habilitado == 0 || habilitado == 1 || habilitado == 2 || habilitado == 3 ){
+                    contact.setAvailable(false);
+                }else{
+                    contact.setAvailable(true);
+                }
+                contact.setPermisoDescripcion( c.getString(c.getColumnIndex(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION ))  );
+                Boolean notificable = c.getInt(c.getColumnIndex(TablesColumns.C_NOTIFICA_EVENTO )) == 0 ? false : true;
+                contact.setNoficable( notificable );
+                list.add(contact);
+            } while (c.moveToNext());
+        }
+        return list;
+    }
 
+    public void guardarContactos(List<Contact> contactos) {
+        for ( Contact c : contactos ) {
+            ContentValues valores = new ContentValues();
+            valores.put(TablesColumns.C_CONTACTO_NAME, c.getName());
+            valores.put(TablesColumns.C_CONTACTO_NUM_TEL, c.getPhoneNumber());
+            if(!c.getAvailable()){
+                valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 0);
+                valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Sin Permiso de Visualizacion");
+            }else {
+                valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 5);
+                valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Habilitado");
+            }
+            valores.put(TablesColumns.C_NOTIFICA_EVENTO, 0);
+            db.insert(TablesColumns.T_CONTACTO, null, valores);
+        }
+    }
 
+    //PERMISOS PENDIENTES DE APROBACION
+    public List<Permiso> getPermisosPendientes(){
+        Cursor c = db.rawQuery("select * From " + TablesColumns.T_PERMISOS_PENDIENTES + " p ", null);
+        Permiso permiso = null;
+        List<Permiso> list = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                permiso = new Permiso();
+                permiso.setId( c.getLong( c.getColumnIndex(TablesColumns.C_PERMISO_ID) )  );
+                permiso.getContacto().setName( c.getString( c.getColumnIndex(TablesColumns.C_PERMISO_CONTACTO_NAME) ) );
+                permiso.getContacto().setPhoneNumber( c.getString(c.getColumnIndex(TablesColumns.C_PERMISO_CONTACTO_NUMTEL)));
+                permiso.getContacto().setToken( c.getString(c.getColumnIndex(TablesColumns.C_PERMISO_CONTACTO_TOKEN )) );
+                list.add(permiso);
+            } while (c.moveToNext());
+        }
+        return list;
+    }
+
+    //GUARDAR PERMISOS PENDIENTES
+    public void guardarPermiso(Permiso permiso) {
+        ContentValues valores = new ContentValues();
+        valores.put(TablesColumns.C_PERMISO_CONTACTO_NAME, permiso.getContacto().getName());
+        valores.put(TablesColumns.C_PERMISO_CONTACTO_NUMTEL, permiso.getContacto().getPhoneNumber());
+        valores.put(TablesColumns.C_PERMISO_CONTACTO_TOKEN, permiso.getContacto().getToken());
+        db.insert(TablesColumns.T_PERMISOS_PENDIENTES, null, valores);
+    }
+
+    //NOTIFICACIONES
+    public List<Notificacion> getNotificaciones() throws ParseException{
+        Cursor c = db.rawQuery("select * From " + TablesColumns.T_NOTIFICACIONES + " n ", null);
+        Notificacion notificacion = null;
+        List<Notificacion> list = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                notificacion = new Notificacion();
+                notificacion.setDescripcion( c.getString( c.getColumnIndex(TablesColumns.C_NOTI_DESC) ) );
+                notificacion.setFromName( c.getString(c.getColumnIndex(TablesColumns.C_NOTI_FROM_NAME)));
+                notificacion.setFromNumTel( c.getString(c.getColumnIndex(TablesColumns.C_NOTI_FROM_NUM_TEL )) );
+                SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                notificacion.setFechaNotificacion( fmt.parse ( c.getString(c.getColumnIndex(TablesColumns.C_NOTI_FECHA )) ) );
+                list.add(notificacion);
+            } while (c.moveToNext());
+        }
+        return list;
+    }
+
+    //GUARDAR NOTIFICACIONES
+    public void guardarNotificacion(Notificacion notificacion) {
+        ContentValues valores = new ContentValues();
+        valores.put(TablesColumns.C_NOTI_DESC, notificacion.getDescripcion());
+        valores.put(TablesColumns.C_NOTI_FROM_NAME, notificacion.getFromName());
+        valores.put(TablesColumns.C_NOTI_FROM_NUM_TEL, notificacion.getFromNumTel());
+        Date currentDate = new Date();
+        SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String date = fmt.format(currentDate);
+        valores.put(TablesColumns.C_NOTI_FECHA, date);
+        db.insert(TablesColumns.T_NOTIFICACIONES, null, valores);
+    }
 
 }

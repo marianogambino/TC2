@@ -70,7 +70,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if(value.get("tipoMensaje").equalsIgnoreCase("AceptacionPermiso")){
                 //actualizar base de datos segun el numTel y estado de aprobacion(RECHAZADO(APROBADO)
                 String permiso = value.get("AceptacionPermiso");
-                //convertit objecto y actualizar DB
+                //convertit objecto y actualizar DB tabla contactos.
+
 
             }
 

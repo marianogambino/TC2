@@ -10,6 +10,8 @@ public class Contact {
     private String name;
     private String token;
     private Boolean available = false;
+    private Boolean isNoficable = false;
+    private String permisoDescripcion = "Sin Permiso de Publicacion";
 
 
     public String getPhoneNumber() {
@@ -42,5 +44,21 @@ public class Contact {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getPermisoDescripcion() {
+        return permisoDescripcion;
+    }
+
+    public void setPermisoDescripcion(String permisoDescripcion) {
+        this.permisoDescripcion = permisoDescripcion;
+    }
+
+    public Boolean getNoficable() {
+        return isNoficable;
+    }
+
+    public void setNoficable(Boolean noficable) {
+        isNoficable = noficable;
     }
 }

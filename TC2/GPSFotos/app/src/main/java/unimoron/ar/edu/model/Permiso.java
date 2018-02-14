@@ -6,8 +6,8 @@ package unimoron.ar.edu.model;
 
 public class Permiso {
 
-    private Contact contacto;
-    private User usuario;
+    private Long id;
+    private Contact contacto = new Contact();
     private Boolean conPermiso = false;
 
     public Contact getContacto() {
@@ -18,13 +18,6 @@ public class Permiso {
         this.contacto = contacto;
     }
 
-    public User getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(User usuario) {
-        this.usuario = usuario;
-    }
 
     public Boolean getConPermiso() {
         return conPermiso;
@@ -32,5 +25,13 @@ public class Permiso {
 
     public void setConPermiso(Boolean conPermiso) {
         this.conPermiso = conPermiso;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -251,7 +251,7 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
 
             //convierto a json y guardo en una shared preferences
             Gson gson = new Gson();
-            //momentaneo
+
             String photosJs = gson.toJson(photos);
             PhotoDB db = new PhotoDB(this.getBaseContext());
             db.open();
@@ -274,8 +274,6 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
         if (((MainActivity)TakePhotoActivity.this).isPermissionGranted()) {
             try
             {
-               // mLastLocation = LocationServices.FusedLocationApi
-               //         .getLastLocation(mGoogleApiClient);
                  LocationServices.getFusedLocationProviderClient(this)
                         .getLastLocation()
                         .addOnSuccessListener(this, new OnSuccessListener<Location>() {

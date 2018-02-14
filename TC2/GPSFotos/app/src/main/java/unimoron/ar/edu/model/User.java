@@ -9,11 +9,17 @@ import java.util.List;
 public class User {
 
     private String name;
-    private String phoneNumber;
+    private String numTel;
+    private String password;
     private String token;
     private List<Contact> contacts;
     private List<Photo> photos;
 
+    public User(String numTel, String password, String token){
+        this.numTel = numTel;
+        this.password = password;
+        this.token = token;
+    }
 
     public String getName() {
         return name;
@@ -23,12 +29,13 @@ public class User {
         this.name = name;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+
+    public String getNumTel() {
+        return numTel;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setNumTel(String numTel) {
+        this.numTel = numTel;
     }
 
     public List<Contact> getContacts() {
@@ -53,5 +60,13 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

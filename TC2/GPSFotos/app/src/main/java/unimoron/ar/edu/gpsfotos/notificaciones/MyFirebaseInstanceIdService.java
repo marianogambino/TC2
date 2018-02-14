@@ -1,5 +1,7 @@
 package unimoron.ar.edu.gpsfotos.notificaciones;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -27,10 +29,10 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
-//c6enlIEA7lE:APA91bET6dmEm3TUj911-tgxGI6a3mjVsFmVjgFKnq9yZsfzjOwbrV1UJhEnMrPEk1C3xGkbi7KiakOnXUJIJ_lumgSC2SsJLwX4VSP6Wmox-hXbsmwyKzBi15LBs8ebERdNRmSexSvM
-        //add shared preference when register user, add token too.
-        System.out.println("token: " + token);
+        SharedPreferences.Editor sharedpreferences =
+                this.getSharedPreferences("token", Context.MODE_PRIVATE).edit();
+        sharedpreferences.putString("token", token);
+        sharedpreferences.apply();
     }
 
 }
