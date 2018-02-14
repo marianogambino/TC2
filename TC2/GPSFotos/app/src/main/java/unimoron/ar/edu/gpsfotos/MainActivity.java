@@ -11,6 +11,9 @@ public class MainActivity extends BaseActivity implements PermissionUtils.Permis
 
     private boolean isPermissionGranted;
 
+
+
+
     @Override
     public int getContentViewId() {
         return R.layout.activity_main;

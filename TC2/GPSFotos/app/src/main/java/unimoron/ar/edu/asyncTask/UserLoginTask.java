@@ -45,7 +45,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Response> {
         RestTemplate service = new RestTemplate();
         String url = Constantes.URL_SERVICE + "/loginOrRegister";
         Response reponse = service.postForObject(url, usuario, Response.class);
-        return null;
+        return reponse;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Response> {
         //mAuthTask = null;
         activity.showProgress(false);
 
-        if (response.getCode() == 200) {
+        if (response.getCode() == 0) {
 
             Gson gson = new Gson();
             String u = gson.toJson(usuario);

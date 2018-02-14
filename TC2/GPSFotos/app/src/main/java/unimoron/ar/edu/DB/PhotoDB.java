@@ -253,7 +253,7 @@ public class PhotoDB {
         Cursor c= db.rawQuery(select, null);
         System.out.println( "Cursor de login = " + c.getCount());
 
-        User usuario = null;
+        User usuario = new User();
         if (c.moveToFirst()) {
             usuario.setNumTel( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_NUM_TEL)) );
             usuario.setToken( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_TOKEN)) );

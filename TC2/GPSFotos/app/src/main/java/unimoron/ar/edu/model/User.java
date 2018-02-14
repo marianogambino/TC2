@@ -15,6 +15,10 @@ public class User {
     private List<Contact> contacts;
     private List<Photo> photos;
 
+    public User(){
+
+    }
+
     public User(String numTel, String password, String token){
         this.numTel = numTel;
         this.password = password;

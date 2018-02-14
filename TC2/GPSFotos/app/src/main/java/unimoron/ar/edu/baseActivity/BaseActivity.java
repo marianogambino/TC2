@@ -2,12 +2,16 @@ package unimoron.ar.edu.baseActivity;
 
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +26,7 @@ import unimoron.ar.edu.gpsfotos.DashboardActivity;
 import unimoron.ar.edu.gpsfotos.GaleriaLocFotoActivity;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.User;
+import unimoron.ar.edu.services.AlarmReceiver;
 
 /**
  * Created by mariano on 06/11/17.
@@ -35,14 +40,21 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
 
+    private String usuario;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        scheduleAlarm();
+
         Gson gson = new Gson();
-        String u = getIntent().getStringExtra("usuario");
-        User usuario = gson.fromJson(u , User.class);
+        usuario = getIntent().getStringExtra("usuario");
 
 
 
@@ -179,5 +191,24 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract int getNavigationMenuItemId();
 
 
+    /**
+     * Servicio en Background que se ejecuta por minuto
+     */
+    public void scheduleAlarm() {
+        // Construct an intent that will execute the AlarmReceiver
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        intent.putExtra("usuario", usuario );
+
+        // Create a PendingIntent to be triggered when the alarm goes off
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, AlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Setup periodic alarm every every half hour from this point onwards
+        long firstMillis = System.currentTimeMillis(); // alarm is set right away
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                1*60*1000, pIntent);
+    }
 
 }

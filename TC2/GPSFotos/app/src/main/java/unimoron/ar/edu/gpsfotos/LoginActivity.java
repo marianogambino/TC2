@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -207,6 +208,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             SharedPreferences sharedpreferences = this.getSharedPreferences("token", Context.MODE_PRIVATE);
             String token = sharedpreferences.getString("token", null);
+            if(token == null){
+                token =  FirebaseInstanceId.getInstance().getToken();
+            }
+            //Verificar conexion a internet
             mAuthTask = new UserLoginTask(numTelefono , password, token ,LoginActivity.this, this);
             mAuthTask.execute((Void) null);
         }

@@ -6,5 +6,7 @@ package unimoron.ar.edu.constantes;
 
 public class Constantes {
 
-    public static String URL_SERVICE = "http://192.168.1.39:8080";
+    //http://192.168.1.39:8080
+    //https://service-gpsfotos.cfapps.io/
+    public static String URL_SERVICE = "https://service-gpsfotos.cfapps.io";
 }
