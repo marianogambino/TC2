@@ -6,5 +6,5 @@ package unimoron.ar.edu.constantes;
 
 public class Constantes {
 
-    public static String URL_SERVICE = "http://localhost:8080";
+    public static String URL_SERVICE = "http://192.168.1.39:8080";
 }
