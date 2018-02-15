@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import java.util.Map;
 
+import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.gpsfotos.MainActivity;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.Contact;
@@ -58,6 +59,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 //Call to DB for update contactos
                 //crear metodos para borrar y re-insertar
+                PhotoDB db = new PhotoDB(this);
+                db.open();
+                db.borrarTodosContactos();
+                db.guardarContactos(contactos);
+                db.close();
+
                 //crear metodo para consutar todos los contactos
             }
             if(value.get("tipoMensaje").equalsIgnoreCase("SolicitudPermiso")){
