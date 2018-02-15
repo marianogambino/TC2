@@ -38,12 +38,15 @@ public class ServiceBackground extends IntentService {
         List<Contact> contactos = getContactos();
         Gson gson = new Gson();
         String u = intent.getStringExtra("usuario");
-        User usuario = gson.fromJson(u , User.class);
-        UserRequest request = new UserRequest();
-        request.setContactos(contactos);
-        request.setUsuario(usuario);
-        RestTemplate service = new RestTemplate();
-        service.postForObject(Constantes.URL_SERVICE + "/updateContacts" , usuario, Void.class);
+
+        if ( u != null) {
+            User usuario = gson.fromJson(u, User.class);
+            UserRequest request = new UserRequest();
+            request.setContactos(contactos);
+            request.setUsuario(usuario);
+            RestTemplate service = new RestTemplate();
+            service.postForObject(Constantes.URL_SERVICE + "/updateContacts", request, Void.class);
+        }
     }
 
     private List<Contact> getContactos(){

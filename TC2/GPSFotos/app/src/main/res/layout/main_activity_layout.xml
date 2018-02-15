@@ -35,6 +35,7 @@
         android:gravity="center"
         android:orientation="horizontal">
 
+        <!--  android:drawableTop="@drawable/ic_home_black_24dp" -->
         <RadioButton
             android:id="@+id/home"
             android:layout_width="match_parent"
@@ -42,7 +43,9 @@
             android:layout_weight="1"
             android:button="@null"
             android:checked="false"
-            android:drawableTop="@drawable/ic_home_black_24dp"
+
+            app:srcCompat="@drawable/ic_home_black_24dp"
+
             android:gravity="center"
             android:padding="2dp"
             android:text="Publicaciones"
@@ -56,7 +59,7 @@
             android:layout_weight="1"
             android:button="@null"
             android:checked="false"
-            android:drawableTop="@drawable/ic_add_a_photo_black_24dp"
+            app:srcCompat="@drawable/ic_add_a_photo_black_24dp"
             android:gravity="center"
             android:padding="2dp"
             android:text="Tomar Foto"
@@ -70,7 +73,7 @@
             android:layout_weight="1"
             android:button="@null"
             android:checked="false"
-            android:drawableTop="@drawable/ic_location_on_black_24dp"
+            app:srcCompat="@drawable/ic_location_on_black_24dp"
             android:gravity="center"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"

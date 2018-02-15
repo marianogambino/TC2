@@ -40,8 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
 
-    private String usuario;
-
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
@@ -50,12 +48,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        scheduleAlarm();
-
-        Gson gson = new Gson();
-        usuario = getIntent().getStringExtra("usuario");
-
 
 
         // Attaching the layout to the toolbar object
@@ -191,24 +183,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract int getNavigationMenuItemId();
 
 
-    /**
-     * Servicio en Background que se ejecuta por minuto
-     */
-    public void scheduleAlarm() {
-        // Construct an intent that will execute the AlarmReceiver
-        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        intent.putExtra("usuario", usuario );
 
-        // Create a PendingIntent to be triggered when the alarm goes off
-        final PendingIntent pIntent = PendingIntent.getBroadcast(this, AlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Setup periodic alarm every every half hour from this point onwards
-        long firstMillis = System.currentTimeMillis(); // alarm is set right away
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
-        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                1*60*1000, pIntent);
-    }
 
 }

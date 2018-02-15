@@ -253,8 +253,9 @@ public class PhotoDB {
         Cursor c= db.rawQuery(select, null);
         System.out.println( "Cursor de login = " + c.getCount());
 
-        User usuario = new User();
+        User usuario = null;
         if (c.moveToFirst()) {
+            usuario = new User();
             usuario.setNumTel( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_NUM_TEL)) );
             usuario.setToken( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_TOKEN)) );
             usuario.setPassword( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_PASS)) );
@@ -296,6 +297,10 @@ public class PhotoDB {
             } while (c.moveToNext());
         }
         return list;
+    }
+
+    public void borrarTodosContactos() {
+        db.execSQL("delete from CONTACTO");
     }
 
     public void guardarContactos(List<Contact> contactos) {

@@ -41,10 +41,17 @@ public class UserLoginTask extends AsyncTask<Void, Void, Response> {
 
     @Override
     protected Response doInBackground(Void... params) {
-        usuario = new User(mNumTel, mPassword, token);
-        RestTemplate service = new RestTemplate();
-        String url = Constantes.URL_SERVICE + "/loginOrRegister";
-        Response reponse = service.postForObject(url, usuario, Response.class);
+
+        Response reponse;
+        try{
+            usuario = new User(mNumTel, mPassword, token);
+            RestTemplate service = new RestTemplate();
+            String url = Constantes.URL_SERVICE + "/loginOrRegister";
+             reponse = service.postForObject(url, usuario, Response.class);
+            return reponse;
+        }catch (RuntimeException ex){
+            reponse = new Response(9, ex.getMessage());
+        }
         return reponse;
     }
 

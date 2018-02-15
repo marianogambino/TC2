@@ -31,6 +31,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
@@ -165,10 +166,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
+       /* if (mAuthTask != null) {
             return;
         }
-
+        */
         // Reset errors.
         mPassword.setError(null);
         mNumTelefono.setError(null);
@@ -210,10 +211,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String token = sharedpreferences.getString("token", null);
             if(token == null){
                 token =  FirebaseInstanceId.getInstance().getToken();
+
+                if(token==null){
+                    showProgress(false);
+                    Toast.makeText(this, "Error en obtener token", Toast.LENGTH_SHORT).show();
+                }else{
+                    //Verificar conexion a internet
+                    mAuthTask = new UserLoginTask(numTelefono, password, token, LoginActivity.this, this);
+                    mAuthTask.execute((Void) null);
+                }
+            }else {
+                //Verificar conexion a internet
+                mAuthTask = new UserLoginTask(numTelefono, password, token, LoginActivity.this, this);
+                mAuthTask.execute((Void) null);
             }
-            //Verificar conexion a internet
-            mAuthTask = new UserLoginTask(numTelefono , password, token ,LoginActivity.this, this);
-            mAuthTask.execute((Void) null);
         }
     }
 
@@ -312,5 +323,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return this.mNumTelefono;
     }
 
+    public void setmAuthTask(UserLoginTask mAuthTask) {
+        this.mAuthTask = mAuthTask;
+    }
 }
 
