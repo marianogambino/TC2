@@ -14,13 +14,18 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import unimoron.ar.edu.DB.PhotoDB;
+import unimoron.ar.edu.gpsfotos.ARPermisoActivity;
 import unimoron.ar.edu.gpsfotos.MainActivity;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.Contact;
+import unimoron.ar.edu.model.Permiso;
+import unimoron.ar.edu.model.User;
+import unimoron.ar.edu.request.PermisoRequest;
 
 
 /**
@@ -31,6 +36,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     private static final String TAG = "MyFirebaseMsgService";
+
+    private int countMessagePermission = 0;
 
     /**
      * Called when message is received.
@@ -51,37 +58,63 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Map<String,String> value = gson.fromJson( remoteMessage.getData().get("body"), Map.class);
 
             if(value.get("tipoMensaje").equalsIgnoreCase("Contactos")){
-
                 String cont = value.get("Contactos");
                 List<Contact> contactos = gson.fromJson(cont, new TypeToken<List<Contact>>(){}.getType());
 
-                Log.d(TAG, "contactos: " + contactos.get(0).getPhoneNumber());
+                if(contactos != null && contactos.size() > 0 ) {
+                    Log.d(TAG, "contactos: " + contactos.get(0).getPhoneNumber());
+                    PhotoDB db = new PhotoDB(this);
+                    db.open();
+                    //modificar solo guardar
+                    List<Contact> contactosFilter = new ArrayList<>();
+                    List<Contact> contactsDB = db.getContactos();
+                    for( Contact c : contactos){
+                        for(Contact cDB : contactsDB){
+                            if(!c.getPhoneNumber().equalsIgnoreCase(cDB.getPhoneNumber())){
+                                contactosFilter.add(c);
+                            }
+                        }
+                    }
 
-                //Call to DB for update contactos
-                //crear metodos para borrar y re-insertar
-                PhotoDB db = new PhotoDB(this);
-                db.open();
-                db.borrarTodosContactos();
-                db.guardarContactos(contactos);
-                db.close();
-
-                //crear metodo para consutar todos los contactos
+                    if(contactosFilter.size() > 0) {
+                        db.guardarContactos(contactosFilter);
+                    }
+                    db.close();
+                }
             }
             if(value.get("tipoMensaje").equalsIgnoreCase("SolicitudPermiso")){
-                String permiso = value.get("SolicitudPermiso");
-                Contact contact = gson.fromJson(permiso, Contact.class);
+                String solicitudPermiso = value.get("SolicitudPermiso");
+                PermisoRequest permisoRequest = gson.fromJson(solicitudPermiso, PermisoRequest.class);
                 //Guardar en DB la solicitud de Permiso.... luego
                 //mostrar notificacion y abrir activity de aprobacion
                 //enviar el json al activity -> para que muestre si acepta o rechaza la solicitud
+                countMessagePermission++;
+
+                PhotoDB db = new PhotoDB(this);
+                db.open();
+                Contact contact = db.getContacto( permisoRequest.getUsuario().getNumTel());
+                Permiso permiso = new Permiso();
+                permiso.setContacto(contact);
+                permiso.setConPermiso(false);
+                db.guardarPermiso(permiso);
+                permisoRequest = new PermisoRequest();
+                permisoRequest.setContacto(contact);
+                User usuario = db.getLogin();
+                permisoRequest.setUsuario(usuario);
+                db.close();
+                enviarNotificacionPermiso(solicitudPermiso, permisoRequest);
             }
+
             if(value.get("tipoMensaje").equalsIgnoreCase("AceptacionPermiso")){
-                //actualizar base de datos segun el numTel y estado de aprobacion(RECHAZADO(APROBADO)
                 String permiso = value.get("AceptacionPermiso");
-                //convertit objecto y actualizar DB tabla contactos.Cons
-
-
+                PermisoRequest permisoRequest = gson.fromJson(permiso, PermisoRequest.class);
+                PhotoDB db = new PhotoDB(this);
+                db.open();
+                Boolean conPermiso = permisoRequest.getConPermiso();
+                Contact contact = db.getContacto( permisoRequest.getUsuario().getNumTel());
+                db.habilitarContacto(contact, conPermiso);
+                db.close();
             }
-
 
         }
 
@@ -146,4 +179,53 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 
+
+    private void enviarNotificacionPermiso(String solicitudPermiso, PermisoRequest request) {
+        Intent intent = new Intent(this, ARPermisoActivity.class);
+        intent.putExtra("permiso", solicitudPermiso);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        String mensaje = "El contacto " + request.getContacto().getName() +
+                " solicita permiso para ver sus publicaciones ";
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_notifications_white_24dp)
+                        .setContentTitle("Notificacion de Solicitud de Permiso")
+                        .setContentText(mensaje)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify( countMessagePermission , notificationBuilder.build());
+    }
+
+    private void enviarNotificacionComentario(String messageBody) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        //String channelId = getString(R.string.default_notification_channel_id);
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_notifications_white_24dp)
+                        .setContentTitle("Alguien hizo un comentario en tu publicacion")
+                        .setContentText(messageBody)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
 }

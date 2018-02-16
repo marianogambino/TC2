@@ -315,14 +315,57 @@ public class PhotoDB {
                 valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 5);
                 valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Habilitado");
             }
-            valores.put(TablesColumns.C_NOTIFICA_EVENTO, 0);
+            valores.put(TablesColumns.C_NOTIFICA_EVENTO, 1);
             db.insert(TablesColumns.T_CONTACTO, null, valores);
         }
     }
 
+    //CONTACTO
+    public Contact getContacto(String numTel){
+        Cursor c = db.rawQuery("select * From CONTACTO c where numTel=" + numTel, null);
+        Contact contact = null;
+
+        if (c.moveToFirst()) {
+            contact = new Contact();
+            contact.setName(c.getString(c.getColumnIndex(TablesColumns.C_CONTACTO_NAME)));
+            contact.setPhoneNumber(c.getString(c.getColumnIndex(TablesColumns.C_CONTACTO_NUM_TEL)));
+            contact.setToken(c.getString(c.getColumnIndex(TablesColumns.C_CONTACTO_TOKEN)));
+            int habilitado = c.getInt(c.getColumnIndex(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO));
+            if (habilitado == 0 || habilitado == 1 || habilitado == 2 || habilitado == 3) {
+                contact.setAvailable(false);
+            } else {
+                contact.setAvailable(true);
+            }
+            contact.setPermisoDescripcion(c.getString(c.getColumnIndex(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION)));
+            Boolean notificable = c.getInt(c.getColumnIndex(TablesColumns.C_NOTIFICA_EVENTO)) == 0 ? false : true;
+            contact.setNoficable(notificable);
+        }
+        return contact;
+    }
+
+    public void contactoActualizarNotificable(Contact contacto) {
+        ContentValues valores = new ContentValues();
+        valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 4);
+        valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Pendiente de Aprobacion");
+        valores.put(TablesColumns.C_NOTIFICA_EVENTO, 0);
+        db.update(TablesColumns.T_CONTACTO, valores, TablesColumns.C_CONTACTO_NUM_TEL + "=?"  , new String[] { contacto.getPhoneNumber() });
+    }
+
+    public void habilitarContacto(Contact contacto, Boolean tienePermiso) {
+        ContentValues valores = new ContentValues();
+        if(tienePermiso) {
+            valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 5);
+            valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Habilitado");
+        }else{
+            valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 3);
+            valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Rechazado");
+        }
+        db.update(TablesColumns.T_CONTACTO, valores, TablesColumns.C_CONTACTO_NUM_TEL + "=?"  , new String[] { contacto.getPhoneNumber() });
+    }
+
     //PERMISOS PENDIENTES DE APROBACION
     public List<Permiso> getPermisosPendientes(){
-        Cursor c = db.rawQuery("select * From " + TablesColumns.T_PERMISOS_PENDIENTES + " p ", null);
+        Cursor c = db.rawQuery("select * From " + TablesColumns.T_PERMISOS_PENDIENTES , null);
         Permiso permiso = null;
         List<Permiso> list = new ArrayList<>();
         if (c.moveToFirst()) {
@@ -347,9 +390,13 @@ public class PhotoDB {
         db.insert(TablesColumns.T_PERMISOS_PENDIENTES, null, valores);
     }
 
+    public void deletePermiso(String numTel) {
+        db.delete(TablesColumns.T_PERMISOS_PENDIENTES, TablesColumns.C_PERMISO_CONTACTO_NUMTEL + "=?", new String[]{numTel});
+    }
+
     //NOTIFICACIONES
     public List<Notificacion> getNotificaciones() throws ParseException{
-        Cursor c = db.rawQuery("select * From " + TablesColumns.T_NOTIFICACIONES + " n ", null);
+        Cursor c = db.rawQuery("select * From " + TablesColumns.T_NOTIFICACIONES , null);
         Notificacion notificacion = null;
         List<Notificacion> list = new ArrayList<>();
         if (c.moveToFirst()) {

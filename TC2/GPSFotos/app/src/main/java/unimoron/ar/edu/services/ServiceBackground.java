@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.constantes.Constantes;
 import unimoron.ar.edu.model.Contact;
 import unimoron.ar.edu.model.User;
@@ -36,11 +37,13 @@ public class ServiceBackground extends IntentService {
         // Do the task here
         Log.i("ServiceBackground", "Service running");
         List<Contact> contactos = getContactos();
-        Gson gson = new Gson();
-        String u = intent.getStringExtra("usuario");
 
-        if ( u != null) {
-            User usuario = gson.fromJson(u, User.class);
+        PhotoDB db = new PhotoDB(this);
+        db.open();
+        User usuario = db.getLogin();
+        db.close();
+
+        if ( usuario != null) {
             UserRequest request = new UserRequest();
             request.setContactos(contactos);
             request.setUsuario(usuario);

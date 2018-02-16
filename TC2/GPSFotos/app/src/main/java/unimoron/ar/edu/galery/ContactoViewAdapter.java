@@ -65,8 +65,12 @@ public class ContactoViewAdapter extends BaseAdapter {
 
         name.setText( c.getName() );
         phoneNum.setText( c.getPhoneNumber() );
-        available.setText("Deshabilitado");
+        available.setText(c.getPermisoDescripcion());
         available.setTextColor(Color.parseColor("#F44336"));
+        if(c.getAvailable()){
+            available.setTextColor(Color.parseColor("#99CC00"));
+        }
+
 
 
         return convertView;
