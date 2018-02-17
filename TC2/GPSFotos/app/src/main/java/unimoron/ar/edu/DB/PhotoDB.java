@@ -315,10 +315,11 @@ public class PhotoDB {
                 valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 5);
                 valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Habilitado");
             }
-            valores.put(TablesColumns.C_NOTIFICA_EVENTO, 1);
+            valores.put(TablesColumns.C_NOTIFICA_EVENTO, 0);
             db.insert(TablesColumns.T_CONTACTO, null, valores);
         }
     }
+
 
     //CONTACTO
     public Contact getContacto(String numTel){
@@ -345,11 +346,18 @@ public class PhotoDB {
 
     public void contactoActualizarNotificable(Contact contacto) {
         ContentValues valores = new ContentValues();
-        valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 4);
+        valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 3);
         valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Pendiente de Aprobacion");
         valores.put(TablesColumns.C_NOTIFICA_EVENTO, 0);
         db.update(TablesColumns.T_CONTACTO, valores, TablesColumns.C_CONTACTO_NUM_TEL + "=?"  , new String[] { contacto.getPhoneNumber() });
     }
+
+    public void actualizarToken(Contact contacto) {
+        ContentValues valores = new ContentValues();
+        valores.put(TablesColumns.C_CONTACTO_TOKEN, contacto.getToken());
+        db.update(TablesColumns.T_CONTACTO, valores, TablesColumns.C_CONTACTO_NUM_TEL + "=?"  , new String[] { contacto.getPhoneNumber() });
+    }
+
 
     public void habilitarContacto(Contact contacto, Boolean tienePermiso) {
         ContentValues valores = new ContentValues();

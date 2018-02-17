@@ -73,7 +73,6 @@ public class ContactosActivity extends MainActivity {
                     startActivity(intent);
                 }
 
-
             }
         });
     }

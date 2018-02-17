@@ -37,7 +37,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
 
-    private int countMessagePermission = 0;
+    private int cantPermisos = 0;
+    private int cantComentario = 0;
+    private int cantNotificaciones = 0;
+
 
     /**
      * Called when message is received.
@@ -68,16 +71,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     //modificar solo guardar
                     List<Contact> contactosFilter = new ArrayList<>();
                     List<Contact> contactsDB = db.getContactos();
-                    for( Contact c : contactos){
-                        for(Contact cDB : contactsDB){
-                            if(!c.getPhoneNumber().equalsIgnoreCase(cDB.getPhoneNumber())){
-                                contactosFilter.add(c);
+                    if ( contactsDB.size() > 0 ) {
+                        for (Contact c : contactos) {
+                            for (Contact cDB : contactsDB) {
+                                if (!c.getPhoneNumber().equalsIgnoreCase(cDB.getPhoneNumber())) {
+                                    contactosFilter.add(c);
+                                }else if(!c.getToken().equalsIgnoreCase(cDB.getToken())){
+                                    db.actualizarToken(c);
+                                }
                             }
                         }
-                    }
 
-                    if(contactosFilter.size() > 0) {
-                        db.guardarContactos(contactosFilter);
+                        if (contactosFilter.size() > 0) {
+                            db.guardarContactos(contactosFilter);
+                        }
+                    }else{
+                        db.guardarContactos(contactos);
                     }
                     db.close();
                 }
@@ -88,7 +97,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 //Guardar en DB la solicitud de Permiso.... luego
                 //mostrar notificacion y abrir activity de aprobacion
                 //enviar el json al activity -> para que muestre si acepta o rechaza la solicitud
-                countMessagePermission++;
+                cantPermisos++;
 
                 PhotoDB db = new PhotoDB(this);
                 db.open();
@@ -97,12 +106,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 permiso.setContacto(contact);
                 permiso.setConPermiso(false);
                 db.guardarPermiso(permiso);
-                permisoRequest = new PermisoRequest();
-                permisoRequest.setContacto(contact);
-                User usuario = db.getLogin();
-                permisoRequest.setUsuario(usuario);
                 db.close();
-                enviarNotificacionPermiso(solicitudPermiso, permisoRequest);
+                String contacto  = gson.toJson(contact);
+                enviarNotificacionPermiso(contacto , contact.getName(), solicitudPermiso);
             }
 
             if(value.get("tipoMensaje").equalsIgnoreCase("AceptacionPermiso")){
@@ -111,9 +117,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 PhotoDB db = new PhotoDB(this);
                 db.open();
                 Boolean conPermiso = permisoRequest.getConPermiso();
-                Contact contact = db.getContacto( permisoRequest.getUsuario().getNumTel());
-                db.habilitarContacto(contact, conPermiso);
+                Contact contacto = permisoRequest.getContacto();
+                db.habilitarContacto(contacto, conPermiso);
                 db.close();
+                cantPermisos++;
+                notificarAceptacionPermiso(contacto, permisoRequest.getConPermiso());
             }
 
         }
@@ -133,14 +141,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Schedule a job using FirebaseJobDispatcher.
      */
     private void scheduleJob() {
-        // [START dispatch_job]
-        //FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-        //Job myJob = dispatcher.newJobBuilder()
-        //        .setService(MyJobService.class)
-        //        .setTag("my-job-tag")
-        //        .build();
-        //dispatcher.schedule(myJob);
-        // [END dispatch_job]
+
     }
 
     /**
@@ -176,18 +177,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(cantNotificaciones, notificationBuilder.build());
     }
 
 
-    private void enviarNotificacionPermiso(String solicitudPermiso, PermisoRequest request) {
+    private void enviarNotificacionPermiso(String contacto, String name, String solicitudPermiso) {
         Intent intent = new Intent(this, ARPermisoActivity.class);
         intent.putExtra("permiso", solicitudPermiso);
+        intent.putExtra("contacto", contacto);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        String mensaje = "El contacto " + request.getContacto().getName() +
+        String mensaje = "El contacto " + name +
                 " solicita permiso para ver sus publicaciones ";
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -203,7 +205,37 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify( countMessagePermission , notificationBuilder.build());
+        notificationManager.notify( cantPermisos , notificationBuilder.build());
+    }
+
+    private void notificarAceptacionPermiso(Contact contacto , Boolean conPermiso) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        String resolucion = " RECHAZO";
+        if(conPermiso){
+            resolucion = " APROBO";
+        }
+
+        String mensaje = "El contacto " + contacto.getName() +
+               resolucion + " solicitud de permiso para ver sus publicaciones ";
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_notifications_white_24dp)
+                        .setContentTitle("Notificacion de Aceptacion/Rechazo")
+                        .setContentText(mensaje)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify( cantPermisos , notificationBuilder.build());
     }
 
     private void enviarNotificacionComentario(String messageBody) {
@@ -226,6 +258,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(cantComentario, notificationBuilder.build());
     }
 }

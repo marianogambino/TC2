@@ -43,7 +43,6 @@ public class  MapActivity extends BaseActivity implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_map);
 
         dynamicContent = (LinearLayout) findViewById(R.id.dynamicContent);
         bottonNavBar= (RelativeLayout) findViewById(R.id.bottonNavBar);

@@ -30,10 +30,8 @@ public class PhotoGaleryActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_photo_galery);
 
         try {
-
             dynamicContent = (LinearLayout) findViewById(R.id.dynamicContent);
             View wizard = getLayoutInflater().inflate(R.layout.activity_photo_galery, null);
             dynamicContent.addView(wizard);

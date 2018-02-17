@@ -59,8 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         radioGroup1=(RadioGroup)findViewById(R.id.radioGroup1);
         home = (RadioButton)findViewById(R.id.home);
 
-
-
         radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override

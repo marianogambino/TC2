@@ -38,6 +38,7 @@ public class SolicitudPermisoTask extends AsyncTask<Void, Void, Response> {
         this.contacto = contacto;
         this.ctx = ctx;
         this.activity = activity;
+        this.usuario = usuario;
     }
 
     @Override

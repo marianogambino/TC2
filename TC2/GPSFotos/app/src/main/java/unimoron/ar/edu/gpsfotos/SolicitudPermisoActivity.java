@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 
 import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.asyncTask.SolicitudPermisoTask;
-import unimoron.ar.edu.asyncTask.UserLoginTask;
+
 import unimoron.ar.edu.model.Contact;
 import unimoron.ar.edu.model.User;
 
@@ -19,12 +19,20 @@ public class SolicitudPermisoActivity extends AppCompatActivity {
     private SolicitudPermisoTask task;
     private Contact contacto;
     private User usuario;
+    private android.support.v7.widget.Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solicitud_permiso);
-        getActionBar().setTitle("Solicitud de Permiso de Publicacion");
+        setTitle("Solicitud de Permiso de Publicacion");
+
+        toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
+        // Setting toolbar as the ActionBar with setSupportActionBar() call
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Solicitud de Permiso de Publicacion");
+
 
         Gson gson = new Gson();
         String contact = getIntent().getStringExtra("contacto");

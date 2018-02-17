@@ -8,6 +8,10 @@
     android:layout_marginTop="50dp"
     tools:context="unimoron.ar.edu.gpsfotos.PhotoGaleryActivity">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar" />
+
     <ListView
         android:id="@+id/list_photo"
         android:layout_width="match_parent"

@@ -20,20 +20,29 @@ public class ARPermisoActivity extends AppCompatActivity {
 
     private ARPermisoTask task;
     private PermisoRequest permisoRequest;
+    private android.support.v7.widget.Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arpermiso);
 
-        getActionBar().setTitle("Aprobacion/Rechazo de Permiso");
+        setTitle("Aprobacion/Rechazo de Permiso");
+
+        toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
+        // Setting toolbar as the ActionBar with setSupportActionBar() call
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Aprobacion/Rechazo de Permiso");
+
 
         String permiso = getIntent().getStringExtra("permiso");
+        String contact = getIntent().getStringExtra("contacto");
 
         Gson gson = new Gson();
         permisoRequest = gson.fromJson(permiso, PermisoRequest.class);
 
-        Contact contacto = permisoRequest.getContacto();
+        Contact contacto = gson.fromJson(contact, Contact.class);
 
         TextView nombreContacto = (TextView) findViewById(R.id.contacto);
         TextView numTel = (TextView) findViewById(R.id.numTel);
