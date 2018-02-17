@@ -86,8 +86,9 @@ public class Endpoint {
 
     }
 
-    @GetMapping("/getPostByContacts")
-    public void getPostByContact(){
+    @GetMapping("/obtenerPublicaciones")
+    public void getPostByContact(String numTel){
+        serviceIntegration.obtenerPublicaciones(numTel);
 
     }
 

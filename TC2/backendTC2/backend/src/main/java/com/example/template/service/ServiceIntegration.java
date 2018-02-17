@@ -24,7 +24,7 @@ public interface ServiceIntegration {
 
     void aprobarPermiso(PermisoRequest request);
 
-    void obtenerPublicaciones(User user);
+    void obtenerPublicaciones(String numTel);
 
 
 }

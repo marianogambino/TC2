@@ -13,5 +13,14 @@
 
 
 
+    <ListView
+        android:id="@+id/publicaciones"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:layout_marginTop="50dp">
+
+    </ListView>
+
+
 </RelativeLayout>
 

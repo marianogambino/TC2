@@ -104,16 +104,6 @@ public class ServiceIntegrationImpl implements ServiceIntegration{
         return response;
     }
 
-    @Override
-    public void publicarFoto() {
-
-    }
-
-    @Override
-    public void agreagrComentario() {
-
-    }
-
 
     @Override
     @Async
@@ -138,7 +128,17 @@ public class ServiceIntegrationImpl implements ServiceIntegration{
     }
 
     @Override
-    public void obtenerPublicaciones(User user) {
+    public void publicarFoto() {
+
+    }
+
+    @Override
+    public void agreagrComentario() {
+
+    }
+
+    @Override
+    public void obtenerPublicaciones(String numTel) {
 
     }
 
