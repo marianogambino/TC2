@@ -20,6 +20,7 @@ import java.util.Map;
 
 import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.gpsfotos.ARPermisoActivity;
+import unimoron.ar.edu.gpsfotos.DashboardActivity;
 import unimoron.ar.edu.gpsfotos.MainActivity;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.Contact;
@@ -209,7 +210,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void notificarAceptacionPermiso(Contact contacto , Boolean conPermiso) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
