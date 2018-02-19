@@ -25,7 +25,7 @@ import unimoron.ar.edu.model.Contact;
 
 public class ContactoViewAdapter extends BaseAdapter {
 
-    private final List<Contact> mValues;
+    private  List<Contact> mValues;
     private Context ctx;
 
     public ContactoViewAdapter(List<Contact> items, Context context) {
@@ -66,12 +66,12 @@ public class ContactoViewAdapter extends BaseAdapter {
         name.setText( c.getName() );
         phoneNum.setText( c.getPhoneNumber() );
         available.setText(c.getPermisoDescripcion());
-        available.setTextColor(Color.parseColor("#F44336"));
+
         if(c.getAvailable()){
             available.setTextColor(Color.parseColor("#99CC00"));
+        }else{
+            available.setTextColor(Color.parseColor("#F44336"));
         }
-
-
 
         return convertView;
     }
@@ -82,6 +82,14 @@ public class ContactoViewAdapter extends BaseAdapter {
 
     public void setCtx(Context ctx) {
         this.ctx = ctx;
+    }
+
+    public List<Contact> getmValues() {
+        return mValues;
+    }
+
+    public void setmValues(List<Contact> mValues){
+        this.mValues = mValues;
     }
 
 }

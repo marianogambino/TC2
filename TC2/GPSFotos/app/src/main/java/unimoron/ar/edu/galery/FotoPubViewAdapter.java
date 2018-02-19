@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,7 +51,7 @@ public class FotoPubViewAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater) this.ctx.getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
-            convertView = mInflater.inflate( R.layout.photo_item_default, null );
+            convertView = mInflater.inflate( R.layout.publicacion_item, null );
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.name);
@@ -72,7 +73,20 @@ public class FotoPubViewAdapter extends BaseAdapter {
         Bitmap img = BitmapConverter.convertBitmap(photo.getPathDir(), photo.getName());
         view.setImageBitmap( BitmapConverter.getResizedBitmap(img, 40 ) );
 
+        Button btnGeolocalizar = (Button) convertView.findViewById(R.id.button3);
+
+        btnGeolocalizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ir a la geolocalizacion.
+                //ver a lo ultimo
+            }
+        });
+
+
         return convertView;
+
+
     }
 
     public Context getCtx() {

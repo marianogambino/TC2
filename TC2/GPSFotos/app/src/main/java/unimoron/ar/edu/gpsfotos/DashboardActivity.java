@@ -1,10 +1,13 @@
 package unimoron.ar.edu.gpsfotos;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -12,15 +15,21 @@ import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.baseActivity.BaseActivity;
+import unimoron.ar.edu.galery.ContactoViewAdapter;
+import unimoron.ar.edu.galery.FotoPubViewAdapter;
+import unimoron.ar.edu.model.Photo;
 
 public class DashboardActivity extends BaseActivity {
 
     private LinearLayout dynamicContent;
     private RelativeLayout bottonNavBar;
+    private ListView listView;
+    private FotoPubViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +45,24 @@ public class DashboardActivity extends BaseActivity {
         rb.setCompoundDrawablesWithIntrinsicBounds( 0,R.drawable.ic_home_black_24dp, 0,0);
         rb.setTextColor(Color.parseColor("#3F51B5"));
 
-        TextView textDB = (TextView) wizard.findViewById(R.id.textDB);
+        //::::: Obtener las publicaciones del USUARIO ::::::
+        //LLAMAR SERVICIO
+        listView = (ListView) findViewById(R.id.publicaciones);
 
-        PhotoDB db = new PhotoDB(this);
-        db.open();
-        List<String> countries =  db.countries();
-        textDB.setText( countries.toString() );
-        db.close();
+        adapter = new FotoPubViewAdapter(new ArrayList<Photo>(), this);
+        listView.setAdapter(adapter);
+
+        Button btnPublicar = (Button)findViewById(R.id.btnPublicar);
+
+        btnPublicar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent( DashboardActivity.this , SeleccionFotoActivity.class);
+                DashboardActivity.this.startActivity(intent);
+            }
+        });
+
     }
 
     @Override

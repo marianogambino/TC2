@@ -246,6 +246,24 @@ public class PhotoDB {
         return list;
     }
 
+    public List<Photo> getPhotos() throws ParseException {
+        Cursor c = db.rawQuery("select * From Photo c order by creation_date desc", null);
+        Photo photo = null;
+        List<Photo> list = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                photo = new Photo();
+                photo.setId(Long.valueOf(c.getString(0) ));
+                photo.setJson( c.getString(1) );
+                photo.setPathDir( c.getString(4) );
+                SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                photo.setTakenDate( fmt.parse( c.getString(5) ) );
+                list.add(photo);
+            } while (c.moveToNext());
+        }
+        return list;
+    }
+
     //Verifica si ya esta logeando el usuario
     public User getLogin() {
 

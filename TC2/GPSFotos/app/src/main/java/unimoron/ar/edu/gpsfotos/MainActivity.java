@@ -26,7 +26,8 @@ public class MainActivity extends BaseActivity implements PermissionUtils.Permis
         super.onCreate(savedInstanceState);
         Gson gson = new Gson();
         usuario = getIntent().getStringExtra("usuario");
-        scheduleAlarm();
+
+        //scheduleAlarm();
     }
 
 

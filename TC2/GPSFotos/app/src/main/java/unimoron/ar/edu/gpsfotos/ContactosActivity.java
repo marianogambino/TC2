@@ -1,9 +1,13 @@
 package unimoron.ar.edu.gpsfotos;
 
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -18,10 +22,12 @@ import unimoron.ar.edu.galery.ContactoViewAdapter;
 import unimoron.ar.edu.model.City;
 import unimoron.ar.edu.model.Contact;
 import unimoron.ar.edu.model.User;
+import unimoron.ar.edu.services.ServiceBackground;
 
 import android.provider.ContactsContract;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 public class ContactosActivity extends MainActivity {
@@ -30,21 +36,23 @@ public class ContactosActivity extends MainActivity {
     private RelativeLayout bottonNavBar;
     private ListView listView;
     private List<Contact> contactList;
+    private ContactoViewAdapter adapter;
+    private BroadcastReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        onStartService();
+
         dynamicContent = (LinearLayout) findViewById(R.id.dynamicContent);
         bottonNavBar= (RelativeLayout) findViewById(R.id.bottonNavBar);
+
         View wizard = getLayoutInflater().inflate(R.layout.activity_contactos, null);
         dynamicContent.addView(wizard);
         listView = (ListView) findViewById(R.id.contactos);
-        PhotoDB db = new PhotoDB(this);
-        db.open();
-        contactList = db.getContactos();
-        db.close();
-        ContactoViewAdapter adapter = new ContactoViewAdapter(contactList, this);
+        setearListaContactos();
+        adapter = new ContactoViewAdapter(contactList, this);
         listView.setAdapter(adapter);
 
         //add itemClick and goto activity
@@ -82,5 +90,48 @@ public class ContactosActivity extends MainActivity {
         moveTaskToBack(false);
     }
 
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+
+        IntentFilter intentFilter = new IntentFilter(
+                "action.updateContactos");
+
+        mReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                setearListaContactos();
+                adapter.setmValues(contactList);
+                adapter.notifyDataSetChanged();
+
+            }
+        };
+        //registering our receiver
+        this.registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        //unregister our receiver
+        this.unregisterReceiver(this.mReceiver);
+    }
+
+    // Launching the service
+    public void onStartService() {
+        Intent i = new Intent(this, ServiceBackground.class);
+        startService(i);
+    }
+
+
+    private void setearListaContactos(){
+        PhotoDB db = new PhotoDB(this);
+        db.open();
+        contactList = db.getContactos();
+        db.close();
+    }
 
 }

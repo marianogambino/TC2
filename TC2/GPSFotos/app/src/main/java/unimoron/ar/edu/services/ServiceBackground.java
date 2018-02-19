@@ -43,6 +43,7 @@ public class ServiceBackground extends IntentService {
         User usuario = db.getLogin();
         db.close();
 
+
         if ( usuario != null) {
             UserRequest request = new UserRequest();
             request.setContactos(contactos);
@@ -54,7 +55,7 @@ public class ServiceBackground extends IntentService {
 
     private List<Contact> getContactos(){
        List<Contact> contactList = new ArrayList<>();
-       Contact contact = new Contact();
+       Contact contact = null;
 
        Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
                null, null, null, null);

@@ -130,7 +130,9 @@
 
         <activity android:name=".SolicitudPermisoActivity" />
         <activity android:name=".PublicacionesActivity" />
-        <activity android:name=".ARPermisoActivity"></activity>
+        <activity android:name=".ARPermisoActivity" />
+        <activity android:name=".SeleccionFotoActivity" />
+        <activity android:name=".FotoSeleccionadaActivity"></activity>
     </application>
 
 </manifest>

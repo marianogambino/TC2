@@ -14,12 +14,13 @@
     <ListView
         android:id="@+id/publicaciones"
         android:layout_width="match_parent"
-        android:layout_height="440dp"
+        android:layout_height="460dp"
         android:layout_marginTop="50dp">
 
     </ListView>
 
     <Button
+        android:id="@+id/btnPublicar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/publicaciones"

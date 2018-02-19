@@ -1,76 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="360px"
     android:orientation="horizontal"
-    android:padding="5dip" >
+    android:padding="5dip">
 
     <!--  Image -->
-    <LinearLayout android:id="@+id/thumbnail"
+    <LinearLayout
+        android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="3dip"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip">
+        android:layout_marginRight="5dip"
+        android:padding="3dip">
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
-            />
+            android:layout_width="150dip"
+            android:layout_height="150dip" />
 
     </LinearLayout>
 
-    <!-- Nombre de la foto -->
+    <!-- Titulo -->
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/location"
         android:layout_alignTop="@+id/thumbnail"
+        android:layout_toEndOf="@+id/thumbnail"
+        android:layout_toLeftOf="@+id/textView2"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Nombre de la foto"
+        android:layout_toStartOf="@+id/textView2"
+        android:text="Titulo"
         android:textColor="#040404"
-        android:typeface="sans"
-        android:textSize="15dip"
-        android:textStyle="bold"/>
+        android:textSize="20dip"
+        android:textStyle="bold"
+        android:typeface="sans" />
 
-    <!-- Lugar -->
+    <!-- Nombre de la foto -->
     <TextView
-        android:id="@+id/location"
+        android:id="@+id/nombreFoto"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
-        android:textColor="#343434"
-        android:textSize="10dip"
-        android:layout_marginTop="1dip"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/clima"
+        android:layout_marginTop="13dp"
+        android:layout_toEndOf="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Argentina-Buenos Aires-Ituzaingo" />
+        android:text="Nombre de la Foto"
+        android:textColor="#343434"
+        android:textSize="10dip" />
+
+
+    <TextView
+        android:id="@+id/location2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/clima"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_toEndOf="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Argentina-Buenos Aires-Ituzaingo"
+        android:textColor="#343434"
+        android:textSize="10dip" />
 
     <!-- Clima -->
     <TextView
         android:id="@+id/clima"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/location"
-        android:textColor="#343434"
-        android:textSize="10dip"
-        android:layout_marginTop="1dip"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Clima - Temperatura Actual" />
+        android:text="Clima - Temperatura Actual"
+        android:textColor="#343434"
+        android:textSize="10dip" />
 
     <!-- fecha hora -->
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/fechaHora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/name"
+        android:layout_alignParentTop="true"
         android:gravity="right"
         android:text="Fecha-Hora"
-        android:layout_marginRight="5dip"
-        android:textSize="10dip"
         android:textColor="#10bcc9"
-        android:textStyle="bold"/>
+        android:textSize="10dip"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="Geolocalizar"
+        android:textSize="8sp" />
 
 
 </RelativeLayout>

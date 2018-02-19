@@ -90,6 +90,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         db.guardarContactos(contactos);
                     }
                     db.close();
+
+                    Intent i = new Intent("action.updateContactos");
+                    this.sendBroadcast(i);
                 }
             }
             if(value.get("tipoMensaje").equalsIgnoreCase("SolicitudPermiso")){
