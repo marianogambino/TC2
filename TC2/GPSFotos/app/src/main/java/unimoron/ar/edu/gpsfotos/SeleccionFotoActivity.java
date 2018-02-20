@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -35,6 +36,12 @@ public class SeleccionFotoActivity extends AppCompatActivity {
 
             PhotoViewAdapter adapter = new PhotoViewAdapter(photos, this);
             listView.setAdapter(adapter);
+
+            if(photos.size() == 0){
+                Toast.makeText(this, "No hay Fotos para publicar", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SeleccionFotoActivity.this, DashboardActivity.class);
+                startActivity(intent);
+            }
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

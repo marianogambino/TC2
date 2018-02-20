@@ -20,6 +20,7 @@ import java.util.Map;
 
 import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.gpsfotos.ARPermisoActivity;
+import unimoron.ar.edu.gpsfotos.ContactosActivity;
 import unimoron.ar.edu.gpsfotos.DashboardActivity;
 import unimoron.ar.edu.gpsfotos.MainActivity;
 import unimoron.ar.edu.gpsfotos.R;
@@ -213,10 +214,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void notificarAceptacionPermiso(Contact contacto , Boolean conPermiso) {
-        Intent intent = new Intent(this, DashboardActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
 
         String resolucion = " RECHAZO";
         if(conPermiso){
@@ -224,7 +221,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         String mensaje = "El contacto " + contacto.getName() +
-               resolucion + " solicitud de permiso para ver sus publicaciones ";
+                resolucion + " solicitud de permiso para ver sus publicaciones ";
+
+
+        Intent intent = new Intent(this, ContactosActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =

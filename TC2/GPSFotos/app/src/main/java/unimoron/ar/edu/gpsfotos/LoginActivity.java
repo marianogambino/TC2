@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -21,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -42,6 +44,7 @@ import java.util.List;
 import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.asyncTask.UserLoginTask;
 import unimoron.ar.edu.model.User;
+import unimoron.ar.edu.util.NumeroTelefonoUtil;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -100,13 +103,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
         //Verificar si existe usuario en la DB
-            //Si existe, obtener el usuario e ir directamente al Main Activity
+        //Si existe, obtener el usuario e ir directamente al Main Activity
         //Sino existe no hacer nada.
         PhotoDB db = new PhotoDB(this);
         db.open();
         User usuario = db.getLogin();
         db.close();
-        if(usuario != null ) {
+        if (usuario != null) {
             Gson gson = new Gson();
             String u = gson.toJson(usuario);
             Intent intent = new Intent(this, MainActivity.class);
@@ -182,7 +185,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
 
-        if (TextUtils.isEmpty(password) ) {
+        if (TextUtils.isEmpty(password)) {
             mPassword.setError(getString(R.string.error_incorrect_password));
             focusView = mPassword;
             cancel = true;
@@ -193,11 +196,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView = mNumTelefono;
             cancel = true;
         }
-        if (!isNumTelefonoValid(numTelefono)) {
+
+       /* if (!isNumTelefonoValid(numTelefono)) {
             mNumTelefono.setError(getString(R.string.error_invalid_phoneNumber));
             focusView = mNumTelefono;
             cancel = true;
-        }
+        }*/
+
+        numTelefono = NumeroTelefonoUtil.normalizarNumeroTel(numTelefono);
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -215,6 +221,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if(token==null){
                     showProgress(false);
                     Toast.makeText(this, "Error en obtener token", Toast.LENGTH_SHORT).show();
+
                 }else{
                     //Verificar conexion a internet
                     mAuthTask = new UserLoginTask(numTelefono, password, token, LoginActivity.this, this);
@@ -231,7 +238,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isNumTelefonoValid(String numTelefono) {
         //TODO: Replace this with your own logic
-        return numTelefono.length() == 10;
+        return numTelefono.length()  == 8;
     }
 
     /**

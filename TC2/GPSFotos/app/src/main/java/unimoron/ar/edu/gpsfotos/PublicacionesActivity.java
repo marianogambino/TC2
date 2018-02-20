@@ -40,6 +40,9 @@ public class PublicacionesActivity extends AppCompatActivity {
 
         //Obtener las publicaciones del contacto
         //LLAMAR SERVICIO
+
+        //agregar progress bar
+
         adapter = new FotoPubViewAdapter(new ArrayList<Photo>(), this);
         listView.setAdapter(adapter);
 

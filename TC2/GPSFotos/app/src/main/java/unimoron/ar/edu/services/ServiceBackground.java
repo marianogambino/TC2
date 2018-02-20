@@ -13,13 +13,16 @@ import com.google.gson.Gson;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.constantes.Constantes;
 import unimoron.ar.edu.model.Contact;
 import unimoron.ar.edu.model.User;
 import unimoron.ar.edu.request.UserRequest;
+import unimoron.ar.edu.util.NumeroTelefonoUtil;
 
 /**
  * Created by mariano on 14/02/18.
@@ -60,6 +63,9 @@ public class ServiceBackground extends IntentService {
        Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
                null, null, null, null);
        ContentResolver cr = getContentResolver();
+
+        Map<String, String> repetidos = new HashMap<>();
+
        while (cursor.moveToNext()) {
            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
            String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
@@ -75,13 +81,16 @@ public class ServiceBackground extends IntentService {
                String phone = pCur.getString(
                        pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                //System.out.println("phone" + phone);
-               contact.setPhoneNumber( phone );
+               contact.setPhoneNumber(  NumeroTelefonoUtil.normalizarNumeroTel(phone) );
                break;
            }
            pCur.close();
 
+           if(repetidos.get(contact.getPhoneNumber()) == null){
+               contactList.add(contact);
+               repetidos.put(contact.getPhoneNumber(),contact.getPhoneNumber());
+           }
 
-           contactList.add(contact);
        }
        return contactList;
    }

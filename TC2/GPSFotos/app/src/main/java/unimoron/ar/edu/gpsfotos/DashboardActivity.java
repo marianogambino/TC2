@@ -47,6 +47,10 @@ public class DashboardActivity extends BaseActivity {
 
         //::::: Obtener las publicaciones del USUARIO ::::::
         //LLAMAR SERVICIO
+        //agregar progress bar
+
+
+
         listView = (ListView) findViewById(R.id.publicaciones);
 
         adapter = new FotoPubViewAdapter(new ArrayList<Photo>(), this);
