@@ -18,7 +18,7 @@
             android:id="@+id/image"
             android:layout_width="150dip"
             android:layout_height="150dip"
-            android:background="@drawable/ic_mr_button_connecting_15_light"/>
+           />
 
     </LinearLayout>
 
