@@ -1,7 +1,11 @@
 package unimoron.ar.edu.gpsfotos;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,18 +23,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import unimoron.ar.edu.DB.PhotoDB;
+import unimoron.ar.edu.asyncTask.GetPublicacionesTask;
 import unimoron.ar.edu.baseActivity.BaseActivity;
 import unimoron.ar.edu.galery.ContactoViewAdapter;
 import unimoron.ar.edu.galery.FotoPubViewAdapter;
 import unimoron.ar.edu.model.Photo;
 import unimoron.ar.edu.model.Publicacion;
+import unimoron.ar.edu.model.User;
 
-public class DashboardActivity extends BaseActivity {
+public class DashboardActivity extends BaseActivity implements IPublicacionActivity{
 
     private LinearLayout dynamicContent;
     private RelativeLayout bottonNavBar;
     private ListView listView;
     private FotoPubViewAdapter adapter;
+
+    private View mProgressView;
+    private Button btnPublicar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +55,19 @@ public class DashboardActivity extends BaseActivity {
         rb.setCompoundDrawablesWithIntrinsicBounds( 0,R.drawable.ic_home_black_24dp, 0,0);
         rb.setTextColor(Color.parseColor("#3F51B5"));
 
-        //::::: Obtener las publicaciones del USUARIO ::::::
-        //LLAMAR SERVICIO
-        //agregar progress bar
-
-
-
         listView = (ListView) findViewById(R.id.publicaciones);
+        btnPublicar = (Button)findViewById(R.id.btnPublicar);
+        mProgressView = findViewById(R.id.getPublicaciones_progress);
 
-        adapter = new FotoPubViewAdapter(new ArrayList<Publicacion>(), this);
-        listView.setAdapter(adapter);
+        showProgress(true);
 
-        Button btnPublicar = (Button)findViewById(R.id.btnPublicar);
+        PhotoDB db = new PhotoDB(this);
+        db.open();
+        User usuario = db.getLogin();
+        db.close();
+        //call asynctask
+        GetPublicacionesTask task = new GetPublicacionesTask(usuario.getNumTel(), this , this);
+        task.execute((Void) null);
 
         btnPublicar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,5 +88,40 @@ public class DashboardActivity extends BaseActivity {
     @Override
     public int getNavigationMenuItemId() {
         return 0;
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            listView.setVisibility(show ? View.GONE : View.VISIBLE);
+            btnPublicar.setVisibility(show ? View.GONE : View.VISIBLE);
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            listView.setVisibility(show ? View.GONE : View.VISIBLE);
+            btnPublicar.setVisibility(show ? View.GONE : View.VISIBLE);
+            //mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void setPublicaciones(List<Publicacion> publicaciones) {
+        adapter = new FotoPubViewAdapter(publicaciones, this, this, getResources());
+        listView.setAdapter(adapter);
+        showProgress(false);
     }
 }

@@ -97,14 +97,25 @@ public class  MapActivity extends BaseActivity implements OnMapReadyCallback {
                 File root = Environment.getExternalStorageDirectory();
                 Bitmap bMap = BitmapFactory.decodeFile(root+"/" +  p.getPathDir() +  "/" + p.getName());
 
-                Bitmap img = getResizedBitmap(bMap, 100);
-                mMap.addMarker(
-                        new MarkerOptions()
-                                .position(loc)
-                                .title(p.getLocation().getAddress())
-                                .icon(BitmapDescriptorFactory.fromBitmap(img))
-                                .snippet(p.getName()));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+                if(bMap == null){
+                    mMap.addMarker(
+                            new MarkerOptions()
+                                    .position(loc)
+                                    .title(p.getLocation().getAddress())
+                                    .snippet(p.getName()));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+
+                }else {
+
+                    Bitmap img = getResizedBitmap(bMap, 100);
+                    mMap.addMarker(
+                            new MarkerOptions()
+                                    .position(loc)
+                                    .title(p.getLocation().getAddress())
+                                    .icon(BitmapDescriptorFactory.fromBitmap(img))
+                                    .snippet(p.getName()));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+                }
             }
         }
     }

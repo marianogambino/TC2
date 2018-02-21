@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="460px"
+    android:layout_height="500px"
     android:orientation="horizontal"
     android:padding="5dip">
 
@@ -14,11 +14,24 @@
         android:layout_marginRight="5dip"
         android:padding="3dip">
 
+        <ProgressBar
+            android:id="@+id/publicar_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="142dp"
+            android:layout_marginRight="142dp"
+            android:visibility="visible" />
+
         <ImageView
             android:id="@+id/image"
-            android:layout_width="150dip"
-            android:layout_height="150dip"
-           />
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            android:visibility="gone"
+            android:rotation="360"/>
 
     </LinearLayout>
 
@@ -45,6 +58,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:text="Nombre de la Foto"
+        android:textAlignment="center"
         android:textColor="#343434"
         android:textSize="10dip" />
 
@@ -55,10 +69,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_alignTop="@+id/titulo"
         android:text="Argentina-Buenos Aires-Ituzaingo"
+        android:textAlignment="textEnd"
         android:textColor="#343434"
         android:textSize="8sp" />
 
@@ -75,7 +88,8 @@
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Clima - Temperatura Actual"
         android:textColor="#343434"
-        android:textSize="10dip" />
+        android:textSize="10dip"
+        android:visibility="gone"/>
 
     <!-- fecha hora -->
     <TextView
@@ -93,8 +107,8 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"

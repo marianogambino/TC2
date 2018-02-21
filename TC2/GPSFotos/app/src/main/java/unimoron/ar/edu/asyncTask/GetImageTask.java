@@ -2,10 +2,12 @@ package unimoron.ar.edu.asyncTask;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ import unimoron.ar.edu.gpsfotos.FotoSeleccionadaActivity;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.Publicacion;
 import unimoron.ar.edu.model.User;
+import unimoron.ar.edu.util.BitmapConverter;
 
 /**
  * Created by mariano on 13/02/18.
@@ -49,11 +52,17 @@ public class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
     private String url;
 
     private final WeakReference<ImageView> imageViewReference;
+    private final View mProgressView;
 
-    public GetImageTask( ImageView imageView, String url, Context ctx) {
+    private Resources resources;
+
+    public GetImageTask(ImageView imageView, View mProgressView,
+                        String url, Context ctx, Resources resources) {
         this.ctx = ctx;
         imageViewReference = new WeakReference<ImageView>(imageView);
         this.url = url;
+        this.mProgressView = mProgressView;
+        this.resources = resources;
     }
 
     @Override
@@ -78,13 +87,20 @@ public class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
             ImageView imageView = imageViewReference.get();
             if (imageView != null) {
                 if (bitmap != null) {
-                    imageView.setImageBitmap(bitmap);
+
+                    imageView.setImageBitmap( BitmapConverter.getResizedBitmap(bitmap, 100 ));
+
+                    //imageView.setImageBitmap(
+                     //       BitmapConverter.decodeSampledBitmapFromResource(resources, R.id.image, 140, 140));
+                    imageView.setVisibility(View.VISIBLE);
                 } else {
                     Drawable placeholder = imageView.getContext().getResources().getDrawable(R.drawable.ic_mr_button_connecting_15_light);
                     imageView.setImageDrawable(placeholder);
                 }
             }
+
         }
+        mProgressView.setVisibility(View.GONE);
     }
 
     @Override

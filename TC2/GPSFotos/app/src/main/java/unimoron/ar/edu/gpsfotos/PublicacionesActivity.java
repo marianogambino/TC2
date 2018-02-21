@@ -21,7 +21,7 @@ import unimoron.ar.edu.model.Contact;
 import unimoron.ar.edu.model.Photo;
 import unimoron.ar.edu.model.Publicacion;
 
-public class PublicacionesActivity extends AppCompatActivity {
+public class PublicacionesActivity extends AppCompatActivity implements IPublicacionActivity {
 
     private android.support.v7.widget.Toolbar toolbar;
     private ListView listView;
@@ -50,12 +50,12 @@ public class PublicacionesActivity extends AppCompatActivity {
 
         showProgress(true);
         //call asynctask
-        GetPublicacionesTask task = new GetPublicacionesTask(contacto, this , this);
+        GetPublicacionesTask task = new GetPublicacionesTask(contacto.getPhoneNumber(), this , this);
         task.execute((Void) null);
     }
 
     public void setPublicaciones(List<Publicacion> publicaciones){
-        adapter = new FotoPubViewAdapter(publicaciones, this);
+        adapter = new FotoPubViewAdapter(publicaciones, this, PublicacionesActivity.this, getResources());
         listView.setAdapter(adapter);
         showProgress(false);
     }

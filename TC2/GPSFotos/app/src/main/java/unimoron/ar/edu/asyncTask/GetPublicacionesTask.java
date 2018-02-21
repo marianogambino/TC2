@@ -24,6 +24,7 @@ import java.util.Map;
 import unimoron.ar.edu.asyncTask.response.Response;
 import unimoron.ar.edu.gpsfotos.DashboardActivity;
 import unimoron.ar.edu.gpsfotos.FotoSeleccionadaActivity;
+import unimoron.ar.edu.gpsfotos.IPublicacionActivity;
 import unimoron.ar.edu.gpsfotos.PublicacionesActivity;
 import unimoron.ar.edu.model.Contact;
 import unimoron.ar.edu.model.Publicacion;
@@ -41,12 +42,12 @@ public class GetPublicacionesTask extends AsyncTask<Void, Void, List<Publicacion
 
 
     private final Context ctx;
-    private PublicacionesActivity activity;
+    private IPublicacionActivity activity;
     private List<Publicacion> publicaciones;
-    private Contact contacto;
+    private String numTel;
 
-    public GetPublicacionesTask(Contact contacto, Context ctx, PublicacionesActivity activity) {
-        this.contacto = contacto;
+    public GetPublicacionesTask(String numTel, Context ctx, IPublicacionActivity activity) {
+        this.numTel = numTel;
         this.ctx = ctx;
         this.activity = activity;
     }
@@ -55,7 +56,7 @@ public class GetPublicacionesTask extends AsyncTask<Void, Void, List<Publicacion
     protected List<Publicacion> doInBackground(Void... params) {
         List<Publicacion> publicacionList = null;
         try{
-            String urlGet = "https://gpsfotos-5bf17.firebaseio.com/publicaciones/"+ contacto.getPhoneNumber() +".json";
+            String urlGet = "https://gpsfotos-5bf17.firebaseio.com/publicaciones/"+ numTel +".json";
             RestTemplate service = new RestTemplate();
             String publiUsuario = service.getForObject(urlGet, String.class);
 

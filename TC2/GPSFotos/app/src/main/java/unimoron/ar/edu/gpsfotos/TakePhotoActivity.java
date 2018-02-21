@@ -210,7 +210,8 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
                         showToast("address null");
                     }
                 } else {
-                    showToast("Couldn't get the location. Make sure location is enabled on the device");
+                    showToast("No se puede obtener la localizacion. " +
+                            "Asegurese que el GPS este habilitado o Espere y vuelva a intentarlo");
                     if (checkPlayServices()) {
                         // Building the GoogleApi client
                         buildGoogleApiClient();

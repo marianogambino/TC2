@@ -2,6 +2,9 @@ package unimoron.ar.edu.galery;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -21,6 +25,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import unimoron.ar.edu.asyncTask.GetImageTask;
+import unimoron.ar.edu.gpsfotos.MapActivity;
+import unimoron.ar.edu.gpsfotos.PhotoActivity;
+import unimoron.ar.edu.gpsfotos.PublicacionesActivity;
 import unimoron.ar.edu.gpsfotos.R;
 import unimoron.ar.edu.model.Photo;
 import unimoron.ar.edu.model.Publicacion;
@@ -32,12 +39,17 @@ public class FotoPubViewAdapter extends BaseAdapter {
     private List<Publicacion> mValues;
     private Context ctx;
     private Publicacion p;
+    private final Activity act;
+    private Resources resources;
 
-    private ImageView view;
 
-    public FotoPubViewAdapter(List<Publicacion> items, Context context) {
+
+    public FotoPubViewAdapter(List<Publicacion> items, Context context,
+                              Activity act, Resources resources) {
         mValues = items;
         this.ctx = context;
+        this.act = act;
+        this.resources = resources;
     }
 
     @Override
@@ -81,12 +93,13 @@ public class FotoPubViewAdapter extends BaseAdapter {
 
         nombreFoto.setText(photo.getName());
 
-        //Bitmap img = BitmapConverter.convertBitmap(photo.getPathDir(), photo.getName());
-        //view.setImageBitmap( BitmapConverter.getResizedBitmap(img, 40 ) );
 
         ViewHolder holder = new ViewHolder();
+        holder.mProgressView = convertView.findViewById(R.id.publicar_progress);
         holder.imageView = (ImageView) convertView.findViewById(R.id.image);
-        GetImageTask task = new GetImageTask(holder.imageView , p.getUrlFoto(), this.getCtx());
+
+        GetImageTask task = new GetImageTask(holder.imageView , holder.mProgressView ,
+                p.getUrlFoto(), this.getCtx(), resources);
         task.execute((Void)null);
 
         Button btnGeolocalizar = (Button) convertView.findViewById(R.id.button3);
@@ -94,23 +107,27 @@ public class FotoPubViewAdapter extends BaseAdapter {
         btnGeolocalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ir a la geolocalizacion.
-                //ver a lo ultimo
-                p.getPhoto().getLocation();
+
+                List<Photo> photos = Lists.newArrayList();
+                photos.add(p.getPhoto());
+                Gson gson = new Gson();
+                String photosJs = gson.toJson(photos);
+
+                SharedPreferences.Editor sharedpreferences = ctx.getSharedPreferences("Photos", Context.MODE_PRIVATE).edit();
+                sharedpreferences.putString("photos", photosJs);
+                sharedpreferences.apply();
+
+                Intent in = new Intent(act , MapActivity.class);
+                ctx.startActivity(in);
+
             }
         });
-
 
         return convertView;
 
 
     }
 
-    public void setView(Bitmap bmp){
-        if(bmp != null){
-            view.setImageBitmap(bmp);
-        }
-    }
 
     public Context getCtx() {
         return ctx;
@@ -126,6 +143,7 @@ public class FotoPubViewAdapter extends BaseAdapter {
 
     static class ViewHolder {
         ImageView imageView;
+        View mProgressView;
     }
 
 
