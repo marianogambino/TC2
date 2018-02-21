@@ -23,6 +23,7 @@ import unimoron.ar.edu.baseActivity.BaseActivity;
 import unimoron.ar.edu.galery.ContactoViewAdapter;
 import unimoron.ar.edu.galery.FotoPubViewAdapter;
 import unimoron.ar.edu.model.Photo;
+import unimoron.ar.edu.model.Publicacion;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -53,7 +54,7 @@ public class DashboardActivity extends BaseActivity {
 
         listView = (ListView) findViewById(R.id.publicaciones);
 
-        adapter = new FotoPubViewAdapter(new ArrayList<Photo>(), this);
+        adapter = new FotoPubViewAdapter(new ArrayList<Publicacion>(), this);
         listView.setAdapter(adapter);
 
         Button btnPublicar = (Button)findViewById(R.id.btnPublicar);

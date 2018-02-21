@@ -12,12 +12,25 @@
         layout="@layout/toolbar" />
 
 
+    <ProgressBar
+        android:id="@+id/getPublicaciones_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="142dp"
+        android:layout_marginRight="142dp"
+        android:visibility="gone" />
+
 
     <ListView
         android:id="@+id/publicaciones"
         android:layout_width="match_parent"
         android:layout_height="480dp"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="50dp"
+        android:visibility="visible">
 
     </ListView>
 

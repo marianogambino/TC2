@@ -113,13 +113,6 @@ public class FotoSeleccionadaActivity extends AppCompatActivity {
                 try {
                     showProgress(true);
                     uploadFile(photo.getPathDir(), photo.getName());
-
-                    /*if(!cancel) {
-                        //llamar al servicio
-                        PublicacionTask task = new PublicacionTask(publicacion, usuario, FotoSeleccionadaActivity.this, FotoSeleccionadaActivity.this);
-                        task.execute((Void) null);
-                    }*/
-
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -159,9 +152,6 @@ public class FotoSeleccionadaActivity extends AppCompatActivity {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                if(progress == 100.0) {
-                    showProgress(false);
-                }
                 System.out.println("Upload is " + progress + "% done");
             }
         }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
@@ -186,13 +176,6 @@ public class FotoSeleccionadaActivity extends AppCompatActivity {
                 String downloadUrl = taskSnapshot.getMetadata().getDownloadUrl().toString();
                 System.out.println("Download url: :" + downloadUrl );
 
-                //titulo
-                //get data by numTel and then
-                //put data -> publicacionRequest
-                                      // - fechaHora
-                                               //- photo formato json
-                                               //- titulo
-                                               //url
                 //Pasarlo a una clase servicio
                 publicacion.setTituloPublicacion(titulo);
                 publicacion.setPhoto(photo);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="360px"
+    android:layout_height="460px"
     android:orientation="horizontal"
     android:padding="5dip">
 
@@ -17,7 +17,8 @@
         <ImageView
             android:id="@+id/image"
             android:layout_width="150dip"
-            android:layout_height="150dip" />
+            android:layout_height="150dip"
+            android:background="@drawable/ic_mr_button_connecting_15_light"/>
 
     </LinearLayout>
 
@@ -26,15 +27,12 @@
         android:id="@+id/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/location"
-        android:layout_alignTop="@+id/thumbnail"
-        android:layout_toEndOf="@+id/thumbnail"
-        android:layout_toLeftOf="@+id/textView2"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:layout_toStartOf="@+id/textView2"
+        android:layout_below="@+id/fechaHora"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
         android:text="Titulo"
         android:textColor="#040404"
-        android:textSize="20dip"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:typeface="sans" />
 
@@ -43,36 +41,36 @@
         android:id="@+id/nombreFoto"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/clima"
-        android:layout_marginTop="13dp"
-        android:layout_toEndOf="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_above="@+id/button3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:text="Nombre de la Foto"
         android:textColor="#343434"
         android:textSize="10dip" />
 
 
     <TextView
-        android:id="@+id/location2"
+        android:id="@+id/location"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/clima"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Argentina-Buenos Aires-Ituzaingo"
         android:textColor="#343434"
-        android:textSize="10dip" />
+        android:textSize="8sp" />
 
     <!-- Clima -->
     <TextView
         android:id="@+id/clima"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_above="@+id/nombreFoto"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
         android:layout_toEndOf="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Clima - Temperatura Actual"

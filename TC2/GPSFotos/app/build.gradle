@@ -64,6 +64,7 @@ dependencies {
     //compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
     //compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
+    compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
