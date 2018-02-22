@@ -4,17 +4,14 @@
             android:id="@+id/menu_seccion_1"
             android:icon="@mipmap/ic_action_widgets"
             android:title="@string/seccion_1"/>
-        <item
-            android:id="@+id/menu_seccion_2"
-            android:icon="@mipmap/ic_action_widgets"
-            android:title="@string/seccion_2"/>
+
         <item
             android:id="@+id/menu_seccion_3"
             android:icon="@mipmap/ic_action_widgets"
             android:title="@string/seccion_3"/>
     </group>
 
-    <item
+    <!--item
         android:id="@+id/navigation_subheader"
         android:title="@string/otras_opciones">
         <menu>
@@ -27,5 +24,5 @@
                 android:icon="@mipmap/ic_action_widgets"
                 android:title="@string/opcion_2"/>
         </menu>
-    </item>
+    </item-->
 </menu>

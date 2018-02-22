@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toolbar;
@@ -20,6 +21,7 @@ import unimoron.ar.edu.galery.FotoPubViewAdapter;
 import unimoron.ar.edu.model.Contact;
 import unimoron.ar.edu.model.Photo;
 import unimoron.ar.edu.model.Publicacion;
+import unimoron.ar.edu.util.ListViewUtil;
 
 public class PublicacionesActivity extends AppCompatActivity implements IPublicacionActivity {
 
@@ -47,6 +49,27 @@ public class PublicacionesActivity extends AppCompatActivity implements IPublica
         toolbar.setTitle("Publicaciones");
 
         listView = (ListView) findViewById(R.id.publicaciones);
+        listView.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
 
         showProgress(true);
         //call asynctask
@@ -57,6 +80,7 @@ public class PublicacionesActivity extends AppCompatActivity implements IPublica
     public void setPublicaciones(List<Publicacion> publicaciones){
         adapter = new FotoPubViewAdapter(publicaciones, this, PublicacionesActivity.this, getResources());
         listView.setAdapter(adapter);
+        ListViewUtil.setListViewHeightBasedOnChildren(listView);
         showProgress(false);
     }
 

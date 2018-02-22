@@ -18,6 +18,7 @@ import unimoron.ar.edu.DB.PhotoDB;
 import unimoron.ar.edu.galery.PhotoViewAdapter;
 import unimoron.ar.edu.model.City;
 import unimoron.ar.edu.model.Photo;
+import unimoron.ar.edu.util.ListViewUtil;
 
 public class PhotoGaleryActivity extends MainActivity {
 
@@ -61,6 +62,7 @@ public class PhotoGaleryActivity extends MainActivity {
                 }
             });
             listView.setScrollingCacheEnabled(false);
+            ListViewUtil.setListViewHeightBasedOnChildren(listView);
 
         }catch (ParseException ex){
             ex.printStackTrace();

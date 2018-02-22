@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,6 +31,7 @@ import unimoron.ar.edu.galery.FotoPubViewAdapter;
 import unimoron.ar.edu.model.Photo;
 import unimoron.ar.edu.model.Publicacion;
 import unimoron.ar.edu.model.User;
+import unimoron.ar.edu.util.ListViewUtil;
 
 public class DashboardActivity extends BaseActivity implements IPublicacionActivity{
 
@@ -39,7 +41,6 @@ public class DashboardActivity extends BaseActivity implements IPublicacionActiv
     private FotoPubViewAdapter adapter;
 
     private View mProgressView;
-    private Button btnPublicar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class DashboardActivity extends BaseActivity implements IPublicacionActiv
         rb.setTextColor(Color.parseColor("#3F51B5"));
 
         listView = (ListView) findViewById(R.id.publicaciones);
-        btnPublicar = (Button)findViewById(R.id.btnPublicar);
+       // btnPublicar = (Button)findViewById(R.id.btnPublicar);
         mProgressView = findViewById(R.id.getPublicaciones_progress);
 
         showProgress(true);
@@ -69,14 +70,14 @@ public class DashboardActivity extends BaseActivity implements IPublicacionActiv
         GetPublicacionesTask task = new GetPublicacionesTask(usuario.getNumTel(), this , this);
         task.execute((Void) null);
 
-        btnPublicar.setOnClickListener(new View.OnClickListener() {
+       /* btnPublicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent( DashboardActivity.this , SeleccionFotoActivity.class);
                 DashboardActivity.this.startActivity(intent);
             }
-        });
+        });*/
 
     }
 
@@ -99,7 +100,6 @@ public class DashboardActivity extends BaseActivity implements IPublicacionActiv
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
             listView.setVisibility(show ? View.GONE : View.VISIBLE);
-            btnPublicar.setVisibility(show ? View.GONE : View.VISIBLE);
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
@@ -113,7 +113,6 @@ public class DashboardActivity extends BaseActivity implements IPublicacionActiv
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             listView.setVisibility(show ? View.GONE : View.VISIBLE);
-            btnPublicar.setVisibility(show ? View.GONE : View.VISIBLE);
             //mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
@@ -122,6 +121,7 @@ public class DashboardActivity extends BaseActivity implements IPublicacionActiv
     public void setPublicaciones(List<Publicacion> publicaciones) {
         adapter = new FotoPubViewAdapter(publicaciones, this, this, getResources());
         listView.setAdapter(adapter);
+        ListViewUtil.setListViewHeightBasedOnChildren(listView);
         showProgress(false);
     }
 }

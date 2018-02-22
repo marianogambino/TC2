@@ -25,6 +25,7 @@ import unimoron.ar.edu.gpsfotos.ContactosActivity;
 import unimoron.ar.edu.gpsfotos.DashboardActivity;
 import unimoron.ar.edu.gpsfotos.GaleriaLocFotoActivity;
 import unimoron.ar.edu.gpsfotos.R;
+import unimoron.ar.edu.gpsfotos.SeleccionFotoActivity;
 import unimoron.ar.edu.model.User;
 import unimoron.ar.edu.services.AlarmReceiver;
 
@@ -108,20 +109,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             break;
-                        case R.id.menu_seccion_2:
-                            //fragment = new Fragment2();
-                            //fragmentTransaction = true;
-                            break;
                         case R.id.menu_seccion_3:
                             intent = new Intent( BaseActivity.this , ContactosActivity.class);
                             intent.putExtra("USERNAME", "Mariano");
                             startActivity(intent);
-                            break;
-                        case R.id.menu_opcion_1:
-                            Log.i("NavigationView", "Pulsada opción 1");
-                            break;
-                        case R.id.menu_opcion_2:
-                            Log.i("NavigationView", "Pulsada opción 2");
                             break;
                     }
                     drawerLayout.closeDrawers();
@@ -150,10 +141,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            //...
+            case R.id.publicar:
+                Intent intent = new Intent( BaseActivity.this , SeleccionFotoActivity.class);
+                BaseActivity.this.startActivity(intent);
         }
-
         return super.onOptionsItemSelected(item);
     }
 

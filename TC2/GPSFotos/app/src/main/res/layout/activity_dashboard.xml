@@ -13,49 +13,29 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="189dp"
         android:layoutDirection="inherit"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:layout_width="600dp"
-        android:layout_height="600dp"
-        android:orientation="horizontal"
-        android:id="@+id/btnLayout">
-        <Button
-            android:id="@+id/btnPublicar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Publicar"
-            android:layout_marginLeft="250dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="65dp"
-            android:visibility="visible" />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="600dp"
-        android:layout_height="460dp"
 
-        android:layout_alignBottom="@id/btnLayout"
-        android:orientation="vertical">
+    <ListView
+        android:id="@+id/publicaciones"
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp"
+        android:scrollbars="vertical"
+        android:visibility="visible">
+
+    </ListView>
 
         <!-- add last publication, photo, dia/hora , location-->
         <!-- poder agregar comentarios -->
-        <ListView
-            android:id="@+id/publicaciones"
-            android:layout_width="match_parent"
-            android:layout_height="460dp"
-            android:layout_marginTop="50dp"
-            android:visibility="visible">
-
-        </ListView>
-
-    </LinearLayout>
-
-
 
 
 </RelativeLayout>

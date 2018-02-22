@@ -5,12 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivty">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/publicar"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/publicar"
 
         />
-    <item
+    <!--item
         android:id="@+id/action_search"
         android:orderInCategory="200"
         android:title="Search"
@@ -19,7 +19,7 @@
         android:id="@+id/action_user"
         android:orderInCategory="300"
         android:title="User"
-        />
+        /-->
 
 
 </menu>
