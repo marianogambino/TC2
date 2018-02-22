@@ -141,9 +141,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
+                break;
             case R.id.publicar:
                 Intent intent = new Intent( BaseActivity.this , SeleccionFotoActivity.class);
                 BaseActivity.this.startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
