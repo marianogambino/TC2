@@ -36,6 +36,9 @@ public class ServiceDatabase {
     public LinkedHashMap registrarUsuario(User user){
         RestTemplate service = new RestTemplate();
         LinkedHashMap usuarios = service.getForObject(Constants.FIREBASEIO_USUARIOS, LinkedHashMap.class);
+        if(usuarios == null){
+            usuarios = new LinkedHashMap();
+        }
         LinkedHashMap usuario = (LinkedHashMap) usuarios.get(user.getNumTel());
         if(usuario == null) {
             usuarios.put(user.getNumTel(), user);
@@ -75,6 +78,9 @@ public class ServiceDatabase {
         RestTemplate service = new RestTemplate();
         LinkedHashMap permisos = service.getForObject(url, LinkedHashMap.class);
 
+        if(permisos == null){
+            permisos = new LinkedHashMap();
+        }
         String permiso = contact.getPhoneNumber();
 
         List<String> numTelPermitidos = new ArrayList<>();

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.gson.Gson;
@@ -78,9 +79,14 @@ public class PublicacionesActivity extends AppCompatActivity implements IPublica
     }
 
     public void setPublicaciones(List<Publicacion> publicaciones){
-        adapter = new FotoPubViewAdapter(publicaciones, this, PublicacionesActivity.this, getResources());
-        listView.setAdapter(adapter);
-        ListViewUtil.setListViewHeightBasedOnChildren(listView);
+
+        if(publicaciones != null) {
+            adapter = new FotoPubViewAdapter(publicaciones, this, PublicacionesActivity.this, getResources());
+            listView.setAdapter(adapter);
+            ListViewUtil.setListViewHeightBasedOnChildren(listView);
+        }else{
+            Toast.makeText(this, "No hay publicaciones para visualizar", Toast.LENGTH_SHORT).show();
+        }
         showProgress(false);
     }
 

@@ -60,6 +60,10 @@ public class PublicacionTask extends AsyncTask<Void, Void, Response> {
 
             LinkedHashMap publicaciones = service.getForObject(urlPatch, LinkedHashMap.class);
 
+            if ( publicaciones == null ){
+                publicaciones = new LinkedHashMap();
+            }
+
             List<LinkedHashMap> publiUsuario =  (List<LinkedHashMap>) publicaciones.get(usuario.getNumTel());
 
             if ( publiUsuario == null ){

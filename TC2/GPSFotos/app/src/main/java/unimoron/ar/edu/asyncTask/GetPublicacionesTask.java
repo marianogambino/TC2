@@ -75,6 +75,7 @@ public class GetPublicacionesTask extends AsyncTask<Void, Void, List<Publicacion
 
     @Override
     protected void onPostExecute(final List<Publicacion> publicacionList) {
+
        this.activity.setPublicaciones(publicacionList);
     }
 

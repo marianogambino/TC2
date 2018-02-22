@@ -21,7 +21,7 @@ public class ServiceNotificacion {
 
     public void sendDataNotificacion(String token, String tipoMensaje, String mensaje){
         //enviar notificacion tipo data, con el tipo updateContacts
-        HttpHeaders headers = HelperUtil.getHttpHeaderFCM();
+        HttpHeaders headers = new HelperUtil().getHttpHeaderFCM();
         Message msg = new Message();
         msg.setTo(token);
         Data data = new Data();

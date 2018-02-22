@@ -154,8 +154,8 @@ public class TemplateApplicationTests {
 	public void loginOrRegister(){
 		//Lo obtengo como parametro
 		User user = new User();
-		user.setNumTel("1144446789");
-		user.setToken("123ABAV");
+		user.setNumTel("1144442222");
+		user.setToken("21321321321");
 		user.setPassword("123456");
 		user.setName("Login");
 
@@ -165,6 +165,10 @@ public class TemplateApplicationTests {
 		String url = "https://gpsfotos-5bf17.firebaseio.com/usuarios.json";
 		RestTemplate service = new RestTemplate();
 		LinkedHashMap usuarios = service.getForObject(url, LinkedHashMap.class);
+
+		if(usuarios == null){
+			usuarios = new LinkedHashMap();
+		}
 		LinkedHashMap usuario = (LinkedHashMap) usuarios.get(user.getNumTel());
 		if(usuario == null){
 			usuarios.put(user.getNumTel(), user);

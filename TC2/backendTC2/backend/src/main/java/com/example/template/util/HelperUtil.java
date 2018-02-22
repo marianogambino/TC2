@@ -7,7 +7,7 @@ import org.springframework.http.HttpHeaders;
  */
 public class HelperUtil {
 
-    public static HttpHeaders getHttpHeaderFCM(){
+    public  HttpHeaders getHttpHeaderFCM(){
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("Authorization" , Constants.auth);

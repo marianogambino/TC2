@@ -17,6 +17,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -70,15 +71,6 @@ public class DashboardActivity extends BaseActivity implements IPublicacionActiv
         GetPublicacionesTask task = new GetPublicacionesTask(usuario.getNumTel(), this , this);
         task.execute((Void) null);
 
-       /* btnPublicar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent( DashboardActivity.this , SeleccionFotoActivity.class);
-                DashboardActivity.this.startActivity(intent);
-            }
-        });*/
-
     }
 
     @Override
@@ -119,9 +111,13 @@ public class DashboardActivity extends BaseActivity implements IPublicacionActiv
 
     @Override
     public void setPublicaciones(List<Publicacion> publicaciones) {
-        adapter = new FotoPubViewAdapter(publicaciones, this, this, getResources());
-        listView.setAdapter(adapter);
-        ListViewUtil.setListViewHeightBasedOnChildren(listView);
+        if(publicaciones != null) {
+            adapter = new FotoPubViewAdapter(publicaciones, this, this, getResources());
+            listView.setAdapter(adapter);
+            ListViewUtil.setListViewHeightBasedOnChildren(listView);
+        }else {
+            Toast.makeText(this, "No hay publicaciones para visualizar", Toast.LENGTH_SHORT).show();
+        }
         showProgress(false);
     }
 }
