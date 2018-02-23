@@ -75,7 +75,7 @@ public class ServiceIntegrationImpl implements ServiceIntegration{
         Message msg = new Message();
         msg.setTo(token);
         msg.setNotification(new Notification(message, title));
-        HttpEntity<Message> entity = new HttpEntity<>(msg, HelperUtil.getHttpHeaderFCM());
+        HttpEntity<Message> entity = new HttpEntity<>(msg, new HelperUtil().getHttpHeaderFCM());
         RestTemplate service = new RestTemplate();
         service.postForLocation(Constants.urlFCM, entity);
     }

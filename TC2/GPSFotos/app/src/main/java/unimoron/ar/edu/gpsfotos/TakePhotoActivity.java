@@ -1,9 +1,11 @@
 package unimoron.ar.edu.gpsfotos;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.hardware.Camera;
@@ -15,12 +17,14 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -191,6 +195,8 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
             }
         };
 
+
+
         floatingActionButton.setVisibility(visibility);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -205,7 +211,8 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
                     Address address = getAddress();
 
                     if(address!=null) {
-                        camera.takePicture(null, null, jpegCallback);
+                        //camera.takePicture(null, null, jpegCallback);
+                        takeFocusedPicture();
                     }else{
                         showToast("address null");
                     }
@@ -227,6 +234,42 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
         }
 
         //return view;
+
+    }
+
+
+    Camera.ShutterCallback mShutterCallback = new Camera.ShutterCallback() {
+
+        @Override
+        public void onShutter() {
+            // TODO Auto-generated method stub
+
+        }
+    };
+
+
+    Camera.AutoFocusCallback mAutoFocusCallback = new Camera.AutoFocusCallback() {
+        @Override
+        public void onAutoFocus(boolean success, Camera camera) {
+
+            try{
+                camera.takePicture(mShutterCallback, null, jpegCallback);
+            }catch(Exception e){
+
+            }
+
+        }
+    };
+
+    public void takeFocusedPicture() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                camera.autoFocus(mAutoFocusCallback);
+            }
+        }, 200);
+
 
     }
 
@@ -476,18 +519,46 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
             System.err.println(e);
             return;
         }
-        Camera.Parameters param;
-        param = camera.getParameters();
+
+        Camera.Parameters param = camera.getParameters();
+
+        List<Camera.Size> sizes = param.getSupportedPictureSizes();
+        //searches for good picture quality
+        Camera.Size bestDimens = null;
+        for(Camera.Size dimens : sizes){
+            if(dimens.width  <= 1024 && dimens.height <= 768){
+                if (bestDimens == null || (dimens.width > bestDimens.width && dimens.height > bestDimens.height)) {
+                    bestDimens = dimens;
+                }
+            }
+        }
+        param.setPictureSize(bestDimens.width, bestDimens.height);
+        camera.setParameters(param);
 
         // modify parameter
-        List<Camera.Size> sizes = param.getSupportedPreviewSizes();
-        Camera.Size selected = sizes.get(0);
-        param.setPreviewSize(selected.width,selected.height);
-        camera.setParameters(param);
+
+        //Camera.Size selected = sizes.get(0);
+        //param.setPreviewSize(selected.width,selected.height);
+
+        //param.setPictureSize(bestDimens.width, bestDimens.height);
+        //camera.setParameters(param);
+
+        //camera.setParameters(param);
         try {
             // The Surface has been created, now tell the camera where to draw
             // the preview.
-            camera.setDisplayOrientation(90);
+            camera.setErrorCallback(new Camera.ErrorCallback() {
+                public void onError(int error, Camera mcamera) {
+
+                    camera.release();
+                    camera = Camera.open();
+                    Log.d("Camera died", "error camera");
+
+                }
+            });
+            //camera.setDisplayOrientation(90);
+            setCameraDisplayOrientation(this,
+                    Camera.CameraInfo.CAMERA_FACING_BACK, camera);
             camera.setPreviewDisplay(surfaceHolder);
             camera.startPreview();
         } catch (Exception e) {
@@ -495,6 +566,39 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
             System.err.println(e);
             return;
         }
+    }
+
+
+    private void setCameraDisplayOrientation(Activity activity, int cameraId,
+                                             android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);
+        int rotation = activity.getWindowManager().getDefaultDisplay()
+                .getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360; // compensate the mirror
+        } else { // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(result);
     }
 
     @Override
