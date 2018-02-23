@@ -69,7 +69,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if(contactos != null && contactos.size() > 0 ) {
                     Log.d(TAG, "contactos: " + contactos.get(0).getPhoneNumber());
                     PhotoDB db = new PhotoDB(this);
-                    db.open();
                     //modificar solo guardar
                     List<Contact> contactosFilter = new ArrayList<>();
                     List<Contact> contactsDB = db.getContactos();
@@ -90,7 +89,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }else{
                         db.guardarContactos(contactos);
                     }
-                    db.close();
 
                     Intent i = new Intent("action.updateContactos");
                     this.sendBroadcast(i);
@@ -103,15 +101,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 //mostrar notificacion y abrir activity de aprobacion
                 //enviar el json al activity -> para que muestre si acepta o rechaza la solicitud
                 cantPermisos++;
-
                 PhotoDB db = new PhotoDB(this);
-                db.open();
                 Contact contact = db.getContacto( permisoRequest.getUsuario().getNumTel());
                 Permiso permiso = new Permiso();
                 permiso.setContacto(contact);
                 permiso.setConPermiso(false);
                 db.guardarPermiso(permiso);
-                db.close();
                 String contacto  = gson.toJson(contact);
                 enviarNotificacionPermiso(contacto , contact.getName(), solicitudPermiso);
             }
@@ -120,11 +115,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 String permiso = value.get("AceptacionPermiso");
                 PermisoRequest permisoRequest = gson.fromJson(permiso, PermisoRequest.class);
                 PhotoDB db = new PhotoDB(this);
-                db.open();
                 Boolean conPermiso = permisoRequest.getConPermiso();
                 Contact contacto = permisoRequest.getContacto();
                 db.habilitarContacto(contacto, conPermiso);
-                db.close();
                 cantPermisos++;
                 notificarAceptacionPermiso(contacto, permisoRequest.getConPermiso());
             }

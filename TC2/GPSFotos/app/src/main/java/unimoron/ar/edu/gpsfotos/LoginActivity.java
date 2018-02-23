@@ -106,9 +106,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //Si existe, obtener el usuario e ir directamente al Main Activity
         //Sino existe no hacer nada.
         PhotoDB db = new PhotoDB(this);
-        db.open();
         User usuario = db.getLogin();
-        db.close();
         if (usuario != null) {
             Gson gson = new Gson();
             String u = gson.toJson(usuario);

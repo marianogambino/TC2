@@ -64,9 +64,7 @@ public class DashboardActivity extends BaseActivity implements IPublicacionActiv
         showProgress(true);
 
         PhotoDB db = new PhotoDB(this);
-        db.open();
         User usuario = db.getLogin();
-        db.close();
         //call asynctask
         GetPublicacionesTask task = new GetPublicacionesTask(usuario.getNumTel(), this , this);
         task.execute((Void) null);

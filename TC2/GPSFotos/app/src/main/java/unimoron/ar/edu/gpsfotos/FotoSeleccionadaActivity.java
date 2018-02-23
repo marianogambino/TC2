@@ -97,9 +97,7 @@ public class FotoSeleccionadaActivity extends AppCompatActivity {
         et = (EditText)findViewById(R.id.editText);
 
         PhotoDB db = new PhotoDB(this);
-        db.open();
         usuario = db.getLogin();
-        db.close();
 
         btnLoc.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -33,11 +33,9 @@ public class StateActivity extends MainActivity {
         listViewState = (ListView) findViewById(R.id.list_state);
 
         PhotoDB db = new PhotoDB(this);
-        db.open();
         Intent intent = this.getIntent();
         String id = (String) intent.getStringExtra("countryID");
         stateList =  db.getStates( new Long ( id )  );
-        db.close();
 
         StateViewAdapter adapter = new StateViewAdapter(stateList, this);
         listViewState.setAdapter(adapter);

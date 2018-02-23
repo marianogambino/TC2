@@ -39,9 +39,7 @@ public class PhotoGaleryActivity extends MainActivity {
 
             listView = (ListView) findViewById(R.id.list_photo);
             PhotoDB db = new PhotoDB(this);
-            db.open();
             photos = db.getPhoto(new Long(getIntent().getStringExtra("cityID") ) ) ;
-            db.close();
 
             PhotoViewAdapter adapter = new PhotoViewAdapter(photos, this);
             listView.setAdapter(adapter);

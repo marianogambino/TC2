@@ -34,9 +34,7 @@ public class CityActivity extends MainActivity {
         listView = (ListView) findViewById(R.id.list_city);
 
         PhotoDB db = new PhotoDB(this);
-        db.open();
         cities =  db.getCities(new Long(getIntent().getStringExtra("stateID") ) );
-        db.close();
 
         CityViewAdapter adapter = new CityViewAdapter(cities, this);
         listView.setAdapter(adapter);

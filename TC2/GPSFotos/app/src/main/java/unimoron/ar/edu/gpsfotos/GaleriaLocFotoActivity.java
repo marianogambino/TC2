@@ -32,9 +32,7 @@ public class GaleriaLocFotoActivity extends BaseActivity {
         listCountry = (ListView) findViewById(R.id.list_country);
 
         PhotoDB db = new PhotoDB(this);
-        db.open();
         countries =  db.getCountries();
-        db.close();
 
         CountryViewAdapter adapter = new CountryViewAdapter(countries, this);
 

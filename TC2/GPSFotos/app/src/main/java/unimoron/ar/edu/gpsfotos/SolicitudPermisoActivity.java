@@ -39,9 +39,7 @@ public class SolicitudPermisoActivity extends AppCompatActivity {
         contacto = gson.fromJson(contact, Contact.class);
 
         PhotoDB db = new PhotoDB(this);
-        db.open();
         usuario = db.getLogin();
-        db.close();
 
         TextView nombreContacto = (TextView) findViewById(R.id.contacto);
         TextView numTel = (TextView) findViewById(R.id.numTel);
@@ -66,8 +64,6 @@ public class SolicitudPermisoActivity extends AppCompatActivity {
         task = new SolicitudPermisoTask(usuario, contacto, SolicitudPermisoActivity.this, this);
         task.execute((Void) null);
         PhotoDB db = new PhotoDB(this);
-        db.open();
         db.contactoActualizarNotificable(contacto);
-        db.close();
     }
 }

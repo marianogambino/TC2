@@ -298,9 +298,7 @@ public class TakePhotoActivity extends MainActivity implements SurfaceHolder.Cal
 
             String photosJs = gson.toJson(photos);
             PhotoDB db = new PhotoDB(this.getBaseContext());
-            db.open();
             db.savePhoto(photo, gson.toJson(photo));
-            db.close();
 
             //momentaneo
             SharedPreferences.Editor sharedpreferences = this.getSharedPreferences("Photos", Context.MODE_PRIVATE).edit();

@@ -42,10 +42,7 @@ public class ServiceBackground extends IntentService {
         List<Contact> contactos = getContactos();
 
         PhotoDB db = new PhotoDB(this);
-        db.open();
         User usuario = db.getLogin();
-        db.close();
-
 
         if ( usuario != null) {
             UserRequest request = new UserRequest();

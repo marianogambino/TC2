@@ -78,9 +78,7 @@ public class ARPermisoActivity extends AppCompatActivity {
 
         if(permisoRequest.getConPermiso()){
             PhotoDB db = new PhotoDB(this);
-            db.open();
             db.deletePermiso(permisoRequest.getContacto().getPhoneNumber());
-            db.close();
         }
 
         task = new ARPermisoTask(permisoRequest, ARPermisoActivity.this, this);

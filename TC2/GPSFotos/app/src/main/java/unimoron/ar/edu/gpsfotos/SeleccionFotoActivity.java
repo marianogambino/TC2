@@ -30,9 +30,7 @@ public class SeleccionFotoActivity extends AppCompatActivity {
     try {
             listView = (ListView) findViewById(R.id.list_photo);
             PhotoDB db = new PhotoDB(this);
-            db.open();
             photos = db.getPhotos();
-            db.close();
 
             PhotoViewAdapter adapter = new PhotoViewAdapter(photos, this);
             listView.setAdapter(adapter);

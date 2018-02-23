@@ -129,9 +129,7 @@ public class ContactosActivity extends MainActivity {
 
     private void setearListaContactos(){
         PhotoDB db = new PhotoDB(this);
-        db.open();
         contactList = db.getContactos();
-        db.close();
     }
 
 }

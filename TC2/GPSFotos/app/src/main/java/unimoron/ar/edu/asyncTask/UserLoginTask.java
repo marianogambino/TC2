@@ -70,9 +70,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Response> {
             //Antes de ir al MainActivity
             //Guardar usuario en DB.
             PhotoDB db = new PhotoDB(this.ctx);
-            db.open();
             db.saveLogin(usuario);
-            db.close();
             this.ctx.startActivity(intent);
 
         } else {

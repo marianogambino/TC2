@@ -53,6 +53,7 @@ public class PhotoDB {
      */
     public void savePhoto(Photo photo, String jsonPhoto){
 
+        this.open();
         Cursor cCountry = db.query(TablesColumns.T_COUNTRY, TablesColumns.allColumnsCountry,
                 TablesColumns.C_COUNTRY_NAME + "=?", new String[]{photo.getLocation().getCountry()},
                 null, null, null);
@@ -112,31 +113,40 @@ public class PhotoDB {
             persistPhoto(photo, jsonPhoto, cityId);
         }
         cCountry.close();
+        this.close();
     }
 
     private long persistCountry(String country){
+        this.open();
         ContentValues valCountry = new ContentValues();
         valCountry.put(TablesColumns.C_COUNTRY_NAME, country);
         long countryIdx = db.insert(TablesColumns.T_COUNTRY, null, valCountry);
+        this.close();
         return countryIdx;
     }
 
     private long persistState(long countryIdx , String state){
+        this.open();
         ContentValues valState = new ContentValues();
         valState.put(TablesColumns.C_STATE_NAME, state);
         valState.put(TablesColumns.C_COUNTRY_ID, countryIdx );
         long stateIdx = db.insert(TablesColumns.T_STATE, null, valState);
+        this.close();
         return stateIdx;
     }
 
     private long persistCity(long stateIdx , String city){
+        this.open();
         ContentValues valCity = new ContentValues();
         valCity.put(TablesColumns.C_CITY_NAME, city);
         valCity.put(TablesColumns.C_STATE_ID, stateIdx );
-        return db.insert(TablesColumns.T_CITY, null, valCity);
+        long id = db.insert(TablesColumns.T_CITY, null, valCity);
+        this.close();
+        return id;
     }
 
     private long persistPhoto(Photo photo, String jsonPhoto , long cityId){
+        this.open();
         ContentValues valores = new ContentValues();
         valores.put(TablesColumns.C_PHOTO_JSON, jsonPhoto);
         valores.put(TablesColumns.C_PHOTO_DELETE, 0);
@@ -149,7 +159,9 @@ public class PhotoDB {
         valores.put(TablesColumns.C_PHOTO_DATE, date);
 
         System.out.println( "insert into photo");
-        return db.insert(TablesColumns.T_PHOTO, null, valores);
+        long id =  db.insert(TablesColumns.T_PHOTO, null, valores);
+        this.close();
+        return id;
     }
 
     /**
@@ -157,6 +169,7 @@ public class PhotoDB {
      * @return
      */
     public List<String> countries(){
+        this.open();
         Cursor c = db.rawQuery("select c.name, s.name, ct.name, ct.id_city, p.path_file, p.creation_date " +
                 " from country c, state s, city ct , photo p" +
                 " where c.id = s.id and s.id_state = ct.id_state and p.id_city = ct.id_city ", null);
@@ -178,12 +191,13 @@ public class PhotoDB {
                         " citi ID: " + column4 + " - " + column5 + " - " + column6 );
             } while (c.moveToNext());
         }
-
+        this.close();
         return list;
     }
 
 
     public List<Country> getCountries(){
+        this.open();
         Cursor c = db.rawQuery("select c.id , c.name From country c", null);
         Country country = null;
         List<Country> list = new ArrayList<>();
@@ -195,10 +209,12 @@ public class PhotoDB {
                 list.add(country);
             } while (c.moveToNext());
         }
+        this.close();
         return list;
     }
 
     public List<State> getStates(Long idCountry){
+        this.open();
         Cursor c = db.rawQuery("select s.id , s.name From state s where s.id = " + idCountry, null);
         State state = null;
         List<State> list = new ArrayList<>();
@@ -210,10 +226,12 @@ public class PhotoDB {
                 list.add(state);
             } while (c.moveToNext());
         }
+        this.close();
         return list;
     }
 
     public List<City> getCities(Long idState){
+        this.open();
         Cursor c = db.rawQuery("select c.id_city , c.name From city c where c.id_state=" + idState, null);
         City city = null;
         List<City> list = new ArrayList<>();
@@ -225,10 +243,12 @@ public class PhotoDB {
                 list.add(city);
             } while (c.moveToNext());
         }
+        this.close();
         return list;
     }
 
     public List<Photo> getPhoto(Long idCity) throws ParseException {
+        this.open();
         Cursor c = db.rawQuery("select * From Photo c where c.id_city=" + idCity + " order by creation_date desc", null);
         Photo photo = null;
         List<Photo> list = new ArrayList<>();
@@ -243,10 +263,12 @@ public class PhotoDB {
                 list.add(photo);
             } while (c.moveToNext());
         }
+        this.close();
         return list;
     }
 
     public List<Photo> getPhotos() throws ParseException {
+        this.open();
         Cursor c = db.rawQuery("select * From Photo c order by creation_date desc", null);
         Photo photo = null;
         List<Photo> list = new ArrayList<>();
@@ -261,12 +283,13 @@ public class PhotoDB {
                 list.add(photo);
             } while (c.moveToNext());
         }
+        this.close();
         return list;
     }
 
     //Verifica si ya esta logeando el usuario
     public User getLogin() {
-
+        this.open();
         String select = "SELECT *  from login where loginEstado = 'A'";
         Cursor c= db.rawQuery(select, null);
         System.out.println( "Cursor de login = " + c.getCount());
@@ -278,21 +301,25 @@ public class PhotoDB {
             usuario.setToken( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_TOKEN)) );
             usuario.setPassword( c.getString(c.getColumnIndex(TablesColumns.C_LOGIN_PASS)) );
         }
+        this.close();
         return usuario;
     }
 
     //VER EL LOGIN PERO CON NUMERO DE TELEFONO. VER validacion via firebase
     public void saveLogin(User usuario) {
+        this.open();
         ContentValues valores = new ContentValues();
         valores.put(TablesColumns.C_LOGIN_NUM_TEL, usuario.getNumTel());
         valores.put(TablesColumns.C_LOGIN_PASS, usuario.getPassword());
         valores.put(TablesColumns.C_LOGIN_ESTADO, "A");
         valores.put(TablesColumns.C_LOGIN_TOKEN, usuario.getToken());
         db.insert(TablesColumns.T_LOGIN, null, valores);
+        this.close();
     }
 
     //CONTACTOS
     public List<Contact> getContactos(){
+        this.open();
         Cursor c = db.rawQuery("select * From CONTACTO c ", null);
         Contact contact = null;
         List<Contact> list = new ArrayList<>();
@@ -314,14 +341,18 @@ public class PhotoDB {
                 list.add(contact);
             } while (c.moveToNext());
         }
+        this.close();
         return list;
     }
 
     public void borrarTodosContactos() {
+        this.open();
         db.execSQL("delete from CONTACTO");
+        this.close();
     }
 
     public void guardarContactos(List<Contact> contactos) {
+        this.open();
         for ( Contact c : contactos ) {
             ContentValues valores = new ContentValues();
             valores.put(TablesColumns.C_CONTACTO_NAME, c.getName());
@@ -336,11 +367,13 @@ public class PhotoDB {
             valores.put(TablesColumns.C_NOTIFICA_EVENTO, 0);
             db.insert(TablesColumns.T_CONTACTO, null, valores);
         }
+        this.close();
     }
 
 
     //CONTACTO
     public Contact getContacto(String numTel){
+        this.open();
         Cursor c = db.rawQuery("select * From CONTACTO c where numTel=" + numTel, null);
         Contact contact = null;
 
@@ -359,25 +392,31 @@ public class PhotoDB {
             Boolean notificable = c.getInt(c.getColumnIndex(TablesColumns.C_NOTIFICA_EVENTO)) == 0 ? false : true;
             contact.setNoficable(notificable);
         }
+        this.close();
         return contact;
     }
 
     public void contactoActualizarNotificable(Contact contacto) {
+        this.open();
         ContentValues valores = new ContentValues();
         valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 3);
         valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Pendiente de Aprobacion");
         valores.put(TablesColumns.C_NOTIFICA_EVENTO, 0);
         db.update(TablesColumns.T_CONTACTO, valores, TablesColumns.C_CONTACTO_NUM_TEL + "=?"  , new String[] { contacto.getPhoneNumber() });
+        this.close();
     }
 
     public void actualizarToken(Contact contacto) {
+        this.open();
         ContentValues valores = new ContentValues();
         valores.put(TablesColumns.C_CONTACTO_TOKEN, contacto.getToken());
         db.update(TablesColumns.T_CONTACTO, valores, TablesColumns.C_CONTACTO_NUM_TEL + "=?"  , new String[] { contacto.getPhoneNumber() });
+        this.close();
     }
 
 
     public void habilitarContacto(Contact contacto, Boolean tienePermiso) {
+        this.open();
         ContentValues valores = new ContentValues();
         if(tienePermiso) {
             valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_CODIGO, 5);
@@ -387,10 +426,12 @@ public class PhotoDB {
             valores.put(TablesColumns.C_CONTACTO_PERMISO_PUBLICACION_DESCRIPCION, "Rechazado");
         }
         db.update(TablesColumns.T_CONTACTO, valores, TablesColumns.C_CONTACTO_NUM_TEL + "=?"  , new String[] { contacto.getPhoneNumber() });
+        this.close();
     }
 
     //PERMISOS PENDIENTES DE APROBACION
     public List<Permiso> getPermisosPendientes(){
+        this.open();
         Cursor c = db.rawQuery("select * From " + TablesColumns.T_PERMISOS_PENDIENTES , null);
         Permiso permiso = null;
         List<Permiso> list = new ArrayList<>();
@@ -404,24 +445,30 @@ public class PhotoDB {
                 list.add(permiso);
             } while (c.moveToNext());
         }
+        this.close();
         return list;
     }
 
     //GUARDAR PERMISOS PENDIENTES
     public void guardarPermiso(Permiso permiso) {
+        this.open();
         ContentValues valores = new ContentValues();
         valores.put(TablesColumns.C_PERMISO_CONTACTO_NAME, permiso.getContacto().getName());
         valores.put(TablesColumns.C_PERMISO_CONTACTO_NUMTEL, permiso.getContacto().getPhoneNumber());
         valores.put(TablesColumns.C_PERMISO_CONTACTO_TOKEN, permiso.getContacto().getToken());
         db.insert(TablesColumns.T_PERMISOS_PENDIENTES, null, valores);
+        this.close();
     }
 
     public void deletePermiso(String numTel) {
+        this.open();
         db.delete(TablesColumns.T_PERMISOS_PENDIENTES, TablesColumns.C_PERMISO_CONTACTO_NUMTEL + "=?", new String[]{numTel});
+        this.close();
     }
 
     //NOTIFICACIONES
     public List<Notificacion> getNotificaciones() throws ParseException{
+        this.open();
         Cursor c = db.rawQuery("select * From " + TablesColumns.T_NOTIFICACIONES , null);
         Notificacion notificacion = null;
         List<Notificacion> list = new ArrayList<>();
@@ -436,11 +483,13 @@ public class PhotoDB {
                 list.add(notificacion);
             } while (c.moveToNext());
         }
+        this.close();
         return list;
     }
 
     //GUARDAR NOTIFICACIONES
     public void guardarNotificacion(Notificacion notificacion) {
+        this.open();
         ContentValues valores = new ContentValues();
         valores.put(TablesColumns.C_NOTI_DESC, notificacion.getDescripcion());
         valores.put(TablesColumns.C_NOTI_FROM_NAME, notificacion.getFromName());
@@ -450,6 +499,7 @@ public class PhotoDB {
         String date = fmt.format(currentDate);
         valores.put(TablesColumns.C_NOTI_FECHA, date);
         db.insert(TablesColumns.T_NOTIFICACIONES, null, valores);
+        this.close();
     }
 
 }
